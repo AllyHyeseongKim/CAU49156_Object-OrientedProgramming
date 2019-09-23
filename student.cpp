@@ -1,10 +1,10 @@
 #include "student.h"
 
-Student::Student(string name, string age, string id, string department, string tel):Person(name, age) {
-    this->id = id;
-    this->department = department;
-    this->tel = tel;
-}
+Student::Student(string name, string age, string id, string department, string tel)
+    : Person(name, age), id(id), department(department), tel(tel) {};
+
+Student::Student(const Student& copy)
+    : Person(copy.name, copy.age), id(copy.id), department(copy.department), tel(copy.tel) {};
 
 string Student::getId() {
     return this->id;
@@ -18,9 +18,9 @@ string Student::getTel() {
     return this->tel;
 }
 
-ostream& operator<<(ostream& os, Student& student)
+ostream& operator<<(ostream& os, const Student& student)
 {
-    os <<"id: " << student.getId() << " name: " << student.getName() << " age: " << student.getAge() 
-    << " department: " << student.getDepartment << "telephone number: " << student.getTel() << endl;
+    os <<"id: " << student.id << " name: " << student.name << " age: " << student.age 
+    << " department: " << student.getDepartment << "telephone number: " << student.tel << endl;
     return os;
 }

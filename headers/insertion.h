@@ -4,8 +4,8 @@
 #include "student.h"
 
 class Insertion {
-    virtual void insert(Student student);
-    virtual bool chkRedunduncy(string id);
+    virtual void insert(Student student) = 0;
+    virtual bool chkRedunduncy(string id) = 0;
 };
 
 #endif

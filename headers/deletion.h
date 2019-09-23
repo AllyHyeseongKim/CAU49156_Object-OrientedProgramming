@@ -5,7 +5,7 @@
 using namespace std;
 
 class Deletion {
-    virtual void deleteStudent(string id);
+    virtual void deleting(string id) = 0;
 };
 
 #endif
