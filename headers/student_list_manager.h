@@ -21,7 +21,7 @@ public:
     vector<Student> getStudentList();
     vector<Student> searching(string str, SearchMenu menu);
 
-    void insert(Student &student);
+    bool insert(Student &student);
 
     void deleting(string id);
 

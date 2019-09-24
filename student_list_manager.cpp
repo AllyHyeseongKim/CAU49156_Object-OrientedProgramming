@@ -32,13 +32,22 @@ vector<Student> StudentListManager::searching(string str, SearchMenu menu) {
     }
 }
 
-void StudentListManager::insert(Student &student) {
-    if (!StudentListManager::chkRedundancy(student.getId()))
-        return;
+bool StudentListManager::insert(Student &student) {
+    if (!StudentListManager::chkRedundancy(student.getId())) { 
+        cout << "Error : Already inserted" << endl;
+        return false;
+    };
+    if (student.getName().length() > 15) return false;
+    if (student.getId().length() != 10) return false;
+    if (student.getAge().length() > 3) return false;
+    if (student.getDepartment().length() > 20) return false;
+    if (student.getTel().length() > 12) return false;
 
     studentList.push_back(student);
     qsort(&studentList[0], studentList.size(), sizeof(Student), studentCompareByName);
     StudentListManager::fileWrite();
+
+    return true;
 }
 
 void StudentListManager::deleting(string id) {

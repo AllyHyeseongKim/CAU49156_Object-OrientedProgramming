@@ -4,7 +4,7 @@
 #include "student.h"
 
 class Insertion {
-    virtual void insert(Student &student) = 0;
+    virtual bool insert(Student &student) = 0;
     virtual bool chkRedundancy(string id) = 0;
 };
 
