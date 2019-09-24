@@ -35,7 +35,7 @@ private:
 
     bool chkRedundancy(string id);
 
-    void fileOpen();
+    void fileRead();
     void fileWrite();
 
     void setStudentList();

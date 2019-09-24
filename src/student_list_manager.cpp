@@ -9,8 +9,7 @@ int studentCompareByName(const void *first, const void *second) {
 
 StudentListManager::StudentListManager(string fileName) {
         this->fileName = fileName;
-        StudentListManager::fileOpen();
-        StudentListManager::setStudentList();
+        StudentListManager::fileRead();
 }
 
 vector<Student> StudentListManager::getStudentList() {
@@ -108,8 +107,10 @@ bool StudentListManager::chkRedundancy(string id) {
     return student.empty();
 }
 
-void StudentListManager::fileOpen() {
+void StudentListManager::fileRead() {
     fd.open(fileName, ios::in);
+    StudentListManager::setStudentList();
+    fd.close();
 }
 
 
@@ -133,7 +134,6 @@ void StudentListManager::setStudentList() {
             delete(tempStudent);
         }
     }
-    fd.close();
 }
 
 ostream& operator<<(ostream& os, const StudentListManager& student)
