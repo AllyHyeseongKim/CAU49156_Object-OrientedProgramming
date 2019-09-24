@@ -16,6 +16,7 @@
                 "person.cpp",
                 "student.cpp",
                 "student_list_manager.cpp",
+                "utils.cpp",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],

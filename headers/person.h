@@ -13,6 +13,7 @@ protected:
 public:
     Person(string name, string age);
     Person(const Person& copy);
+    Person(const string &line);
 
     string getName();
     string getAge();

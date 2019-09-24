@@ -12,6 +12,7 @@ class Student: public Person {
 public:
     Student(string name, string age, string id, string department, string tel);
     Student(const Student& copy);
+    Student(const string &line);
 
     string getId();
     string getDepartment();

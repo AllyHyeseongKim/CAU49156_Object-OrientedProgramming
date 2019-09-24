@@ -100,33 +100,28 @@ bool StudentListManager::chkRedundancy(string id) {
 }
 
 void StudentListManager::fileOpen() {
-    fd.open(fileName, ios::binary|ios::in);
+    fd.open(fileName, ios::in);
 }
 
 
 void StudentListManager::fileWrite() {
     ofstream fd;
-    fd.open(fileName, ios::binary|ios::out);
+    fd.open(fileName, ios::out);
 
-    for (Student stu: studentList) {
-        fd.write((char*)&stu, sizeof(Student));
-    }
+    for (Student stu: studentList)
+        fd << stu;
+    fd.close();
 }
 
 void StudentListManager::setStudentList() {
-    streampos fileSize;
-    int numOfObject;
+    string line;
     Student *tempStudent;
 
-    StudentListManager::fileOpen();
-
     if (fd.is_open()) {
-        fileSize = fd.tellg();
-        numOfObject = fileSize/sizeof(Student);
-        
-        for (int i = 0; i < numOfObject; i++) {
-            fd.read((char*)tempStudent, sizeof(Student));
+        while (getline(fd, line)) {
+            tempStudent = new Student(line);
             studentList.push_back(*tempStudent);
+            delete(tempStudent);
         }
     }
     fd.close();

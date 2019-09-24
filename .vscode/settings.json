@@ -60,7 +60,9 @@
         "utility": "cpp",
         "vector": "cpp",
         "deque": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "iostream": "cpp",
+        "filesystem": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }
