@@ -1,4 +1,4 @@
-#include "headers/student_list_manager.h"
+#include "../headers/student_list_manager.h"
 
 int studentCompareByName(const void *first, const void *second) {
     string firstStudentName =  ((Student*)first)->getName();

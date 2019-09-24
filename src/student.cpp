@@ -1,5 +1,5 @@
-#include "headers/student.h"
-#include "headers/utils.h"
+#include "../headers/student.h"
+#include "../headers/utils.h"
 
 Student::Student(string name, string age, string id, string department, string tel)
     : Person(name, age), id(id), department(department), tel(tel) {};
