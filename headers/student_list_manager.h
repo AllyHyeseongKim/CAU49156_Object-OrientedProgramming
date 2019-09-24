@@ -25,6 +25,8 @@ public:
 
     void deleting(string id);
 
+    friend ostream& operator<<(ostream& os, const StudentListManager& student);
+
 private:
     vector<Student> searchByName(string str);
     vector<Student> searchById(string id_t);

@@ -1,4 +1,4 @@
-#include "student_list_manager.h"
+#include "headers/student_list_manager.h"
 
 int studentCompareByName(const void *first, const void *second) {
     string firstStudentName =  ((Student*)first)->getName();
@@ -33,23 +33,25 @@ vector<Student> StudentListManager::searching(string str, SearchMenu menu) {
 }
 
 void StudentListManager::insert(Student &student) {
-    if (!StudentListManager::chkRedundancy(student.getId))
+    if (!StudentListManager::chkRedundancy(student.getId()))
         return;
 
     studentList.push_back(student);
     qsort(&studentList[0], studentList.size(), sizeof(Student), studentCompareByName);
+    StudentListManager::fileWrite();
 }
 
 void StudentListManager::deleting(string id) {
-    vector<Student>::iterator student = find_if(studentList.begin(), studentList.begin() + studentList.size(), 
+    vector<Student>::iterator student = find_if(studentList.begin(), studentList.end(), 
     [&id](Student& student) {return student.getId() == id;});
 
     studentList.erase(student);
+    StudentListManager::fileWrite();
 }
 
 vector<Student> StudentListManager::searchByName(string str) {
     vector<Student> result;
-    vector<Student>::iterator studentIter = find_if(studentList.begin(), studentList.begin() + studentList.size(), 
+    vector<Student>::iterator studentIter = find_if(studentList.begin(), studentList.end(), 
         [&str](Student& student) {return str == student.getName();});;
 
     for (; studentIter != studentList.end(); studentIter++)
@@ -60,7 +62,7 @@ vector<Student> StudentListManager::searchByName(string str) {
 
 vector<Student> StudentListManager::searchById(string str) {
     vector<Student> result;
-    vector<Student>::iterator studentIter = find_if(studentList.begin(), studentList.begin() + studentList.size(), 
+    vector<Student>::iterator studentIter = find_if(studentList.begin(), studentList.end(), 
         [&str](Student& student) {return str == student.getId();});;
 
     for (; studentIter != studentList.end(); studentIter++)
@@ -71,7 +73,7 @@ vector<Student> StudentListManager::searchById(string str) {
 
 vector<Student> StudentListManager::searchByDepart(string str) {
     vector<Student> result;
-    vector<Student>::iterator studentIter = find_if(studentList.begin(), studentList.begin() + studentList.size(), 
+    vector<Student>::iterator studentIter = find_if(studentList.begin(), studentList.end(), 
         [&str](Student& student) {return str == student.getDepartment();});;
 
     for (; studentIter != studentList.end(); studentIter++)
@@ -82,7 +84,7 @@ vector<Student> StudentListManager::searchByDepart(string str) {
 
 vector<Student> StudentListManager::searchByAge(string str) {
     vector<Student> result;
-    vector<Student>::iterator studentIter = find_if(studentList.begin(), studentList.begin() + studentList.size(), 
+    vector<Student>::iterator studentIter = find_if(studentList.begin(), studentList.end(), 
         [&str](Student& student) {return str == student.getAge();});;
 
     for (; studentIter != studentList.end(); studentIter++)
@@ -104,7 +106,7 @@ void StudentListManager::fileOpen() {
 
 void StudentListManager::fileWrite() {
     ofstream fd;
-    fd.open(fileName, ios::binary|ios::app|ios::out);
+    fd.open(fileName, ios::binary|ios::out);
 
     for (Student stu: studentList) {
         fd.write((char*)&stu, sizeof(Student));
@@ -128,4 +130,12 @@ void StudentListManager::setStudentList() {
         }
     }
     fd.close();
+}
+
+ostream& operator<<(ostream& os, const StudentListManager& student)
+{
+    for (Student stu: student.studentList) {
+        os << stu;
+    }
+    return os;
 }

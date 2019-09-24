@@ -1,5 +1,5 @@
-#ifndef __SEARCHING_H__
-#define __SERACHING_H__
+#ifndef __SEARCH_H__
+#define __SEARCH_H__
 
 #include <vector>
 #include <string>

@@ -1,4 +1,4 @@
-#include "person.h"
+#include "headers/person.h"
 
 Person::Person(string name, string age): name(name), age(age){};
 Person::Person(const Person& copy): name(copy.name), age(copy.age){};
