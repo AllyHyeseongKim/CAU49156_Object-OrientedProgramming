@@ -25,7 +25,7 @@ vector<Student> StudentListManager::searching(string str, SearchMenu menu) {
 }
 
 bool StudentListManager::insert(Student &student) {
-    if(StudentListManager::chkWorngInfoForm(student.getName(), student.getAge(), student.getId(), 
+    if(!StudentListManager::chkCorrectInfoForm(student.getName(), student.getAge(), student.getId(), 
     student.getDepartment(), student.getTel())) return false;
 
     studentList.insert(upper_bound(studentList.begin(), studentList.end(), student), student);
@@ -61,7 +61,7 @@ bool StudentListManager::modifyStudentInfo(string id, string name, string depart
     vector<Student>::iterator studentIter = find_if(studentList.begin(), studentList.end(), 
     [&id](Student& student) {return student.getId() == id;});
 
-    if (StudentListManager::chkWorngInfoForm(name, "11", "0000000000", department, tel)) return false;
+    if (!StudentListManager::chkCorrectInfoForm(name, "11", "0000000000", department, tel)) return false;
 
     if (studentIter == studentList.end())
         return false;
@@ -122,7 +122,7 @@ bool StudentListManager::chkRedundancy(string id) {
 }
 
 
-bool StudentListManager::chkWorngInfoForm(string name, string age, string id, string department, string tel) {
+bool StudentListManager::chkCorrectInfoForm(string name, string age, string id, string department, string tel) {
     if (!StudentListManager::chkRedundancy(id)) { 
         cout << "Error : Already inserted" << endl;
         return false;

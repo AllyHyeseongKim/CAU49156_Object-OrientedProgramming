@@ -5,9 +5,10 @@ using namespace std;
 int main(int argc, char * argv[]) {
     StudentListManager *stu = new StudentListManager("data.txt");
 
-    stu->insert(*(new Student("Z111111111", "11", "1s11111111", "adsf", "adsf")));
+    cout << stu->insert(*(new Student("Jang Wonbeom", "21", "1234567890", "Computer Science", "01037937352")));
+    cout << *stu;
 
-    stu->modifyStudentInfo("1s11111111", "a", "a", "a");
+    stu->modifyStudentInfo("1234567890", "sdf", "sdf", "01037937352");
 
     cout << *stu;
 
