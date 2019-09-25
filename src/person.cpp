@@ -23,3 +23,8 @@ ostream& operator<<(ostream& os, const Person& person)
     os << person.name << "|" << person.age << endl;
     return os;
 }
+
+
+bool operator<( const Person& person1,  const Person& person2) {
+    return person1.name < person2.name;
+}

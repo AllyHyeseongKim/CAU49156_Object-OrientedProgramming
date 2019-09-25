@@ -1,12 +1,5 @@
 #include "../headers/student_list_manager.h"
 
-int studentCompareByName(const void *first, const void *second) {
-    string firstStudentName =  ((Student*)first)->getName();
-    string secondStudentName =  ((Student*)second)->getName();
-
-    return firstStudentName.compare(secondStudentName) > 0;
-}
-
 StudentListManager::StudentListManager(string fileName) {
         this->fileName = fileName;
         StudentListManager::fileRead();
@@ -42,19 +35,7 @@ bool StudentListManager::insert(Student &student) {
     if (student.getDepartment().length() > 20) return false;
     if (student.getTel().length() > 12) return false;
 
-    int start = 0;
-    int end = studentList.size();
-    int mid;
-
-    while (start < end) {
-        mid = (start + end) / 2;
-        if (studentCompareByName(&studentList[start], &studentList[end]))
-            start = mid + 1;
-        else
-            end = mid;
-    }
-    
-    studentList.insert(studentList.begin() + end, student);
+    studentList.insert(upper_bound(studentList.begin(), studentList.end(), student), student);
     StudentListManager::fileWrite();
 
     return true;

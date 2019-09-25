@@ -19,6 +19,7 @@ public:
     string getAge();
 
     friend ostream& operator<<(ostream& os, const Person& person);
+    friend bool operator<( const Person& person1,  const Person& person2);
 };
 
 #endif
