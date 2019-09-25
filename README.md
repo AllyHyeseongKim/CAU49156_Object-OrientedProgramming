@@ -17,3 +17,6 @@ fileOpen --> file read로 바꿈
 
 #### 의문점
 getStudentList로 List를 받아버리면 수정 가능할텐데?
+
+#### complie
+g++ -std=c++11 main.cpp src/person.cpp src/student.cpp src/student_list_manager.cpp src/utils.cpp -o main
