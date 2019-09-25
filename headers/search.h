@@ -7,6 +7,10 @@
 
 typedef enum {Name, Id, Department, Age} SearchMenu;
 
+/* 
+* Marker virtual class that it support deleting function. 
+* Implement detail on extended class.
+*/
 class Search {
 protected:
     virtual vector<Student> searching(string str, SearchMenu menu) = 0;

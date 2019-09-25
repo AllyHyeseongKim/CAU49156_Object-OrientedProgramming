@@ -10,6 +10,11 @@
 #include "insertion.h"
 #include "thanos.h"
 
+
+/* 
+* Class that inform that this is instance of StudentListManager. 
+* Student is extended by Search, Insertion, Deletion, Thanos.\
+*/
 class StudentListManager: public Search, public Insertion, public Deletion, public Thanos {
     vector<Student> studentList;
     ifstream fd;
@@ -38,9 +43,12 @@ private:
     vector<Student> searchByAge(string Age);
 
     bool chkRedundancy(string id);
+    // check information form
     bool chkWorngInfoForm(string name, string age, string id, string department, string tel);
 
+    // load student informations from data file
     void fileRead();
+    // write student informations from data file
     void fileWrite();
 
     void setStudentList();

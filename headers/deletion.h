@@ -4,7 +4,12 @@
 #include <string>
 using namespace std;
 
+/* 
+* Marker virtual class that it support deleting function. 
+* Implement detail on extended class.
+*/
 class Deletion {
+    // delete studnet by id
     virtual void deleting(string id) = 0;
 };
 
