@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <iomanip>
+#include <algorithm>
 
 #include "student.h"
 #include "search.h"
