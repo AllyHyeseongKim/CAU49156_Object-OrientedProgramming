@@ -8,8 +8,6 @@
 #include "deletion.h"
 #include "insertion.h"
 
-int studentCompareByName(const void *, const void *);
-
 class StudentListManager: public Search, public Insertion, public Deletion {
     vector<Student> studentList;
     ifstream fd;
