@@ -27,6 +27,8 @@ public:
 
     void thanosFingerSnap();
 
+    bool modifyStudentInfo(string id, string name, string department, string tel);
+
     friend ostream& operator<<(ostream& os, const StudentListManager& student);
 
 private:
@@ -36,6 +38,7 @@ private:
     vector<Student> searchByAge(string Age);
 
     bool chkRedundancy(string id);
+    bool chkWorngInfoForm(string name, string age, string id, string department, string tel);
 
     void fileRead();
     void fileWrite();

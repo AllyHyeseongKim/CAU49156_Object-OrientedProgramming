@@ -63,7 +63,8 @@
         "fstream": "cpp",
         "iostream": "cpp",
         "filesystem": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "stack": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

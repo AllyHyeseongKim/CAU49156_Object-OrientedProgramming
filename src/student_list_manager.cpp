@@ -25,15 +25,8 @@ vector<Student> StudentListManager::searching(string str, SearchMenu menu) {
 }
 
 bool StudentListManager::insert(Student &student) {
-    if (!StudentListManager::chkRedundancy(student.getId())) { 
-        cout << "Error : Already inserted" << endl;
-        return false;
-    };
-    if (student.getName().length() > 15) return false;
-    if (student.getId().length() != 10) return false;
-    if (student.getAge().length() > 3) return false;
-    if (student.getDepartment().length() > 20) return false;
-    if (student.getTel().length() > 12) return false;
+    if(StudentListManager::chkWorngInfoForm(student.getName(), student.getAge(), student.getId(), 
+    student.getDepartment(), student.getTel())) return false;
 
     studentList.insert(upper_bound(studentList.begin(), studentList.end(), student), student);
     StudentListManager::fileWrite();
@@ -61,6 +54,21 @@ void StudentListManager::thanosFingerSnap() {
     }
 
     StudentListManager::fileWrite();
+}
+
+
+bool StudentListManager::modifyStudentInfo(string id, string name, string department, string tel) {
+    vector<Student>::iterator studentIter = find_if(studentList.begin(), studentList.end(), 
+    [&id](Student& student) {return student.getId() == id;});
+
+    if (StudentListManager::chkWorngInfoForm(name, "11", "0000000000", department, tel)) return false;
+
+    if (studentIter == studentList.end())
+        return false;
+    studentIter->modifyInfo(name, department, tel);
+    
+    StudentListManager::fileWrite();
+    return true;
 }
 
 vector<Student> StudentListManager::searchByName(string str) {
@@ -111,6 +119,20 @@ bool StudentListManager::chkRedundancy(string id) {
     vector<Student>student = StudentListManager::searchById(id);
 
     return student.empty();
+}
+
+
+bool StudentListManager::chkWorngInfoForm(string name, string age, string id, string department, string tel) {
+    if (!StudentListManager::chkRedundancy(id)) { 
+        cout << "Error : Already inserted" << endl;
+        return false;
+    };
+    if (name.length() > 15) return false;
+    if (id.length() != 10) return false;
+    if (age.length() > 3) return false;
+    if (department.length() > 20) return false;
+    if (tel.length() > 12) return false;
+    return true;
 }
 
 void StudentListManager::fileRead() {

@@ -7,7 +7,7 @@ int main(int argc, char * argv[]) {
 
     stu->insert(*(new Student("Z111111111", "11", "1s11111111", "adsf", "adsf")));
 
-    stu->thanosFingerSnap();
+    stu->modifyStudentInfo("1s11111111", "a", "a", "a");
 
     cout << *stu;
 

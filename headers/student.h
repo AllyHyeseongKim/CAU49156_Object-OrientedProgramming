@@ -18,6 +18,8 @@ public:
     string getDepartment() const;
     string getTel() const;
 
+    void modifyInfo(string name, string department, string tel);
+
     friend ostream& operator<<(ostream& os, const Student& student);
     friend bool operator<( const Person& person1,  const Person& person2);
     friend bool operator==(const Student& student1,  const Person& student2);

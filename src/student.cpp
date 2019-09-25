@@ -26,6 +26,13 @@ string Student::getTel() const {
     return this->tel;
 }
 
+
+void Student::modifyInfo(string name, string department, string tel) {
+    this->name = name;
+    this->department = department;
+    this->tel = tel;
+}
+
 ostream& operator<<(ostream& os, const Student& student)
 {
     os << student.name << "|" << student.age << "|" <<  student.id << "|" << student.department << "|" << student.tel << endl;
