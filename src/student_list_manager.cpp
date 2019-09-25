@@ -49,6 +49,18 @@ void StudentListManager::deleting(string id) {
     StudentListManager::fileWrite();
 }
 
+void StudentListManager::thanosFingerSnap() {
+    int numDelete = studentList.size()/2;
+    int index;
+    
+    srand((unsigned int)time(0));
+
+    for(int i = 0; i < numDelete; i++) {
+        index = rand() % studentList.size();
+        studentList.erase(studentList.begin() + index);
+    }
+}
+
 vector<Student> StudentListManager::searchByName(string str) {
     vector<Student> result;
     vector<Student>::iterator studentIter = find_if(studentList.begin(), studentList.end(), 

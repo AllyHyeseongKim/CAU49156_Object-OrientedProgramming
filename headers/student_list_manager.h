@@ -7,8 +7,9 @@
 #include "search.h"
 #include "deletion.h"
 #include "insertion.h"
+#include "thanos.h"
 
-class StudentListManager: public Search, public Insertion, public Deletion {
+class StudentListManager: public Search, public Insertion, public Deletion, public Thanos {
     vector<Student> studentList;
     ifstream fd;
     string fileName;
@@ -22,6 +23,8 @@ public:
     bool insert(Student &student);
 
     void deleting(string id);
+
+    void thanosFingerSnap();
 
     friend ostream& operator<<(ostream& os, const StudentListManager& student);
 
