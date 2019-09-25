@@ -14,15 +14,15 @@ Student::Student(const string &line):Person(line) {
     tel = strSet[4];
 }
 
-string Student::getId() {
+string Student::getId() const {
     return this->id;
 }
 
-string Student::getDepartment() {
+string Student::getDepartment() const {
     return this->department;
 }
 
-string Student::getTel() {
+string Student::getTel() const {
     return this->tel;
 }
 
@@ -30,4 +30,12 @@ ostream& operator<<(ostream& os, const Student& student)
 {
     os << student.name << "|" << student.age << "|" <<  student.id << "|" << student.department << "|" << student.tel << endl;
     return os;
+}
+
+bool operator<(const Student& student1,  const Person& student2) {
+    return student1.getName() < student1.getName();
+}
+
+bool operator==(const Student& student1,  const Student& student2) {
+    return student1.getId() == student2.getId();
 }

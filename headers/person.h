@@ -15,8 +15,8 @@ public:
     Person(const Person& copy);
     Person(const string &line);
 
-    string getName();
-    string getAge();
+    string getName() const;
+    string getAge() const;
 
     friend ostream& operator<<(ostream& os, const Person& person);
     friend bool operator<( const Person& person1,  const Person& person2);

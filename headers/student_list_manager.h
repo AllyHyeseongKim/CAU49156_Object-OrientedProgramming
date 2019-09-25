@@ -2,6 +2,7 @@
 #define __STUDENT_LIST_MANAGER_H__
 
 #include <fstream>
+#include <iomanip>
 
 #include "student.h"
 #include "search.h"

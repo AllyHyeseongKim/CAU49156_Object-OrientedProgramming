@@ -10,11 +10,11 @@ Person::Person(const string &line) {
     age = strSet[1];
 };
 
-string Person::getAge() {
+string Person::getAge() const {
     return this->age;
 };
 
-string Person::getName() {
+string Person::getName() const {
     return this->name;
 }
 

@@ -59,6 +59,8 @@ void StudentListManager::thanosFingerSnap() {
         index = rand() % studentList.size();
         studentList.erase(studentList.begin() + index);
     }
+
+    StudentListManager::fileWrite();
 }
 
 vector<Student> StudentListManager::searchByName(string str) {
@@ -142,8 +144,13 @@ void StudentListManager::setStudentList() {
 
 ostream& operator<<(ostream& os, const StudentListManager& student)
 {
+    cout << endl << "STUDENT LIST MANAGER" << endl;
+    cout << "TOATL MEMBER: " << student.studentList.size() << endl << endl;
+    cout << "LIST" << endl; 
+    cout << "    ID     |       NAME      |  AGE  |      DEPARTMENT      |       TEL      |" << endl;
     for (Student stu: student.studentList) {
-        os << stu;
+        os << setw(10) << stu.getId() <<" | " << setw(15) << stu.getName() <<" |  " << setw(4) << stu.getAge()
+         << " | " <<setw(20) << stu.getDepartment() << " | " << setw(14) << stu.getTel() << " | " << endl;
     }
     return os;
 }
