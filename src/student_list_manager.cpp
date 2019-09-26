@@ -167,7 +167,7 @@ void StudentListManager::setStudentList() {
 ostream& operator<<(ostream& os, const StudentListManager& student)
 {
     cout << endl << "STUDENT LIST MANAGER" << endl;
-    cout << "TOATL MEMBER: " << student.studentList.size() << endl << endl;
+    cout << "TOTAL MEMBER: " << student.studentList.size() << endl << endl;
     cout << "LIST" << endl; 
     cout << "    ID     |       NAME      |  AGE  |      DEPARTMENT      |       TEL      |" << endl;
     for (Student stu: student.studentList) {
