@@ -45,14 +45,16 @@ int main(int argc, char *argv[]) {
             cout << "Enter ID : ";
             cin >> id;
 
-            Student student = stu->searching(id, Id).at(0);
-            cout << "Enter new Name : " << student.getName() << " -> ";
-            cin >> name;
-            cout << "Enter new Department : " << student.getDepartment() << " -> ";
-            cin >> dept;
-            cout << "Enter new Telephone : " << student.getTel() << " -> ";
-            cin >> tel;
-            stu->modifyStudentInfo(id, name, dept, tel);
+            vector<Student> student = stu->searching(id, Id);
+            if (!student.empty()) {                
+                cout << "Enter new Name : " << student[0].getName() << " -> ";
+                cin >> name;
+                cout << "Enter new Department : " << student[0].getDepartment() << " -> ";
+                cin >> dept;
+                cout << "Enter new Telephone : " << student[0].getTel() << " -> ";
+                cin >> tel;
+                stu->modifyStudentInfo(id, name, dept, tel);
+            }
         } else if (selection == "3") {
             auto list = stu->getStudentList();
             cout << endl << "TOTAL MEMBER: " << list.size() << endl;
