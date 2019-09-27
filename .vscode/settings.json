@@ -64,7 +64,8 @@
         "iostream": "cpp",
         "filesystem": "cpp",
         "iomanip": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "regex": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

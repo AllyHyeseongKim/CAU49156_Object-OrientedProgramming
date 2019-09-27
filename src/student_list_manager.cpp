@@ -123,15 +123,31 @@ bool StudentListManager::chkRedundancy(string id) {
 
 
 bool StudentListManager::chkCorrectInfoForm(string name, string age, string id, string department, string tel) {
+    regex onlyNumber("^[0-9]+$");
     if (!StudentListManager::chkRedundancy(id)) { 
         cout << "Error : Already inserted" << endl;
         return false;
     };
-    if (name.length() > 15) return false;
-    if (id.length() != 10) return false;
-    if (age.length() > 3) return false;
-    if (department.length() > 20) return false;
-    if (tel.length() > 12) return false;
+    if (name.length() > 15) {
+        cout << "Error: Wrong Name format" << endl;
+        return false;
+    }
+    if (id.length() != 10 || !regex_match(id, onlyNumber)) {
+        cout << "Error: Wrong ID format" << endl;
+        return false;
+    }
+    if (age.length() > 3 || !regex_match(id, onlyNumber)) {
+        cout << "Error: Wrong age format" << endl;
+        return false;
+    }
+    if (department.length() > 20) {
+        cout << "Error: Wrong department fomat" << endl;
+        return false;
+    }
+    if (tel.length() > 12 || !regex_match(id, onlyNumber)) {
+        cout << "Error: Wrong telephone number format" << endl;
+        return false;
+    }
     return true;
 }
 
