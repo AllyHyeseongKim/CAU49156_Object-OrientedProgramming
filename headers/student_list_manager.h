@@ -35,9 +35,11 @@ class StudentListManager: public Search, public Insertion, public Deletion, publ
     string fileName;
 
 public:
+    // Constructor
     StudentListManager(string fileName);
 
     vector<Student> getStudentList();
+    
     /*
     * searching student by menu
     * SeachMenu(int) : Name, Id, Department,  Age
@@ -72,7 +74,6 @@ private:
     bool chkRedundancy(string id);
     // check information form
     bool chkCorrectInfoForm(string name, string age, string id, string department, string tel);
-
     // load student informations from data file
     void fileRead();
     // write student informations from data file

@@ -5,7 +5,7 @@
 #include <string>
 #include "student.h"
 
-typedef enum {Name = 1, Id, Department, Age} SearchMenu;
+typedef enum {Name = 1, Id = 2, Department = 3, Age = 4} SearchMenu;
 
 /* 
 * Marker virtual class that it support deleting function. 

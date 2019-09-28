@@ -153,15 +153,16 @@ bool StudentListManager::chkCorrectInfoForm(string name, string age, string id, 
 
 void StudentListManager::fileRead() {
     fd.open(fileName, ios::in);
+    if(!fd.is_open()) {
+        cout << "- <" << fileName << "> doesn't exist. Make a new file which name is <" << fileName << ">." << "\n\n";
+    }
     StudentListManager::setStudentList();
     fd.close();
 }
 
-
 void StudentListManager::fileWrite() {
     ofstream fd;
     fd.open(fileName, ios::out);
-
     for (Student stu: studentList)
         fd << stu;
     fd.close();
