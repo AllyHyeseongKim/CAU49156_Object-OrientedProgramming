@@ -21,9 +21,10 @@ void Display::printStudentList(vector<Student> list){
 
 void Display::viewPagerStudentList(vector<Student> list) {
     // start from 0 page
-    int input = 1, i = -1;
+    string input = "1";
+    int i = -1;
     while(true){
-        if(input == 1) {
+        if(input == "1") {
             if((i+1)*5 >= list.size()) {
                 cout << "- End of Page - " << "\n\n";
             }
@@ -31,28 +32,23 @@ void Display::viewPagerStudentList(vector<Student> list) {
                 i++;
                 printStudentList(vector<Student>(list.begin() + i*5, list.begin() + i*5+5));
             }
-        } else if(input == 2) {
+        } else if(input == "2") {
             if(i == 0) {
                 cout << "- Front of Page - " << "\n\n";
             } else {
                 i--;
                 printStudentList(vector<Student>(list.begin() + i*5, list.begin() + i*5+5));
             }
-        } else { // input == 3
+        } else if(input == "3") {
             break;
+        } else {
+            cout << "Wrong input. Try again.\n\n";
         }
-        while(true){
-            cout << "1. Next Page\n"
+        cout << "1. Next Page\n"
                     "2. Previous Page\n"
                     "3. Back to Menu\n"
                     "\nEnter number : ";
-            cin >> input;
-            if(input == 1 || input == 2 || input == 3){
-                break;
-            } else {
-                cout << "Wrong input. Try again.\n";
-            }
-        }
+        cin >> input;
     }
 }
 
@@ -90,20 +86,6 @@ void Display::mainView(StudentListManager &stu) {
             getline(cin, tel);
 
             stu.insert(*(new Student(name, age, id, dept, tel)));
-
-            // string lowStudentName1 = (*(new Student("DEFG", "99" , "9999111100", "testing", "01012344321"))).getName();
-            
-            // string lowStudentName2 = (*(new Student(name, age, id, dept, tel))).getName();
-            // transform(lowStudentName1.begin(), lowStudentName1.end(), 
-            //         lowStudentName1.begin(), ::tolower);
-            // cout << lowStudentName1;
-            // transform(lowStudentName2.begin(), lowStudentName2.end(),
-            //         lowStudentName2.begin(), ::tolower);
-            // cout << lowStudentName2;
-
-            // cout << (lower_bound(stu.getStudentList().begin(), stu.getStudentList().end(), *(new Student(name, age, id, dept, tel))));
-
-            // cout << "===" << (lowStudentName1 < lowStudentName2) << "\n";
 
         } else if (selection == "2") {
             string name, age, id, dept, tel;

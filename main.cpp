@@ -5,10 +5,13 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
     string dataFileName;
-    if (argc != 1)
+    if (argc != 1){
         dataFileName = argv[1];
-    else
+    }
+    else {
+        cout << "Create a new file <data.txt>\n";
         dataFileName = "data.txt";
+    }
 
     StudentListManager *stu = new StudentListManager(dataFileName);
     Display display;
