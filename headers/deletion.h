@@ -10,7 +10,7 @@ using namespace std;
 */
 class Deletion {
     // delete studnet by id
-    virtual void deleting(string id) = 0;
+    virtual bool deleting(string id) = 0;
 };
 
 #endif

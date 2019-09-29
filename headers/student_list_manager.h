@@ -51,7 +51,7 @@ public:
     bool insert(Student &student);
 
     // delete studnet by id
-    void deleting(string id);
+    bool deleting(string id);
 
     /* 
     * The function motivated by Avengers

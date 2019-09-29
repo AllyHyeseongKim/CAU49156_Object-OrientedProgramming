@@ -38,12 +38,18 @@ bool StudentListManager::insert(Student &student) {
     return true;
 }
 
-void StudentListManager::deleting(string id) {
+bool StudentListManager::deleting(string id) {
     vector<Student>::iterator student = find_if(studentList.begin(), studentList.end(), 
     [&id](Student& student) {return student.getId() == id;});
 
-    studentList.erase(student);
-    StudentListManager::fileWrite();
+    if(student == studentList.end()) {
+        return false;
+    } else {
+        studentList.erase(student);
+        StudentListManager::fileWrite();
+    }
+    
+    return true;
 }
 
 void StudentListManager::thanosFingerSnap() {

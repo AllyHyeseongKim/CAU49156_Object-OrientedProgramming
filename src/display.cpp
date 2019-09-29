@@ -61,7 +61,7 @@ void Display::mainView(StudentListManager &stu) {
                 "3. Show All\n"
                 "4. Search Student\n"
                 "5. Kick Student\n"
-                "6. Thanos is comming..\n"
+                // "6. Thanos is coming..\n"
                 "0. Exit\n"
                 "\nEnter Menu number : ";
 
@@ -84,7 +84,7 @@ void Display::mainView(StudentListManager &stu) {
             getline(cin, dept);
             cout << "Enter Telephone : ";
             getline(cin, tel);
-            
+
             stu.insert(*(new Student(name, age, id, dept, tel)));
 
         } else if (selection == "2") {
@@ -121,10 +121,11 @@ void Display::mainView(StudentListManager &stu) {
                     "1. ID\n"
                     "2. Name\n"
                     "3. Age\n"
-                    "4. Department\n";
-            cout << "Enter Mode : ";
-            cin >> mode;
+                    "4. Department\n"
+                    "5. Quit\n";
             while (true) {
+                cout << "Enter Mode : ";
+                cin >> mode;
                 if (mode == "1") {
                     cout << "Enter ID : ";
                     menu = Id;
@@ -137,6 +138,8 @@ void Display::mainView(StudentListManager &stu) {
                 } else if (mode == "4") {
                     cout << "Enter Department : ";
                     menu = Department;
+                } else if (mode == "5") {
+                    break;
                 } else {
                     cout << "Wrong input. Try again.\n";
                     continue;
@@ -156,10 +159,13 @@ void Display::mainView(StudentListManager &stu) {
             string input;
             cout << "Enter Id : ";
             cin >> input;
-            stu.deleting(input);
-            cout << "Goodbye, student." << "\n";
+            if(stu.deleting(input)) {
+                cout << "Goodbye, student." << "\n";
+            } else {
+                cout << "Wrong input. Try again.\n";
+            }
 
-        } else if (selection == "6") {
+        } else if (selection == "thanos") {
             stu.thanosFingerSnap();                    
             cout << setw(50) << "I'm inevitable." << endl;
 
