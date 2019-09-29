@@ -84,7 +84,7 @@ void Display::mainView(StudentListManager &stu) {
             getline(cin, dept);
             cout << "Enter Telephone : ";
             getline(cin, tel);
-
+            
             stu.insert(*(new Student(name, age, id, dept, tel)));
 
         } else if (selection == "2") {

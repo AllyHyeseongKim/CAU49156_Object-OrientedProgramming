@@ -29,6 +29,9 @@ bool StudentListManager::insert(Student &student) {
     if(!StudentListManager::chkCorrectInfoForm(student.getName(), student.getAge(), student.getId(), 
     student.getDepartment(), student.getTel())) return false;
 
+    if (!StudentListManager::chkCorrectInfoForm(student.getName(), student.getAge(), student.getId(), 
+                                                student.getDepartment(), student.getTel())) return false;
+
     studentList.insert(lower_bound(studentList.begin(), studentList.end(), student), student);
     StudentListManager::fileWrite();
 
@@ -106,38 +109,38 @@ vector<Student> StudentListManager::searchByAge(string str) {
 
 bool StudentListManager::chkRedundancy(string id) {
     vector<Student>student = StudentListManager::searchById(id);
-
     return student.empty();
 }
 
 
 bool StudentListManager::chkCorrectInfoForm(string name, string age, string id, string department, string tel) {
     regex onlyNumber("^[0-9]+$");
+    bool flag = true;
     if (!StudentListManager::chkRedundancy(id)) { 
         cout << "\nError : Already inserted" << endl;
-        return false;
+        flag = false;
     };
     if (name.length() > 15) {
-        cout << "Error: Wrong Name format" << endl;
-        return false;
+        cout << "Error: Wrong Name format - Name has up to 15(English) characters" << endl;
+        flag = false;
     }
     if (id.length() != 10 || !regex_match(id, onlyNumber)) {
-        cout << "Error: Wrong ID format" << endl;
-        return false;
+        cout << "Error: Wrong ID format - ID should be exactly 10 digits" << endl;
+        flag = false;
     }
     if (age.length() > 3 || !regex_match(id, onlyNumber)) {
-        cout << "Error: Wrong age format" << endl;
-        return false;
+        cout << "Error: Wrong age format - Age has up to 3 digits" << endl;
+        flag = false;
     }
     if (department.length() > 20) {
-        cout << "Error: Wrong department fomat" << endl;
-        return false;
+        cout << "Error: Wrong department fomat - Department has up to 20(English) characters" << endl;
+        flag = false;
     }
     if (tel.length() > 12 || !regex_match(id, onlyNumber)) {
-        cout << "Error: Wrong telephone number format" << endl;
-        return false;
+        cout << "Error: Wrong telephone number format - Tel has up to 12 digits" << endl;
+        flag = false;
     }
-    return true;
+    return flag;
 }
 
 void StudentListManager::fileRead() {
