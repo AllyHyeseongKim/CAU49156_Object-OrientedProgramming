@@ -29,10 +29,13 @@ class StudentListManager: public Search, public Insertion, public Deletion, publ
     * Time consuming on sorting: quick sort (O(n long n)) > lower_bound (O(log n))
     * 
     * For the safty, Searching function return duplicated vector of object.
-    */ 
-    vector<Student> studentList;
+    */
+
     ifstream fd;
     string fileName;
+
+protected:
+    vector<Student> studentList;
 
 public:
     // Constructor

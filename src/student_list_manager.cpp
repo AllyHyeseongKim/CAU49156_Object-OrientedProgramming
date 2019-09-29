@@ -96,7 +96,7 @@ vector<Student> StudentListManager::searchById(string str) {
 vector<Student> StudentListManager::searchByDepart(string str) {
     vector<Student> result;
     vector<Student>::iterator studentIter = find_if(studentList.begin(), studentList.end(), 
-        [&str](Student& student) {return str == student.getDepartment();});;
+        [&str](Student& student) { return str == student.getDepartment();});;
 
     for (; studentIter != studentList.end(); studentIter++)
         result.push_back(*studentIter);
