@@ -12,7 +12,6 @@ typedef enum {Name = 1, Id = 2, Department = 3, Age = 4} SearchMenu;
 * Implement detail on extended class.
 */
 class Search {
-protected:
     virtual vector<Student> searching(string str, SearchMenu menu) = 0;
     virtual vector<Student> searchByName(string name) = 0;
     virtual vector<Student> searchById(string id) = 0;
