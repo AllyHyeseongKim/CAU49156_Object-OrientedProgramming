@@ -33,8 +33,6 @@ class StudentListManager: public Search, public Insertion, public Deletion, publ
 
     ifstream fd;
     string fileName;
-
-protected:
     vector<Student> studentList;
 
 public:
