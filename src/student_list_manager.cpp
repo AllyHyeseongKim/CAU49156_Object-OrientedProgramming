@@ -6,7 +6,8 @@ StudentListManager::StudentListManager(string fileName) {
 }
 
 vector<Student> StudentListManager::getStudentList() {
-    return this->studentList;
+    vector<Student> returnList = studentList;
+    return returnList;
 }
 
 vector<Student> StudentListManager::searching(string str, SearchMenu menu) {
