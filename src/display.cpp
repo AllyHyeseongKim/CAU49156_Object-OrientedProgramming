@@ -3,6 +3,8 @@
 //
 
 #include "../headers/display.h"
+#include <iostream>
+using namespace std;
 
 void Display::printStudentList(vector<Student> list){
     cout << "LIST" << endl;
@@ -67,7 +69,7 @@ void Display::mainView(StudentListManager &stu) {
                 "0. Exit\n"
                 "\nEnter Menu number : ";
 
-        cin >> selection;
+        getline(cin, selection);
 
         if (selection == "0") {
             cout << "Saved.";
@@ -76,30 +78,30 @@ void Display::mainView(StudentListManager &stu) {
         } else if (selection == "1") {
             string name, age, id, dept, tel;
             cout << "Enter Name : ";
-            cin >> name;
+            getline(cin, name);
             cout << "Enter Age : ";
-            cin >> age;
+            getline(cin, age);
             cout << "Enter ID : ";
-            cin >> id;
+            getline(cin, id);
             cout << "Enter Department : ";
-            cin >> dept;
+            getline(cin, dept);
             cout << "Enter Telephone : ";
-            cin >> tel;
+            getline(cin, tel);
             stu.insert(*(new Student(name, age, id, dept, tel)));
 
         } else if (selection == "2") {
             string name, age, id, dept, tel;
             cout << "Enter ID : ";
-            cin >> id;
+            getline(cin, id);
 
             vector<Student> student = stu.searching(id, Id);
             if (!student.empty()) {                
                 cout << "Enter new Name : " << student[0].getName() << " -> ";
-                cin >> name;
+                getline(cin, name);
                 cout << "Enter new Department : " << student[0].getDepartment() << " -> ";
-                cin >> dept;
+                getline(cin, dept);
                 cout << "Enter new Telephone : " << student[0].getTel() << " -> ";
-                cin >> tel;
+                getline(cin, tel);
                 stu.modifyStudentInfo(id, name, dept, tel);
             }
 
