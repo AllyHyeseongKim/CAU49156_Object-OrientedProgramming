@@ -28,7 +28,7 @@ bool StudentListManager::insert(Student &student) {
     if(!StudentListManager::chkCorrectInfoForm(student.getName(), student.getAge(), student.getId(), 
     student.getDepartment(), student.getTel())) return false;
 
-    studentList.insert(upper_bound(studentList.begin(), studentList.end(), student), student);
+    studentList.insert(lower_bound(studentList.begin(), studentList.end(), student), student);
     StudentListManager::fileWrite();
 
     return true;
@@ -73,44 +73,32 @@ bool StudentListManager::modifyStudentInfo(string id, string name, string depart
 
 vector<Student> StudentListManager::searchByName(string str) {
     vector<Student> result;
-    vector<Student>::iterator studentIter = find_if(studentList.begin(), studentList.end(), 
-        [&str](Student& student) {return str == student.getName();});;
-
-    for (; studentIter != studentList.end(); studentIter++)
-        result.push_back(*studentIter);
+    copy_if(studentList.begin(), studentList.end(), back_inserter(result),
+     [&str](Student& student) {return str == student.getName();});
     
     return result;
 }
 
 vector<Student> StudentListManager::searchById(string str) {
     vector<Student> result;
-    vector<Student>::iterator studentIter = find_if(studentList.begin(), studentList.end(), 
-        [&str](Student& student) {return str == student.getId();});;
-
-    for (; studentIter != studentList.end(); studentIter++)
-        result.push_back(*studentIter);
+    copy_if(studentList.begin(), studentList.end(), back_inserter(result),
+     [&str](Student& student) {return str == student.getId();});
     
     return result;
 }
 
 vector<Student> StudentListManager::searchByDepart(string str) {
     vector<Student> result;
-    vector<Student>::iterator studentIter = find_if(studentList.begin(), studentList.end(), 
-        [&str](Student& student) { return str == student.getDepartment();});;
-
-    for (; studentIter != studentList.end(); studentIter++)
-        result.push_back(*studentIter);
+    copy_if(studentList.begin(), studentList.end(), back_inserter(result),
+     [&str](Student& student) {return str == student.getDepartment();});
     
     return result;
 }
 
 vector<Student> StudentListManager::searchByAge(string str) {
     vector<Student> result;
-    vector<Student>::iterator studentIter = find_if(studentList.begin(), studentList.end(), 
-        [&str](Student& student) {return str == student.getAge();});;
-
-    for (; studentIter != studentList.end(); studentIter++)
-        result.push_back(*studentIter);
+    copy_if(studentList.begin(), studentList.end(), back_inserter(result),
+     [&str](Student& student) {return str == student.getAge();});
     
     return result;
 }
