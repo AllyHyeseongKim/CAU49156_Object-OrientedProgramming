@@ -213,7 +213,7 @@ void Display::mainView(StudentListManager &stu) {
                              ...',,,,,,,,,;,,;;,,,,,,,'...                                          
                                   ..................        
                     )" << "\n";                                        
-
+                    
         } else {
             cout << "Wrong input. Try again.\n";
         }
