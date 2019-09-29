@@ -7,7 +7,7 @@
 using namespace std;
 
 void Display::printStudentList(vector<Student> list){
-    cout << "LIST" << endl;
+    cout << "\nLIST" << endl;
     cout << "    ID     |       NAME      |  AGE  |      DEPARTMENT      |       TEL      |" << endl;
     for (Student student: list) {
         cout << setw(10) << student.getId() << " | "        // "ID" has up to 10
@@ -69,7 +69,8 @@ void Display::mainView(StudentListManager &stu) {
                 "0. Exit\n"
                 "\nEnter Menu number : ";
 
-        getline(cin, selection);
+        cin >> selection;
+        cin.ignore();
 
         if (selection == "0") {
             cout << "Saved.";
@@ -107,7 +108,7 @@ void Display::mainView(StudentListManager &stu) {
 
         } else if (selection == "3") {
             vector<Student> list = stu.getStudentList();
-            cout << endl << "TOTAL MEMBER: " << list.size() << endl;
+            cout << endl << "TOTAL MEMBER: " << list.size();
             if (list.size() < 5) {
                 printStudentList(list);
             }
@@ -159,7 +160,7 @@ void Display::mainView(StudentListManager &stu) {
             cout << "Enter Id : ";
             cin >> input;
             stu.deleting(input);
-            cout << "Goodbye, student.";
+            cout << "Goodbye, student." << "\n";
 
         } else if (selection == "6") {
             stu.thanosFingerSnap();                    
