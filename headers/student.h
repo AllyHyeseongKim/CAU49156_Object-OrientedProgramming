@@ -44,9 +44,9 @@ public:
     * operation overloading for compare.
     * compare name in dictionary order.
     */
-    friend bool operator<( const Person& person1,  const Person& person2);
+    friend bool operator<(const Person& person1, const Person& person2);
     // oparation overloading for compare.
-    friend bool operator==(const Student& student1,  const Person& student2);
+    friend bool operator==(const Student& student1, const Person& student2);
 };
 
 #endif

@@ -25,6 +25,12 @@ ostream& operator<<(ostream& os, const Person& person)
 }
 
 
-bool operator<( const Person& person1,  const Person& person2) {
-    return person1.name < person2.name;
+bool operator<(const Person& person1, const Person& person2) {
+    string lowPersonName1 = person1.getName();
+    string lowPersonName2 = person2.getName();
+    transform(lowPersonName1.begin(), lowPersonName1.end(), 
+            lowPersonName1.begin(), ::tolower);
+    transform(lowPersonName2.begin(), lowPersonName2.end(),
+            lowPersonName2.begin(), ::tolower);
+    return lowPersonName1 < lowPersonName2;
 }

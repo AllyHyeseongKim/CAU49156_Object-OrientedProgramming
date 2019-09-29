@@ -113,7 +113,7 @@ bool StudentListManager::chkRedundancy(string id) {
 bool StudentListManager::chkCorrectInfoForm(string name, string age, string id, string department, string tel) {
     regex onlyNumber("^[0-9]+$");
     if (!StudentListManager::chkRedundancy(id)) { 
-        cout << "Error : Already inserted" << endl;
+        cout << "\nError : Already inserted" << endl;
         return false;
     };
     if (name.length() > 15) {

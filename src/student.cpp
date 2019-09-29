@@ -1,6 +1,8 @@
 #include "../headers/student.h"
 #include "../headers/utils.h"
 
+#include <algorithm>
+
 Student::Student(string name, string age, string id, string department, string tel)
     : Person(name, age), id(id), department(department), tel(tel) {};
 
@@ -39,10 +41,16 @@ ostream& operator<<(ostream& os, const Student& student)
     return os;
 }
 
-bool operator<(const Student& student1,  const Person& student2) {
-    return student1.getName() < student1.getName();
+bool operator<(const Student& student1, const Student& student2) {
+    string lowStudentName1 = student1.getName();
+    string lowStudentName2 = student2.getName();
+    transform(lowStudentName1.begin(), lowStudentName1.end(), 
+            lowStudentName1.begin(), ::tolower);
+    transform(lowStudentName2.begin(), lowStudentName2.end(),
+            lowStudentName2.begin(), ::tolower);
+    return lowStudentName1 < lowStudentName2;
 }
 
-bool operator==(const Student& student1,  const Student& student2) {
+bool operator==(const Student& student1, const Student& student2) {
     return student1.getId() == student2.getId();
 }

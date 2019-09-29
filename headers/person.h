@@ -40,7 +40,7 @@ public:
     * operation overloading for compare.
     * compare name in dictionary order.
     */
-    friend bool operator<( const Person& person1,  const Person& person2);
+    friend bool operator<(const Person& person1, const Person& person2);
 };
 
 #endif
