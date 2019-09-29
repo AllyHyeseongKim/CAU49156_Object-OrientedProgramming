@@ -13,6 +13,7 @@
                 // "${file}", ${fileDirname}
                 "-std=c++11",
                 "main.cpp",
+                "src/display.cpp",
                 "src/person.cpp",
                 "src/student.cpp",
                 "src/student_list_manager.cpp",
