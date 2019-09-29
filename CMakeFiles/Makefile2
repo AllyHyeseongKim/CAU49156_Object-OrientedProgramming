@@ -44,21 +44,21 @@ RM = /usr/local/Cellar/cmake/3.15.3/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/Solomon/Desktop/OOPS-Project1
+CMAKE_SOURCE_DIR = /Users/aiel/Desktop/OOPS-Project1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/Solomon/Desktop/OOPS-Project1
+CMAKE_BINARY_DIR = /Users/aiel/Desktop/OOPS-Project1
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/TestCMake.dir/all
+all: CMakeFiles/main.dir/all
 
 .PHONY : all
 
 # The main recursive "clean" target.
-clean: CMakeFiles/TestCMake.dir/clean
+clean: CMakeFiles/main.dir/clean
 
 .PHONY : clean
 
@@ -68,31 +68,31 @@ preinstall:
 .PHONY : preinstall
 
 #=============================================================================
-# Target rules for target CMakeFiles/TestCMake.dir
+# Target rules for target CMakeFiles/main.dir
 
 # All Build rule for target.
-CMakeFiles/TestCMake.dir/all:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/depend
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/Solomon/Desktop/OOPS-Project1/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target TestCMake"
-.PHONY : CMakeFiles/TestCMake.dir/all
+CMakeFiles/main.dir/all:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/depend
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/aiel/Desktop/OOPS-Project1/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target main"
+.PHONY : CMakeFiles/main.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/TestCMake.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/Solomon/Desktop/OOPS-Project1/CMakeFiles 7
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/TestCMake.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/Solomon/Desktop/OOPS-Project1/CMakeFiles 0
-.PHONY : CMakeFiles/TestCMake.dir/rule
+CMakeFiles/main.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/aiel/Desktop/OOPS-Project1/CMakeFiles 7
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/main.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/aiel/Desktop/OOPS-Project1/CMakeFiles 0
+.PHONY : CMakeFiles/main.dir/rule
 
 # Convenience name for target.
-TestCMake: CMakeFiles/TestCMake.dir/rule
+main: CMakeFiles/main.dir/rule
 
-.PHONY : TestCMake
+.PHONY : main
 
 # clean rule for target.
-CMakeFiles/TestCMake.dir/clean:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/clean
-.PHONY : CMakeFiles/TestCMake.dir/clean
+CMakeFiles/main.dir/clean:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/clean
+.PHONY : CMakeFiles/main.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

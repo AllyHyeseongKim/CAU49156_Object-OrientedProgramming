@@ -66,45 +66,9 @@ thanos.h
 
 /Users/aiel/Desktop/OOPS-Project1/headers/thanos.h
 
-/Users/aiel/Desktop/OOPS-Project1/headers/utils.h
-vector
--
-string
--
-algorithm
--
-
-/Users/aiel/Desktop/OOPS-Project1/main.cpp
-iostream
--
-headers/display.h
-/Users/aiel/Desktop/OOPS-Project1/headers/display.h
-
 /Users/aiel/Desktop/OOPS-Project1/src/display.cpp
 ../headers/display.h
 /Users/aiel/Desktop/OOPS-Project1/headers/display.h
 iostream
 -
-
-/Users/aiel/Desktop/OOPS-Project1/src/person.cpp
-../headers/person.h
-/Users/aiel/Desktop/OOPS-Project1/headers/person.h
-../headers/utils.h
-/Users/aiel/Desktop/OOPS-Project1/headers/utils.h
-
-/Users/aiel/Desktop/OOPS-Project1/src/student.cpp
-../headers/student.h
-/Users/aiel/Desktop/OOPS-Project1/headers/student.h
-../headers/utils.h
-/Users/aiel/Desktop/OOPS-Project1/headers/utils.h
-algorithm
--
-
-/Users/aiel/Desktop/OOPS-Project1/src/student_list_manager.cpp
-../headers/student_list_manager.h
-/Users/aiel/Desktop/OOPS-Project1/headers/student_list_manager.h
-
-/Users/aiel/Desktop/OOPS-Project1/src/utils.cpp
-../headers/utils.h
-/Users/aiel/Desktop/OOPS-Project1/headers/utils.h
 

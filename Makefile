@@ -48,10 +48,10 @@ RM = /usr/local/Cellar/cmake/3.15.3/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/Solomon/Desktop/OOPS-Project1
+CMAKE_SOURCE_DIR = /Users/aiel/Desktop/OOPS-Project1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/Solomon/Desktop/OOPS-Project1
+CMAKE_BINARY_DIR = /Users/aiel/Desktop/OOPS-Project1
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/Solomon/Desktop/OOPS-Project1/CMakeFiles /Users/Solomon/Desktop/OOPS-Project1/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/aiel/Desktop/OOPS-Project1/CMakeFiles /Users/aiel/Desktop/OOPS-Project1/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/Solomon/Desktop/OOPS-Project1/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/aiel/Desktop/OOPS-Project1/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named TestCMake
+# Target rules for targets named main
 
 # Build rule for target.
-TestCMake: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 TestCMake
-.PHONY : TestCMake
+main: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 main
+.PHONY : main
 
 # fast build rule for target.
-TestCMake/fast:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/build
-.PHONY : TestCMake/fast
+main/fast:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
+.PHONY : main/fast
 
 main.o: main.cpp.o
 
@@ -129,7 +129,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/main.cpp.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -138,7 +138,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/main.cpp.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -147,7 +147,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/main.cpp.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 src/display.o: src/display.cpp.o
@@ -156,7 +156,7 @@ src/display.o: src/display.cpp.o
 
 # target to build an object file
 src/display.cpp.o:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/src/display.cpp.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/display.cpp.o
 .PHONY : src/display.cpp.o
 
 src/display.i: src/display.cpp.i
@@ -165,7 +165,7 @@ src/display.i: src/display.cpp.i
 
 # target to preprocess a source file
 src/display.cpp.i:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/src/display.cpp.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/display.cpp.i
 .PHONY : src/display.cpp.i
 
 src/display.s: src/display.cpp.s
@@ -174,7 +174,7 @@ src/display.s: src/display.cpp.s
 
 # target to generate assembly for a file
 src/display.cpp.s:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/src/display.cpp.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/display.cpp.s
 .PHONY : src/display.cpp.s
 
 src/person.o: src/person.cpp.o
@@ -183,7 +183,7 @@ src/person.o: src/person.cpp.o
 
 # target to build an object file
 src/person.cpp.o:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/src/person.cpp.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/person.cpp.o
 .PHONY : src/person.cpp.o
 
 src/person.i: src/person.cpp.i
@@ -192,7 +192,7 @@ src/person.i: src/person.cpp.i
 
 # target to preprocess a source file
 src/person.cpp.i:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/src/person.cpp.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/person.cpp.i
 .PHONY : src/person.cpp.i
 
 src/person.s: src/person.cpp.s
@@ -201,7 +201,7 @@ src/person.s: src/person.cpp.s
 
 # target to generate assembly for a file
 src/person.cpp.s:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/src/person.cpp.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/person.cpp.s
 .PHONY : src/person.cpp.s
 
 src/student.o: src/student.cpp.o
@@ -210,7 +210,7 @@ src/student.o: src/student.cpp.o
 
 # target to build an object file
 src/student.cpp.o:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/src/student.cpp.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/student.cpp.o
 .PHONY : src/student.cpp.o
 
 src/student.i: src/student.cpp.i
@@ -219,7 +219,7 @@ src/student.i: src/student.cpp.i
 
 # target to preprocess a source file
 src/student.cpp.i:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/src/student.cpp.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/student.cpp.i
 .PHONY : src/student.cpp.i
 
 src/student.s: src/student.cpp.s
@@ -228,7 +228,7 @@ src/student.s: src/student.cpp.s
 
 # target to generate assembly for a file
 src/student.cpp.s:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/src/student.cpp.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/student.cpp.s
 .PHONY : src/student.cpp.s
 
 src/student_list_manager.o: src/student_list_manager.cpp.o
@@ -237,7 +237,7 @@ src/student_list_manager.o: src/student_list_manager.cpp.o
 
 # target to build an object file
 src/student_list_manager.cpp.o:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/student_list_manager.cpp.o
 .PHONY : src/student_list_manager.cpp.o
 
 src/student_list_manager.i: src/student_list_manager.cpp.i
@@ -246,7 +246,7 @@ src/student_list_manager.i: src/student_list_manager.cpp.i
 
 # target to preprocess a source file
 src/student_list_manager.cpp.i:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/student_list_manager.cpp.i
 .PHONY : src/student_list_manager.cpp.i
 
 src/student_list_manager.s: src/student_list_manager.cpp.s
@@ -255,7 +255,7 @@ src/student_list_manager.s: src/student_list_manager.cpp.s
 
 # target to generate assembly for a file
 src/student_list_manager.cpp.s:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/student_list_manager.cpp.s
 .PHONY : src/student_list_manager.cpp.s
 
 src/utils.o: src/utils.cpp.o
@@ -264,7 +264,7 @@ src/utils.o: src/utils.cpp.o
 
 # target to build an object file
 src/utils.cpp.o:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/src/utils.cpp.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/utils.cpp.o
 .PHONY : src/utils.cpp.o
 
 src/utils.i: src/utils.cpp.i
@@ -273,7 +273,7 @@ src/utils.i: src/utils.cpp.i
 
 # target to preprocess a source file
 src/utils.cpp.i:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/src/utils.cpp.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/utils.cpp.i
 .PHONY : src/utils.cpp.i
 
 src/utils.s: src/utils.cpp.s
@@ -282,7 +282,7 @@ src/utils.s: src/utils.cpp.s
 
 # target to generate assembly for a file
 src/utils.cpp.s:
-	$(MAKE) -f CMakeFiles/TestCMake.dir/build.make CMakeFiles/TestCMake.dir/src/utils.cpp.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/utils.cpp.s
 .PHONY : src/utils.cpp.s
 
 # Help Target
@@ -293,7 +293,7 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... TestCMake"
+	@echo "... main"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

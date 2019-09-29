@@ -43,10 +43,10 @@ RM = /usr/local/Cellar/cmake/3.15.3/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/Solomon/Desktop/OOPS-Project1
+CMAKE_SOURCE_DIR = /Users/aiel/Desktop/OOPS-Project1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/Solomon/Desktop/OOPS-Project1
+CMAKE_BINARY_DIR = /Users/aiel/Desktop/OOPS-Project1
 
 # Include any dependencies generated for this target.
 include CMakeFiles/TestCMake.dir/depend.make
@@ -59,81 +59,81 @@ include CMakeFiles/TestCMake.dir/flags.make
 
 CMakeFiles/TestCMake.dir/main.cpp.o: CMakeFiles/TestCMake.dir/flags.make
 CMakeFiles/TestCMake.dir/main.cpp.o: main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/Solomon/Desktop/OOPS-Project1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/TestCMake.dir/main.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TestCMake.dir/main.cpp.o -c /Users/Solomon/Desktop/OOPS-Project1/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/aiel/Desktop/OOPS-Project1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/TestCMake.dir/main.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TestCMake.dir/main.cpp.o -c /Users/aiel/Desktop/OOPS-Project1/main.cpp
 
 CMakeFiles/TestCMake.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TestCMake.dir/main.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/Solomon/Desktop/OOPS-Project1/main.cpp > CMakeFiles/TestCMake.dir/main.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/aiel/Desktop/OOPS-Project1/main.cpp > CMakeFiles/TestCMake.dir/main.cpp.i
 
 CMakeFiles/TestCMake.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TestCMake.dir/main.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/Solomon/Desktop/OOPS-Project1/main.cpp -o CMakeFiles/TestCMake.dir/main.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/aiel/Desktop/OOPS-Project1/main.cpp -o CMakeFiles/TestCMake.dir/main.cpp.s
 
 CMakeFiles/TestCMake.dir/src/utils.cpp.o: CMakeFiles/TestCMake.dir/flags.make
 CMakeFiles/TestCMake.dir/src/utils.cpp.o: src/utils.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/Solomon/Desktop/OOPS-Project1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/TestCMake.dir/src/utils.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TestCMake.dir/src/utils.cpp.o -c /Users/Solomon/Desktop/OOPS-Project1/src/utils.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/aiel/Desktop/OOPS-Project1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/TestCMake.dir/src/utils.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TestCMake.dir/src/utils.cpp.o -c /Users/aiel/Desktop/OOPS-Project1/src/utils.cpp
 
 CMakeFiles/TestCMake.dir/src/utils.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TestCMake.dir/src/utils.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/Solomon/Desktop/OOPS-Project1/src/utils.cpp > CMakeFiles/TestCMake.dir/src/utils.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/aiel/Desktop/OOPS-Project1/src/utils.cpp > CMakeFiles/TestCMake.dir/src/utils.cpp.i
 
 CMakeFiles/TestCMake.dir/src/utils.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TestCMake.dir/src/utils.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/Solomon/Desktop/OOPS-Project1/src/utils.cpp -o CMakeFiles/TestCMake.dir/src/utils.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/aiel/Desktop/OOPS-Project1/src/utils.cpp -o CMakeFiles/TestCMake.dir/src/utils.cpp.s
 
 CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.o: CMakeFiles/TestCMake.dir/flags.make
 CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.o: src/student_list_manager.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/Solomon/Desktop/OOPS-Project1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.o -c /Users/Solomon/Desktop/OOPS-Project1/src/student_list_manager.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/aiel/Desktop/OOPS-Project1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.o -c /Users/aiel/Desktop/OOPS-Project1/src/student_list_manager.cpp
 
 CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/Solomon/Desktop/OOPS-Project1/src/student_list_manager.cpp > CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/aiel/Desktop/OOPS-Project1/src/student_list_manager.cpp > CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.i
 
 CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/Solomon/Desktop/OOPS-Project1/src/student_list_manager.cpp -o CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/aiel/Desktop/OOPS-Project1/src/student_list_manager.cpp -o CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.s
 
 CMakeFiles/TestCMake.dir/src/student.cpp.o: CMakeFiles/TestCMake.dir/flags.make
 CMakeFiles/TestCMake.dir/src/student.cpp.o: src/student.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/Solomon/Desktop/OOPS-Project1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/TestCMake.dir/src/student.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TestCMake.dir/src/student.cpp.o -c /Users/Solomon/Desktop/OOPS-Project1/src/student.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/aiel/Desktop/OOPS-Project1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/TestCMake.dir/src/student.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TestCMake.dir/src/student.cpp.o -c /Users/aiel/Desktop/OOPS-Project1/src/student.cpp
 
 CMakeFiles/TestCMake.dir/src/student.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TestCMake.dir/src/student.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/Solomon/Desktop/OOPS-Project1/src/student.cpp > CMakeFiles/TestCMake.dir/src/student.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/aiel/Desktop/OOPS-Project1/src/student.cpp > CMakeFiles/TestCMake.dir/src/student.cpp.i
 
 CMakeFiles/TestCMake.dir/src/student.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TestCMake.dir/src/student.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/Solomon/Desktop/OOPS-Project1/src/student.cpp -o CMakeFiles/TestCMake.dir/src/student.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/aiel/Desktop/OOPS-Project1/src/student.cpp -o CMakeFiles/TestCMake.dir/src/student.cpp.s
 
 CMakeFiles/TestCMake.dir/src/person.cpp.o: CMakeFiles/TestCMake.dir/flags.make
 CMakeFiles/TestCMake.dir/src/person.cpp.o: src/person.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/Solomon/Desktop/OOPS-Project1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/TestCMake.dir/src/person.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TestCMake.dir/src/person.cpp.o -c /Users/Solomon/Desktop/OOPS-Project1/src/person.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/aiel/Desktop/OOPS-Project1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/TestCMake.dir/src/person.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TestCMake.dir/src/person.cpp.o -c /Users/aiel/Desktop/OOPS-Project1/src/person.cpp
 
 CMakeFiles/TestCMake.dir/src/person.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TestCMake.dir/src/person.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/Solomon/Desktop/OOPS-Project1/src/person.cpp > CMakeFiles/TestCMake.dir/src/person.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/aiel/Desktop/OOPS-Project1/src/person.cpp > CMakeFiles/TestCMake.dir/src/person.cpp.i
 
 CMakeFiles/TestCMake.dir/src/person.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TestCMake.dir/src/person.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/Solomon/Desktop/OOPS-Project1/src/person.cpp -o CMakeFiles/TestCMake.dir/src/person.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/aiel/Desktop/OOPS-Project1/src/person.cpp -o CMakeFiles/TestCMake.dir/src/person.cpp.s
 
 CMakeFiles/TestCMake.dir/src/display.cpp.o: CMakeFiles/TestCMake.dir/flags.make
 CMakeFiles/TestCMake.dir/src/display.cpp.o: src/display.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/Solomon/Desktop/OOPS-Project1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/TestCMake.dir/src/display.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TestCMake.dir/src/display.cpp.o -c /Users/Solomon/Desktop/OOPS-Project1/src/display.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/aiel/Desktop/OOPS-Project1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/TestCMake.dir/src/display.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TestCMake.dir/src/display.cpp.o -c /Users/aiel/Desktop/OOPS-Project1/src/display.cpp
 
 CMakeFiles/TestCMake.dir/src/display.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TestCMake.dir/src/display.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/Solomon/Desktop/OOPS-Project1/src/display.cpp > CMakeFiles/TestCMake.dir/src/display.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/aiel/Desktop/OOPS-Project1/src/display.cpp > CMakeFiles/TestCMake.dir/src/display.cpp.i
 
 CMakeFiles/TestCMake.dir/src/display.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TestCMake.dir/src/display.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/Solomon/Desktop/OOPS-Project1/src/display.cpp -o CMakeFiles/TestCMake.dir/src/display.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/aiel/Desktop/OOPS-Project1/src/display.cpp -o CMakeFiles/TestCMake.dir/src/display.cpp.s
 
 # Object files for target TestCMake
 TestCMake_OBJECTS = \
@@ -155,7 +155,7 @@ TestCMake: CMakeFiles/TestCMake.dir/src/person.cpp.o
 TestCMake: CMakeFiles/TestCMake.dir/src/display.cpp.o
 TestCMake: CMakeFiles/TestCMake.dir/build.make
 TestCMake: CMakeFiles/TestCMake.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/Solomon/Desktop/OOPS-Project1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable TestCMake"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/aiel/Desktop/OOPS-Project1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable TestCMake"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/TestCMake.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -168,6 +168,6 @@ CMakeFiles/TestCMake.dir/clean:
 .PHONY : CMakeFiles/TestCMake.dir/clean
 
 CMakeFiles/TestCMake.dir/depend:
-	cd /Users/Solomon/Desktop/OOPS-Project1 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/Solomon/Desktop/OOPS-Project1 /Users/Solomon/Desktop/OOPS-Project1 /Users/Solomon/Desktop/OOPS-Project1 /Users/Solomon/Desktop/OOPS-Project1 /Users/Solomon/Desktop/OOPS-Project1/CMakeFiles/TestCMake.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/aiel/Desktop/OOPS-Project1 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/aiel/Desktop/OOPS-Project1 /Users/aiel/Desktop/OOPS-Project1 /Users/aiel/Desktop/OOPS-Project1 /Users/aiel/Desktop/OOPS-Project1 /Users/aiel/Desktop/OOPS-Project1/CMakeFiles/TestCMake.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/TestCMake.dir/depend
 

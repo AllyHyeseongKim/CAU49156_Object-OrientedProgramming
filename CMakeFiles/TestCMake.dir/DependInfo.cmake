@@ -4,12 +4,12 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/Solomon/Desktop/OOPS-Project1/main.cpp" "/Users/Solomon/Desktop/OOPS-Project1/CMakeFiles/TestCMake.dir/main.cpp.o"
-  "/Users/Solomon/Desktop/OOPS-Project1/src/display.cpp" "/Users/Solomon/Desktop/OOPS-Project1/CMakeFiles/TestCMake.dir/src/display.cpp.o"
-  "/Users/Solomon/Desktop/OOPS-Project1/src/person.cpp" "/Users/Solomon/Desktop/OOPS-Project1/CMakeFiles/TestCMake.dir/src/person.cpp.o"
-  "/Users/Solomon/Desktop/OOPS-Project1/src/student.cpp" "/Users/Solomon/Desktop/OOPS-Project1/CMakeFiles/TestCMake.dir/src/student.cpp.o"
-  "/Users/Solomon/Desktop/OOPS-Project1/src/student_list_manager.cpp" "/Users/Solomon/Desktop/OOPS-Project1/CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.o"
-  "/Users/Solomon/Desktop/OOPS-Project1/src/utils.cpp" "/Users/Solomon/Desktop/OOPS-Project1/CMakeFiles/TestCMake.dir/src/utils.cpp.o"
+  "/Users/aiel/Desktop/OOPS-Project1/main.cpp" "/Users/aiel/Desktop/OOPS-Project1/CMakeFiles/TestCMake.dir/main.cpp.o"
+  "/Users/aiel/Desktop/OOPS-Project1/src/display.cpp" "/Users/aiel/Desktop/OOPS-Project1/CMakeFiles/TestCMake.dir/src/display.cpp.o"
+  "/Users/aiel/Desktop/OOPS-Project1/src/person.cpp" "/Users/aiel/Desktop/OOPS-Project1/CMakeFiles/TestCMake.dir/src/person.cpp.o"
+  "/Users/aiel/Desktop/OOPS-Project1/src/student.cpp" "/Users/aiel/Desktop/OOPS-Project1/CMakeFiles/TestCMake.dir/src/student.cpp.o"
+  "/Users/aiel/Desktop/OOPS-Project1/src/student_list_manager.cpp" "/Users/aiel/Desktop/OOPS-Project1/CMakeFiles/TestCMake.dir/src/student_list_manager.cpp.o"
+  "/Users/aiel/Desktop/OOPS-Project1/src/utils.cpp" "/Users/aiel/Desktop/OOPS-Project1/CMakeFiles/TestCMake.dir/src/utils.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")
 
