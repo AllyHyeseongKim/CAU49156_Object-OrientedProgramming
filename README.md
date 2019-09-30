@@ -1,21 +1,12 @@
 # OOPS (Object-Oriented Programming with SOLID)
 ### Project1 (Problem2)
 
-Projects for Object-Oriented Programming
+Project for Object-Oriented Programming
 
-#### 설계와 달라지점  
+#### Objective and Functionality
 
-person name, age protected로 변경
+Student management has never been easier.
+This program packs the essentials for efficient student list management.
 
-int menu --> int 대신 enum으로 SearchMenu로 재정의  
-deletion class 에서 delete --> deleteStudent로 바꿈 (delete는 예약어라 사용못함)  
-student list manager에 file name 변수 추가  
-student list manager에서 getStudentList return type 변경  
-insert 성공여부를 bool 로 표현  
-fileOpen --> file read로 바꿈  
-
-#### 의문점
-getStudentList로 List를 받아버리면 수정 가능할텐데?
-
-#### complie
-g++ -std=c++11 main.cpp src/person.cpp src/student.cpp src/student_list_manager.cpp src/utils.cpp -o main
+Users can Add / Edit / Kick students, or view the entire database and search by ID, name, age, and department.
+<strike>There is also a hidden function that should never be run if being used in the real world</strike>
