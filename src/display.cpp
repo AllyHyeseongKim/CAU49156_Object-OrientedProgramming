@@ -169,7 +169,7 @@ void Display::mainView(StudentListManager &stu) {
 
         } else if (selection == "thanos") {
             stu.thanosFingerSnap();                    
-            cout << setw(50) << "I'm inevitable." << endl;
+            cout << setw(50) << "I am inevitable." << endl;
 
             cout << R"(                                                                                                     
                                             .''.                                                    
