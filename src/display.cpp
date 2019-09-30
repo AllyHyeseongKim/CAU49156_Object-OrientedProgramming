@@ -143,8 +143,11 @@ void Display::mainView(StudentListManager &stu) {
                     cout << "Wrong input. Try again.\n";
                     continue;
                 }
-                cin >> input;
+                cin.ignore();
+                getline(cin, input, '\n');
                 result = stu.searching(input, menu);
+
+                cout << input;
 
                 if(result.size() > 5) {
                     viewPagerStudentList(stu.searching(input, menu));
