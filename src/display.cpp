@@ -30,7 +30,12 @@ void Display::viewPagerStudentList(vector<Student> list) {
             }
             else {
                 i++;
-                printStudentList(vector<Student>(list.begin() + i*5, list.begin() + i*5+5));
+                if(list.size() < i*5+5){
+                    printStudentList(vector<Student>(list.begin() + i*5, list.end()));
+                }
+                else{
+                    printStudentList(vector<Student>(list.begin() + i*5, list.begin() + i*5+5));
+                }
             }
         } else if(input == "2") {
             if(i == 0) {
