@@ -1,23 +1,44 @@
 #ifndef GAME_CONTROLLER_H
 #define GAME_CONTROLLER_H
 
-#include "user.h";
+#include <fstream>
+#include <sstream>
+// #include <boost/tokenizer.hpp>
+
+#include "state.h"                  // Agent
+#include "player.h"                 // Environment
+
+// using namespace boost;
+
+// typedef tokenizer<char_seperator<char>> TOKC;
 
 class GameController {
     
     string player_turn;             // 현재 차례인 유저의 아이디를 저장
     int total_turn;                 // 게임 진행 총 턴 횟수
-    vector<User> user_list;         // 게임에 참여한 유저 목록
+
+    vector<Player> player_list;     // 게임에 참여한 유저 목록
+    vector<State> states;
+
+
+    string game_state_file;
 
 public:
+    
+    GameController();
+
     bool chk_player_turn();
     bool chk_war_win();
     int chk_total_win();
     void increase_total_turn();
     void increase_total_rice();
 
+    // 게임 영지 초기화 - 후에 set_game이 생기면 private으로
+    void set_state(string game_state_file);
+
 private:
 
+    void game_data_file_read();
 };
 
 #endif

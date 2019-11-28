@@ -1,16 +1,19 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include<iostream>
-#include<vector>
+#include <iostream>
+#include <vector>
 
 #include "game_unit.h"
 
 class State {
-    User state_owner;               // 해당 영지의 주인인 플레이어
+    // User state_owner;               // 해당 영지의 주인인 플레이어
     vector<GameUnit> unit_list;     // 해당 영지에 있는 영웅들
     vector<State> near_state;
+    
     int state_id;                   // 1: 함경도, 2: 평안도, 3: 강원도, 4: 황해도, 5: 경기도, 6: 충청도, 7: 경상도, 8: 전라도, 9: 제주도
+    string state_name;              // 위와 같음
+    
     int agriculture_degree;         // 현 영지의 농업도, 처음에 모든 영지는 100의 농업도로 초기화
     int soldier_degree;             // 현 영지의 병사들의 훈련도, 모집한 직후에 20으로 시작
     int state_soldier;              // 현 영지의 병사수

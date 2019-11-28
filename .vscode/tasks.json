@@ -12,6 +12,8 @@
             "args": [
                 // "${file}", ${fileDirname}
                 "-std=c++11",
+                "main.cpp",
+                "src/game_controller.cpp",
                 "-o",
                 "${fileBasenameNoExtension}"
             ],
