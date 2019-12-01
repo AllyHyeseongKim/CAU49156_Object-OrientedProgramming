@@ -149,11 +149,15 @@ void State::defense(GameUnit &selected_unit, State &enamy_state, GameUnit &enamy
 }
 
 bool State::check_win(GameUnit &selected_unit, int num_friendly_soldier, State &enamy_state, GameUnit &enamy_unit, int num_enamy_soldier) {
-        int friendly_power = soldier_degree * num_friendly_soldier 
+    int friendly_power = soldier_degree * num_friendly_soldier 
             + (selected_unit.get_strength() + selected_unit.get_leadearship() + selected_unit.get_wisdom()) / 3;
 
-        int enamy_power = enamy_state.soldier_degree * num_enamy_soldier 
+    int enamy_power = enamy_state.soldier_degree * num_enamy_soldier 
             + (enamy_unit.get_strength() + enamy_unit.get_leadearship() + enamy_unit.get_wisdom()) / 3;
 
-        return friendly_power >= enamy_power;
-    }
+    return friendly_power >= enamy_power;
+}
+
+StateId State::get_state_id() {
+    return state_id;
+}

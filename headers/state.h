@@ -65,6 +65,8 @@ public:
     
     // void lose_the_war();
 
+    StateId get_state_id();
+
 private:
     bool check_win(GameUnit &selected_unit, int num_friendly_soldier, State &enamy_state, GameUnit &enamy_unit, int num_enamy_soldier);
 };
