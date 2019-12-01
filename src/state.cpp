@@ -1,4 +1,5 @@
 #include "../headers/state.h"
+#include "../headers/user.h"
 
 State::State(User &owner, StateId state_id) {
     state_owner = &owner;

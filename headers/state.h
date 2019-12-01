@@ -9,9 +9,10 @@
 
 #include "game_unit.h"
 #include "user.h"
-#include "state.h"
 
 typedef enum {Hamgyeongdo = 1, Pyongando, Gangwondo, Hwanghaedo, Chungcheongdo, Gyeongsangdo, Jeollado, Jejudo} StateId;
+
+class User;
 
 class State {
 
@@ -29,7 +30,7 @@ class State {
     int soldier_capacity;
 
 public:
-    State::State(User &owner, StateId state_id);
+    State(User &owner, StateId state_id);
     // 내정 --------------------------------------------------------------------
     // 정치에 비례하여 농업도 향상
     // 영웅을 한 명 선택하여 일을 맡길 수 있고, 일을 시킨 이후에는 행동력을 다 소모한 것으로 판단, 다른 일을 시킬 수 없다
