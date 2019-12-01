@@ -65,7 +65,9 @@
         "filesystem": "cpp",
         "iomanip": "cpp",
         "stack": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "numeric": "cpp",
+        "random": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

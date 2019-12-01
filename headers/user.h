@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 #include "state.h"
-#include "state.h"
 
 class User {
 
@@ -15,6 +14,7 @@ protected:
     int total_rice;                             // 식량, 5000으로 시작
 
 public:
+    User(std::string user_id, StateId state_id);
     State &find_own_state(StateId state_id);         // 영지 이동, chk_own_state와 연관
 
     // vector<State> get_own_states();             // 현재 유저가 갖고 있는 영지 목록 반환, GUI에서 영지 표시용?

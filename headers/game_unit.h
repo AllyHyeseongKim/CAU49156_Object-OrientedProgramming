@@ -7,7 +7,7 @@ using namespace std;
 typedef enum {undeveloped, developed, hired, munonarch} UnitStatus;
 
 class GameUnit {
-
+    std::string name;
     int strength;       // 무력
     int leadership;     // 통솔
     int wisdom;         // 지력
@@ -20,9 +20,10 @@ class GameUnit {
 public:
 
     // constructor
-    GameUnit(int strength, int leadership, int wisdom, int political, int attraction, string status);
+    GameUnit(std::string name, int strength, int leadership, int wisdom, int political, int attraction, UnitStatus status);
 
     // getter
+    std::string get_name() const;
     int get_strength() const;
     int get_leadearship() const;    
     int get_wisdom() const;

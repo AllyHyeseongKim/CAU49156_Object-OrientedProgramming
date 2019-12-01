@@ -2,7 +2,8 @@
 
 // constructor
 
-GameUnit::GameUnit(int strength, int leadership, int wisdom, int political, int attraction, string status) {
+GameUnit::GameUnit(std::string name, int strength, int leadership, int wisdom, int political, int attraction, UnitStatus status) {
+    this->name = name;
     this->strength = strength;
     this->leadership = leadership;
     this->wisdom = wisdom;
@@ -14,6 +15,10 @@ GameUnit::GameUnit(int strength, int leadership, int wisdom, int political, int 
 }
 
 // getter
+
+std::string GameUnit::get_name() const {
+    return name;
+}
 
 int GameUnit::get_strength() const {
     return strength;
@@ -35,7 +40,7 @@ int GameUnit::get_attraction() const {
     return attraction;
 }
 
-string GameUnit::get_status() const {
+UnitStatus GameUnit::get_status() const {
     return status;
 }
 
@@ -65,7 +70,7 @@ void GameUnit::set_attraction(int attraction) {
     this->attraction = attraction;
 }
 
-void GameUnit::set_status(string status) {
+void GameUnit::set_status(UnitStatus status) {
     this->status = status;
 }
 
