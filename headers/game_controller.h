@@ -5,8 +5,7 @@
 #include <sstream>
 // #include <boost/tokenizer.hpp>
 
-#include "state.h"                  // Agent
-#include "player.h"                 // Environment
+#include "player.h"
 
 // using namespace boost;
 
