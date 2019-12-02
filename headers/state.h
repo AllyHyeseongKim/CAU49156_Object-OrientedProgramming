@@ -8,11 +8,10 @@
 #include <algorithm>
 
 #include "game_unit.h"
-#include "user.h"
 
 typedef enum {Hamgyeongdo = 1, Pyongando, Gangwondo, Gyeonggido, Hwanghaedo, Chungcheongdo, Gyeongsangdo, Jeollado, Jejudo} StateId;
 
-// class User;
+class User;
 
 class State {
 

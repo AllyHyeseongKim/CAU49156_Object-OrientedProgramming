@@ -1,5 +1,6 @@
-#include "../headers/user.h"
+
 #include "../headers/state.h"
+#include "../headers/user.h"
 
 User::User(std::string user_id, State *state) {
     this->user_id = user_id;
