@@ -7,6 +7,7 @@
 #include "state.h"
 
 // class State;
+// 상호 참조를 전방선언으로 해결하려면, typedef 때문에 user.h 에서는 StateId를 사용하지 않도록 한다 -> State& 로 대체
 
 class User {
 protected:
