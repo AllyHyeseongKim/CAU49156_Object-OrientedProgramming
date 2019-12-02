@@ -1,7 +1,6 @@
 #include "../headers/user.h"
 #include "../headers/state.h"
 
-
 State::State(StateId state_id, string state_name) {
     this->state_id = state_id;
     this->state_name = state_name;
@@ -68,6 +67,10 @@ State::State(StateId state_id, string state_name) {
     //     unit_list.push_back(GameUnit("Kim Jeonghui", 20, 20, 75, 85, 75, developed));
     //     break;
     // }
+}
+
+StateId State::get_state_id() {
+    return state_id;
 }
 
 void State::set_state_owner(User &owner) {
@@ -170,8 +173,4 @@ bool State::check_win(GameUnit &selected_unit, int num_friendly_soldier, State &
             + (enamy_unit.get_strength() + enamy_unit.get_leadearship() + enamy_unit.get_wisdom()) / 3;
 
     return friendly_power >= enamy_power;
-}
-
-StateId State::get_state_id() {
-    return state_id;
 }
