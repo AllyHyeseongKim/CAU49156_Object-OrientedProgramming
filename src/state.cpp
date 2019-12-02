@@ -1,12 +1,20 @@
 #include "../headers/state.h"
 #include "../headers/user.h"
 
-State::State(User &owner, StateId state_id) {
-    state_owner = &owner;
+State::State(StateId state_id, string state_name) {
     this->state_id = state_id;
+    this->state_name = state_name;
     agriculture_degree = 100;
     soldier_degree = 20;
     state_soldier = 0;
+}
+
+void State::set_state_owner(User &owner) {
+    this->state_owner = &owner;
+}
+
+void State::set_near_state(StateId state_id) {
+    near_states.push_back(state_id);
 }
 
 void State::agriculture(GameUnit &selected_unit) {

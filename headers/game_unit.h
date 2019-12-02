@@ -8,6 +8,7 @@ typedef enum {undeveloped, developed, hired, munonarch} UnitStatus;
 
 class GameUnit {
 
+    string name;        // 이름
     int strength;       // 무력
     int leadership;     // 통솔
     int wisdom;         // 지력
@@ -20,7 +21,7 @@ class GameUnit {
 public:
 
     // constructor
-    GameUnit(int strength, int leadership, int wisdom, int political, int attraction, string status);
+    GameUnit(string name, int strength, int leadership, int wisdom, int political, int attraction, UnitStatus status);
 
     // getter
     int get_strength() const;

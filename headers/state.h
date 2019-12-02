@@ -18,7 +18,7 @@ class State {
 
     User *state_owner;               // 해당 영지의 주인인 플레이어
     std::vector<GameUnit> unit_list;     // 해당 영지에 있는 영웅들
-    std::vector<State> near_state;
+    std::vector<StateId> near_states;
     
     StateId state_id;                   // 1: 함경도, 2: 평안도, 3: 강원도, 4: 황해도, 5: 경기도, 6: 충청도, 7: 경상도, 8: 전라도, 9: 제주도
     std::string state_name;              // 위와 같음
@@ -30,12 +30,18 @@ class State {
     int soldier_capacity;
 
 public:
-    State(User &owner, StateId state_id);
+    State(StateId state_id, string state_name);
     // 내정 --------------------------------------------------------------------
     // 정치에 비례하여 농업도 향상
     // 영웅을 한 명 선택하여 일을 맡길 수 있고, 일을 시킨 이후에는 행동력을 다 소모한 것으로 판단, 다른 일을 시킬 수 없다
     // 오직 6월, 9월에 영지 농업도 * 20만큼의 식량이 증가
     // ------------------------------------------------------------------------
+    
+    // void get_state_id();
+
+    void set_state_owner(User &owner);
+    void set_near_state(StateId state_id);
+    
     void agriculture(GameUnit &selected_unit);
 
     // 병사 --------------------------------------------------------------------
@@ -67,6 +73,7 @@ public:
 
 private:
     bool check_win(GameUnit &selected_unit, int num_friendly_soldier, State &enamy_state, GameUnit &enamy_unit, int num_enamy_soldier);
+    // bool check_available_state(StateId state_id); // 해당 State가 현재 State의 near state인지, 이동/전투에 대해
 };
 
 #endif

@@ -14,6 +14,9 @@
                 "-std=c++11",
                 "main.cpp",
                 "src/game_controller.cpp",
+                "src/game_unit.cpp",
+                "src/state.cpp",
+                "src/user.cpp",
                 "-o",
                 "${fileBasenameNoExtension}"
             ],
