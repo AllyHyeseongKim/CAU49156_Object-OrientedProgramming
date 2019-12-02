@@ -1,8 +1,9 @@
+// #include "../headers/state.h"
 #include "../headers/user.h"
 
 User::User(std::string user_id, StateId state_id) {
     this->user_id = user_id;
-    this->own_states.push_back(new State(this, state_id));
+    this->own_states.push_back(new State(state_id, ""));
     total_rice = 500;
 }
 
