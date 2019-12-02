@@ -2,7 +2,7 @@
 
 // constructor
 
-GameUnit::GameUnit(string name, int strength, int leadership, int wisdom, int political, int attraction, UnitStatus status) {
+GameUnit::GameUnit(std::string name, int strength, int leadership, int wisdom, int political, int attraction, UnitStatus status) {
     this->name = name;
     this->strength = strength;
     this->leadership = leadership;
@@ -10,11 +10,15 @@ GameUnit::GameUnit(string name, int strength, int leadership, int wisdom, int po
     this->political = political;
     this->attraction = attraction;
     this->status = status;
-    
-    this->can_move = true;   
+
+    this->can_move = true;
 }
 
 // getter
+
+std::string GameUnit::get_name() const {
+    return name;
+}
 
 int GameUnit::get_strength() const {
     return strength;
@@ -72,4 +76,10 @@ void GameUnit::set_status(UnitStatus status) {
 
 void GameUnit::set_can_move(bool can_move) {
     this->can_move = can_move;
+}
+
+bool operator==(GameUnit& unit1, GameUnit& unit2) {
+    return (unit1.name == unit2.name) && (unit1.leadership == unit2.leadership)
+    && (unit1.political == unit2.political) && (unit1.strength == unit2.strength) && (unit1.wisdom == unit2.wisdom)
+    && (unit1.can_move == unit2.can_move);
 }

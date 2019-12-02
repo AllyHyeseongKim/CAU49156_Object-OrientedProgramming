@@ -7,8 +7,7 @@ using namespace std;
 typedef enum {undeveloped, developed, hired, munonarch} UnitStatus;
 
 class GameUnit {
-
-    string name;        // 이름
+    std::string name;
     int strength;       // 무력
     int leadership;     // 통솔
     int wisdom;         // 지력
@@ -21,17 +20,18 @@ class GameUnit {
 public:
 
     // constructor
-    GameUnit(string name, int strength, int leadership, int wisdom, int political, int attraction, UnitStatus status);
+    GameUnit(std::string name, int strength, int leadership, int wisdom, int political, int attraction, UnitStatus status);
 
     // getter
+    std::string get_name() const;
     int get_strength() const;
-    int get_leadearship() const;    
+    int get_leadearship() const;
     int get_wisdom() const;
     int get_political() const;
     int get_attraction() const;
     UnitStatus get_status() const;
     bool get_can_move() const;
-    
+
     // setter
     void set_strength(int strength);
     void set_leadership(int leadership);
@@ -41,6 +41,7 @@ public:
     void set_status(UnitStatus status);
     void set_can_move(bool can_move);
 
+    friend bool operator==(GameUnit& unit1, GameUnit& unit2);
 private:
     void set_unit();
 };
