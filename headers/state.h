@@ -8,7 +8,6 @@
 #include <algorithm>
 
 #include "game_unit.h"
-#include "user.h"
 
 typedef enum {Hamgyeongdo = 1, Pyongando, Gangwondo, Gyeonggido, Hwanghaedo, Chungcheongdo, Gyeongsangdo, Jeollado, Jejudo} StateId;
 
@@ -30,6 +29,7 @@ class State {
     int soldier_capacity;
 
 public:
+
     State(StateId state_id, string state_name);
     // 내정 --------------------------------------------------------------------
     // 정치에 비례하여 농업도 향상
@@ -37,9 +37,11 @@ public:
     // 오직 6월, 9월에 영지 농업도 * 20만큼의 식량이 증가
     // ------------------------------------------------------------------------
 
-    // void get_state_id();
-
+    // 해당 State의 StateId를 return
+    StateId get_state_id();
+    // 해당 State의 주인인 유저를 설정
     void set_state_owner(User &owner);
+    // 해당 State 주변의 State를 설정
     void set_near_state(StateId state_id);
 
     void agriculture(GameUnit &selected_unit);
@@ -70,8 +72,6 @@ public:
     void defense(GameUnit &selected_unit, State &enamy_state, GameUnit &enamy_unit, int enamy_soldier);        // 방어
 
     // void lose_the_war();
-
-    StateId get_state_id();
 
 private:
     bool check_win(GameUnit &selected_unit, int num_friendly_soldier, State &enamy_state, GameUnit &enamy_unit, int num_enamy_soldier);

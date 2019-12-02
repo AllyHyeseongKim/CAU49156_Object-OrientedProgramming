@@ -1,12 +1,12 @@
-// #include "../headers/state.h"
+
+#include "../headers/state.h"
 #include "../headers/user.h"
 
-User::User(std::string user_id, StateId state_id) {
+User::User(std::string user_id, State *state) {
     this->user_id = user_id;
-    this->own_states.push_back(new State(state_id, ""));
+    this->own_states.push_back(state);
     total_rice = 500;
 }
-
 
 State& User::find_own_state(StateId state_id) {
     for(int i = 0; i < own_states.size(); i++) {
@@ -24,7 +24,7 @@ void User::set_total_rice(int rice) {
     total_rice = rice;
 }
 
-bool User::chk_own_state(int state_id) {
+bool User::chk_own_state(StateId state_id) {
     for(int i = 0; i < own_states.size(); i++) {
         if(own_states[i]->get_state_id() == state_id)
             return true;

@@ -5,12 +5,7 @@
 #include <sstream>
 #include <map>
 
-// #include <boost/tokenizer.hpp>
-
 #include "player.h"
-// using namespace boost;
-
-// typedef tokenizer<char_seperator<char>> TOKC;
 
 class GameController {
     
@@ -36,8 +31,7 @@ public:
     void set_state(string game_state_file);
 
 private:
-
-    void game_data_file_read();
+    // void game_data_file_read();
 };
 
 #endif
