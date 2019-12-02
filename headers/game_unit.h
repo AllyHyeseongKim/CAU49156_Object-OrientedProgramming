@@ -41,6 +41,7 @@ public:
     void set_status(UnitStatus status);
     void set_can_move(bool can_move);
 
+    friend bool operator==(GameUnit& unit1, GameUnit& unit2);
 private:
     void set_unit();
 };

@@ -7,7 +7,6 @@
 #include "state.h"
 
 class User {
-
 protected:
     std::string user_id;                             // 유저 아이디
     std::vector<State*> own_states;                   // 유저가 소유한 영지 목록

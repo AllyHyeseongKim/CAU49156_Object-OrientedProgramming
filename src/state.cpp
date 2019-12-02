@@ -1,5 +1,6 @@
-#include "../headers/state.h"
 #include "../headers/user.h"
+#include "../headers/state.h"
+
 
 State::State(User *owner, StateId state_id) {
     state_owner = owner;
@@ -73,12 +74,12 @@ State::State(User *owner, StateId state_id) {
 void State::agriculture(GameUnit &selected_unit) {
     assert(selected_unit.get_can_move());
     selected_unit.set_can_move(false);
-    agriculture_degree += selected_unit.get_political * 0.5;
+    agriculture_degree += selected_unit.get_political() * 0.5;
 }
 
 void State::recurit_soldier(GameUnit &selected_unit, int num_soldier) {
     assert(selected_unit.get_can_move());
-    assert(state_owner->get_total_rice >= 0.5 * num_soldier);
+    assert(state_owner->get_total_rice() >= 0.5 * num_soldier);
     assert(soldier_capacity >= state_soldier);
     
     selected_unit.set_can_move(false);
@@ -114,7 +115,13 @@ void State::hire_unit(GameUnit &hirng_unit, GameUnit &hired_unit) {
 }
 
 void State::move_unit(GameUnit &selected_unit, StateId moved_state_id) {
-    unit_list.erase(find(unit_list.begin(), unit_list.end(), selected_unit));
+    for(int i = 0; i < unit_list.size(); i++) {
+        if (unit_list[i] == selected_unit) {
+            unit_list.erase(unit_list.begin() + i);
+            break;
+        }
+    }
+    // unit_list.erase(find(unit_list.begin(), unit_list.end(), selected_unit));
 
     State &state = state_owner->find_own_state(moved_state_id);
     state.unit_list.push_back(selected_unit);
