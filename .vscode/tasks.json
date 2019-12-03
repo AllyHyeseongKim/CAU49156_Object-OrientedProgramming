@@ -15,6 +15,7 @@
                 "main.cpp",
                 "src/game_controller.cpp",
                 "src/game_unit.cpp",
+                "src/player.cpp",
                 "src/state.cpp",
                 "src/user.cpp",
                 "-o",

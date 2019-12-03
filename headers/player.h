@@ -7,7 +7,7 @@ typedef enum {HRM, Politic, MSoldier, War, FindUnit, GetUnit, MoveUnit} Command;
 
 class Player : public User {
 public:
-    Player(std::string user_id, StateId state_id);
+    Player(std::string user_id);
     // 현 영지에서
     // 1: 인사, 2: 내정, 3: 병사, 4: 전쟁
     void command(int command_num, GameUnit selected_unit);

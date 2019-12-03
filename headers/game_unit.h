@@ -13,7 +13,7 @@ class GameUnit {
     int wisdom;         // 지력
     int political;      // 정치
     int attraction;     // 매력
-    UnitStatus status;      // 탐색으로 찾아내기 전: 미발견, 재야, 등용, 군주
+    UnitStatus status;  // 탐색으로 찾아내기 전: 미발견, 재야, 등용, 군주
 
     bool can_move;      // 행동력
 
@@ -42,8 +42,9 @@ public:
     void set_can_move(bool can_move);
 
     friend bool operator==(GameUnit& unit1, GameUnit& unit2);
+    
 private:
-    void set_unit();
+    // void set_unit();
 };
 
 #endif

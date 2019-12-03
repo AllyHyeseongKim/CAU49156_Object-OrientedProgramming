@@ -39,6 +39,9 @@ public:
 
     // 해당 State의 StateId를 return
     StateId get_state_id();
+    std::string get_state_name();
+    int get_agriculture_degree();
+
     // 해당 State의 주인인 유저를 설정
     void set_state_owner(User &owner);
     // 해당 State 주변의 State를 설정

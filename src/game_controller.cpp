@@ -1,10 +1,44 @@
 #include "../headers/game_controller.h"
 
-GameController::GameController(): total_turn(0) {
-    // ...
+GameController::GameController() {
+    this->total_turn = 1;
 }
 
-void GameController::set_state(string game_state_file) {
+Player* GameController::get_player_turn() {
+    return player_turn;
+}
+
+int GameController::get_total_turn() {
+    return total_turn;
+}
+
+// total_turn에 따른 현재 YYYY/MM 반환 알고리즘 작성
+string GameController::get_date() {
+    int yyyy = 1392, mm = 1;
+    if(total_turn % 12 != 0) {
+        yyyy += total_turn / 12;
+        mm = total_turn % 12;
+    }
+    else {
+        yyyy += (total_turn-1) / 12;
+        mm = 12;
+    }
+    return to_string(yyyy) + "년/" + to_string(mm) + "월";
+}
+
+vector<Player*> GameController::get_players() {
+    return players;
+}
+
+vector<State*> GameController::get_states() {
+    return states;
+}
+
+void GameController::set_player_turn(Player* player) {
+    this->player_turn = player;
+}
+
+void GameController::set_states(string game_state_file) {
     ifstream data(game_state_file);
 
     if(!data.is_open()) {
@@ -56,3 +90,23 @@ void GameController::set_state(string game_state_file) {
     data.close();
 }
 
+void GameController::add_player(Player* player) {
+    players.push_back(player);
+}
+
+Player* GameController::next_player_turn(Player* player) {
+    vector<Player*>::iterator iter;
+    for(iter = players.begin(); iter != players.end(); iter++) {
+        if(*iter == player) {
+            break;
+        }
+    }
+    if(iter + 1 != players.end()) {
+        return *(iter + 1);
+    }
+    return *(players.begin());
+}
+
+void GameController::increase_total_turn() {
+    total_turn += 1;
+}
