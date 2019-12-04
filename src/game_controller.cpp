@@ -110,3 +110,11 @@ Player* GameController::next_player_turn(Player* player) {
 void GameController::increase_total_turn() {
     total_turn += 1;
 }
+
+State *GameController::get_state_by_id(StateId id) {
+    for(int i = 0; i < states.size(); i++) {
+        if(states[i]->get_state_id() == id)
+            return states[i];
+    }
+    return NULL;
+}

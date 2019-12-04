@@ -42,6 +42,10 @@ public:
     int chk_total_win();
     void increase_total_turn();
 
+    State *get_state_by_id(StateId id);
+
+    
+
 private:
     // void game_data_file_read();
 };
