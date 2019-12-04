@@ -21,12 +21,20 @@ int State::get_agriculture_degree() {
     return agriculture_degree;
 }
 
+int State::set_agriculture_degree(int degree) {
+    agriculture_degree = degree;
+}
+
 void State::set_state_owner(User &owner) {
     this->state_owner = &owner;
 }
 
 void State::set_near_state(StateId state_id) {
     near_states.push_back(state_id);
+}
+
+std::vector<StateId>& State::get_near_state() {
+    return near_states;
 }
 
 void State::agriculture(GameUnit &selected_unit) {
@@ -52,6 +60,14 @@ void State::train_soldier(GameUnit &selected_unit) {
     soldier_capacity += selected_unit.get_leadearship() * 0.3;
 }
 
+void State::set_soldier_degree(int degree) {
+    soldier_degree = degree;
+}
+
+int State::get_soldier_degree() {
+    return soldier_degree;
+}
+
 void State::search_unit(GameUnit &selected_unit) {
     assert(selected_unit.get_can_move());
     srand((unsigned int)time(0));
@@ -67,12 +83,20 @@ void State::search_unit(GameUnit &selected_unit) {
 
 void State::hire_unit(GameUnit &hirng_unit, GameUnit &hired_unit) {
     assert(hired_unit.get_can_move());
+    srand((unsigned int)(time(0)));
+    double attraction = hired_unit.get_attraction();
+    attraction = (attraction > 50) ? attraction * 1.005 : attraction * 0.999;
 
     hired_unit.set_can_move(false);
+
+    if ((rand() % 100) < 50 + attraction)
+        return;
     hirng_unit.set_status(hired);
 }
 
 void State::move_unit(GameUnit &selected_unit, StateId moved_state_id) {
+    GameUnit unit = selected_unit;
+
     for(int i = 0; i < unit_list.size(); i++) {
         if (unit_list[i] == selected_unit) {
             unit_list.erase(unit_list.begin() + i);
@@ -82,7 +106,7 @@ void State::move_unit(GameUnit &selected_unit, StateId moved_state_id) {
     // unit_list.erase(find(unit_list.begin(), unit_list.end(), selected_unit));
 
     State &state = state_owner->find_own_state(moved_state_id);
-    state.unit_list.push_back(selected_unit);
+    state.unit_list.push_back(unit);
 }
 
 void State::war(GameUnit &selected_unit, int soldier, State &enamy_state, GameUnit &enamy_unit) {
@@ -121,4 +145,33 @@ bool State::check_win(GameUnit &selected_unit, int num_friendly_soldier, State &
             + (enamy_unit.get_strength() + enamy_unit.get_leadearship() + enamy_unit.get_wisdom()) / 3;
 
     return friendly_power >= enamy_power;
+}
+
+
+bool State::is_hired(GameUnit &selected_unit) {
+    for(int i = 0; i < unit_list.size(); i++)
+        if(unit_list[i] == selected_unit)
+            return true;
+
+    return false;
+} 
+
+   
+std::vector<GameUnit>& State::get_unit_list() {
+    return unit_list;
+}
+
+void State::set_unit_status(GameUnit &unit, UnitStatus status) {
+    for(int i = 0; i < unit_list.size(); i++) {
+        if(unit == unit_list[i]) {
+            unit_list[i].set_status(status);
+            return;
+        }
+    }
+
+    assert(true);
+}
+
+int State::get_state_soilder() {
+    return state_soldier;
 }

@@ -3,18 +3,16 @@
 
 #include "user.h"
 
-typedef enum {HRM, Politic, MSoldier, War, FindUnit, GetUnit, MoveUnit} Command;
-
+typedef enum {Politic, GetSoldier, TrainSolider, War, Defend, FindUnit, GetUnit, MoveUnit} Command;
 class Player : public User {
 public:
     Player(std::string user_id);
     // 현 영지에서
-    // 1: 인사, 2: 내정, 3: 병사, 4: 전쟁
-    void command(int command_num, GameUnit selected_unit);
-    void command(int command_num, GameUnit selected_unit, int need_num);
-    void command_hire(GameUnit hiring_unit, GameUnit hired_unit);
-    void command_war(GameUnit selected_unit, int soldier, State attack_state);
-
+    void command(Command command_num, GameUnit &selected_unit);
+    void command(Command command_num, GameUnit &selected_unit, GameUnit &unhired_unit);
+    void command(Command command_num, GameUnit &selected_unit, int num);
+    void command(Command command_num, GameUnit &selected_unit, StateId state_id);
+    void command(Command command_num, GameUnit &selected_unit, State &enamy_state, GameUnit &enamy_unit, int enamy_soldier);
 };
 
 #endif

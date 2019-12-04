@@ -4,9 +4,9 @@
 #include "user.h"
 
 class GameAI : public User {
-
 public:
-    void AI_algo();
+    GameAI(std::string user_id);
+    void AI_algo(int total_turn);
     void defence_state();
     void attack_state();
     

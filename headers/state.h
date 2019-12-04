@@ -41,11 +41,13 @@ public:
     StateId get_state_id();
     std::string get_state_name();
     int get_agriculture_degree();
+    int set_agriculture_degree(int degree);
 
     // 해당 State의 주인인 유저를 설정
     void set_state_owner(User &owner);
     // 해당 State 주변의 State를 설정
     void set_near_state(StateId state_id);
+    std::vector<StateId>& get_near_state();
 
     void agriculture(GameUnit &selected_unit);
 
@@ -54,6 +56,8 @@ public:
     // ------------------------------------------------------------------------
     void recurit_soldier(GameUnit &selected_unit, int soldier);          // 모집
     void train_soldier(GameUnit &selected_unit);                         // 훈련
+    void set_soldier_degree(int degree);
+    int get_soldier_degree();
 
     // 인사 --------------------------------------------------------------------
     // 인사는 기본적으로 탐색, 등용, 이동으로 이루어짐
@@ -74,6 +78,11 @@ public:
     void war(GameUnit &selected_unit, int soldier, State &enamy_state, GameUnit &enamy_unit);  // 침략
     void defense(GameUnit &selected_unit, State &enamy_state, GameUnit &enamy_unit, int enamy_soldier);        // 방어
 
+    bool is_hired(GameUnit &selected_unit); 
+    int get_state_soilder();
+
+    std::vector<GameUnit>& get_unit_list();
+    void set_unit_status(GameUnit &unit, UnitStatus status);
     // void lose_the_war();
 
 private:
