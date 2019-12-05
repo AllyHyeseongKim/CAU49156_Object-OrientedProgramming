@@ -21,7 +21,7 @@ int State::get_agriculture_degree() {
     return agriculture_degree;
 }
 
-int State::set_agriculture_degree(int degree) {
+void State::set_agriculture_degree(int degree) {
     agriculture_degree = degree;
 }
 

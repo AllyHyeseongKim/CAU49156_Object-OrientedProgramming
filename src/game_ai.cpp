@@ -39,23 +39,25 @@ void GameAI::AI_algo(int total_turn) {
 
 StateId GameAI::attack_state(State &enamy_state, GameUnit &enamy_unit) {
     GameUnit *unit;
+    StateId attacked_state_id;
     for(int i = 0; i < own_states.size(); i++) {
         std::vector<GameUnit> &list = own_states[i]->get_unit_list();
         std::vector<StateId> &near_state = own_states[i]->get_near_state();
 
         for(int j = 0; j < list.size(); i++) {
             if(list[j].get_status() == hired || list[j].get_status() == munonarch) {
-                unit = &unit[j];
+                unit = &list[j]; // unit = &unit[j]; 수정
                 break;
             }
         }
         for(StateId &id: near_state) {
             if(!chk_own_state(id)) {
                 own_states[i]->war(*unit, own_states[i]->get_state_soilder(), enamy_state, enamy_unit);
-                return id;
+                attacked_state_id = id;
             }
         }
     }
+    return attacked_state_id;
 }
 
 

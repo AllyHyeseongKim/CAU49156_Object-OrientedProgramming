@@ -41,7 +41,7 @@ public:
     StateId get_state_id();
     std::string get_state_name();
     int get_agriculture_degree();
-    int set_agriculture_degree(int degree);
+    void set_agriculture_degree(int degree);
 
     // 해당 State의 주인인 유저를 설정
     void set_state_owner(User &owner);

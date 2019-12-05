@@ -13,6 +13,7 @@
                 // "${file}", ${fileDirname}
                 "-std=c++11",
                 "main.cpp",
+                "src/game_ai.cpp",
                 "src/game_controller.cpp",
                 "src/game_unit.cpp",
                 "src/player.cpp",

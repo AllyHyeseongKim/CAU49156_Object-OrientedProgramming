@@ -12,15 +12,17 @@ void Player::command(Command command_num, GameUnit &selected_unit) {
             break;
 
     switch (command_num) {
-    case FindUnit:
-        (*state)->search_unit(selected_unit);
-        break;
-    case Politic:
-        (*state)->agriculture(selected_unit);
-        break;;
-    case TrainSolider:
-        (*state)->train_soldier(selected_unit);
-        break;
+        case FindUnit:
+            (*state)->search_unit(selected_unit);
+            break;
+        case Politic:
+            (*state)->agriculture(selected_unit);
+            break;;
+        case TrainSolider:
+            (*state)->train_soldier(selected_unit);
+            break;
+        default:
+            break;
     }
 }
 
@@ -32,9 +34,11 @@ void Player::command(Command command_num, GameUnit &selected_unit, GameUnit &unh
 
     switch (command_num)
     {
-    case GetUnit:
-        (*state)->hire_unit(unhired_unit, selected_unit);
-        break;
+        case GetUnit:
+            (*state)->hire_unit(unhired_unit, selected_unit);
+            break;
+        default:
+            break;
     }
 }
 
@@ -45,23 +49,27 @@ void Player::command(Command command_num, GameUnit &selected_unit, int num) {
             break;
 
     switch (command_num) {
-    case GetSoldier:
-        (*state)->recurit_soldier(selected_unit, num);
-        break;
+        case GetSoldier:
+            (*state)->recurit_soldier(selected_unit, num);
+            break;
+        default:
+            break;
     }
 }
 
 
 void Player::command(Command command_num, GameUnit &selected_unit, StateId state_id) {
     std::vector<State*>::iterator state;
-    for(state = own_states.begin(); state != own_states.end(); state++)
-        if((*state)->is_hired(selected_unit))
-            break;
+    for(state = own_states.begin(); state != own_states.end(); state++) {
+        if((*state)->is_hired(selected_unit)) break;
+    }
 
     switch (command_num) {
-    case MoveUnit:
-        (*state)->move_unit(selected_unit, state_id);
-        break;
+        case MoveUnit:
+            (*state)->move_unit(selected_unit, state_id);
+            break;
+        default:
+            break;
     }
 }
 
@@ -73,8 +81,10 @@ void Player::command(Command command_num, GameUnit &selected_unit, State &enamy_
 
     switch (command_num) {
         case Defend:
-        (*state)->defense(selected_unit, enamy_state, enamy_unit, enamy_soldier);
-        break;
+            (*state)->defense(selected_unit, enamy_state, enamy_unit, enamy_soldier);
+            break;
+        default:
+            break;
     }
     
 }

@@ -46,22 +46,30 @@ int main(int argc, char *argv[]) {
 
     // player 생성, 선택한 영웅에 맞는 영지 추가
     Player *player = new Player(user_id);
-    Player *ai = new Player("1234");        // GameAI 만들어지면 수정하기
+    GameAI *ai = new GameAI("AI");
     player->add_state(initial_state);
+    
+    // AI 생성, 플레이어가 선택하지 않은 영지 중 자신의 영지를 하나 선택
+    // 데모를 위해 랜덤으로 하지 않음
+    if(initial_state->get_state_id() == Hamgyeongdo) {
+        ai->add_state(game.get_states().at(7));
+    } else {
+        ai->add_state(game.get_states().at(0));
+    }
 
     // players에 player 추가
-    game.add_player(player);
-    game.add_player(ai);
+    game.add_user(player);
+    game.add_user(ai);
 
-    // 시작 플레이어 - 유저부터 시작한다
-    game.set_player_turn(player);
+    // 시작 플레이어 - 사용자(player)부터 시작한다
+    game.set_user_turn(player);
 
     // 게임 시작
     while(1) { // 게임 종료 조건 넣기
 
         // 현재 플레이어 설정
-        Player* current_player = game.get_player_turn();
-        cout << current_player->get_user_id() << "\n";
+        User* current_user = game.get_user_turn();
+        cout << current_user->get_user_id() << "\n";
 
         // 총 턴과 날짜 표시
         cout << "턴 : " << game.get_total_turn() << " , " << "날짜 : " << game.get_date() << "\n";
@@ -71,14 +79,14 @@ int main(int argc, char *argv[]) {
             cout << "즐거운 수확철~ 식량이 증가합니다!\n";
             
             // 각 유저에 대해
-            vector<Player*>::iterator it;
-            for(it = game.get_players().begin(); it != game.get_players().end(); it++) {
+            vector<User*>::iterator it;
+            for(it = game.get_users().begin(); it != game.get_users().end(); it++) {
                 // player가 가지고 있는 모든 영지에 대해
-                vector<State*> player_states = (*it)->get_own_states();
+                vector<State*> user_states = (*it)->get_own_states();
                 vector<State*>::iterator iter;
                 int total_gain = 0;
 
-                for(iter = player_states.begin(); iter != player_states.end(); iter++) {
+                for(iter = user_states.begin(); iter != user_states.end(); iter++) {
                     total_gain += (*iter)->get_agriculture_degree() * 20;
                 }
 
@@ -91,10 +99,10 @@ int main(int argc, char *argv[]) {
         cin >> next;
 
         game.increase_total_turn();;
-        game.set_player_turn(game.next_player_turn(current_player));
+        game.set_user_turn(game.next_user_turn(current_user));
     }
 
-    Player *me = game.get_players().at(0);
+    User *me = game.get_users().at(0);
     // GameAI *ai = game.get_players().at(1);    // 이거는 vector<Player*>에 못들어가잖아 헐
     
     cout << (me->get_total_rice()) << "\n";

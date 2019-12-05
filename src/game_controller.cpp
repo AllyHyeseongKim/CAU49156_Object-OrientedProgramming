@@ -4,8 +4,8 @@ GameController::GameController() {
     this->total_turn = 1;
 }
 
-Player* GameController::get_player_turn() {
-    return player_turn;
+User* GameController::get_user_turn() {
+    return user_turn;
 }
 
 int GameController::get_total_turn() {
@@ -26,16 +26,16 @@ string GameController::get_date() {
     return to_string(yyyy) + "년/" + to_string(mm) + "월";
 }
 
-vector<Player*> GameController::get_players() {
-    return players;
+vector<User*> GameController::get_users() {
+    return users;
 }
 
 vector<State*> GameController::get_states() {
     return states;
 }
 
-void GameController::set_player_turn(Player* player) {
-    this->player_turn = player;
+void GameController::set_user_turn(User* user) {
+    this->user_turn = user;
 }
 
 void GameController::set_states(string game_state_file) {
@@ -90,21 +90,21 @@ void GameController::set_states(string game_state_file) {
     data.close();
 }
 
-void GameController::add_player(Player* player) {
-    players.push_back(player);
+void GameController::add_user(User* user) {
+    users.push_back(user);
 }
 
-Player* GameController::next_player_turn(Player* player) {
-    vector<Player*>::iterator iter;
-    for(iter = players.begin(); iter != players.end(); iter++) {
-        if(*iter == player) {
+User* GameController::next_user_turn(User* user) {
+    vector<User*>::iterator iter;
+    for(iter = users.begin(); iter != users.end(); iter++) {
+        if(*iter == user) {
             break;
         }
     }
-    if(iter + 1 != players.end()) {
+    if(iter + 1 != users.end()) {
         return *(iter + 1);
     }
-    return *(players.begin());
+    return *(users.begin());
 }
 
 void GameController::increase_total_turn() {
