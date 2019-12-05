@@ -30,7 +30,7 @@ std::string User::get_user_id() {
     return user_id;
 }
 
-vector<State*> User::get_own_states() {
+std::vector<State*> User::get_own_states() {
     return own_states;
 }
 

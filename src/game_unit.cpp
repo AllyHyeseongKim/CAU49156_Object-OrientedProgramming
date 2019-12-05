@@ -2,6 +2,8 @@
 
 // constructor
 
+GameUnit::GameUnit() {}
+
 GameUnit::GameUnit(std::string name, int strength, int leadership, int wisdom, int political, int attraction, UnitStatus status) {
     this->name = name;
     this->strength = strength;

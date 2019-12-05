@@ -27,7 +27,7 @@ public:
     void add_state(State* state);
 
     std::string get_user_id();
-    vector<State*> get_own_states();
+    std::vector<State*> get_own_states();
     int get_total_rice();
 
     void set_total_rice(int rice);

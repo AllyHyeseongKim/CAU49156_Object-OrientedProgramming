@@ -10,10 +10,10 @@
 
 class GameController {
     
-    User* user_turn;             // 현재 차례인 유저의 아이디를 저장
+    User* user_turn;                 // 현재 차례인 유저의 아이디를 저장
     int total_turn;                 // 게임 진행 총 턴 횟수, 월 단위
 
-    vector<User*> users;        // 게임에 참여한 유저 목록 - 0: 플레이어, 1: AI_1
+    vector<User*> users;            // 게임에 참여한 유저 목록 - 0: 플레이어, 1: AI
     vector<State*> states;          // 게임의 영지 목록
 
     string game_state_file;
@@ -21,6 +21,7 @@ class GameController {
 public:
     
     GameController();
+    // ~GameController();          // users, states delete 해주기
 
     User* get_user_turn();
     int get_total_turn();
@@ -32,7 +33,7 @@ public:
     // 게임 영지 초기화 - 후에 set_game이 생기면 private으로
     void set_states(string game_state_file);
     // 플레이어 및 AI 추가
-    void add_user(User* player);
+    void add_user(User* user);
 
     // 현재 플레이어를 넣으면 다음 턴 플레이어를 반환, (일대일 뿐만 아니라 여러 명이 플레이하는 경우도 커버)
     User* next_user_turn(User* user);

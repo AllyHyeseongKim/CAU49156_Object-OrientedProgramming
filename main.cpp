@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
         ai->add_state(game.get_states().at(0));
     }
 
-    // players에 player 추가
+    // users에 player와 ai 업캐스팅해서 추가
     game.add_user(player);
     game.add_user(ai);
 
@@ -69,20 +69,28 @@ int main(int argc, char *argv[]) {
 
         // 현재 플레이어 설정
         User* current_user = game.get_user_turn();
-        cout << current_user->get_user_id() << "\n";
+        cout << "현재 턴 : " << current_user->get_user_id() << "\n";
 
         // 총 턴과 날짜 표시
         cout << "턴 : " << game.get_total_turn() << " , " << "날짜 : " << game.get_date() << "\n";
         
-        // 농업도에 비례해서 식량 수확 (모든 플레이어가)
+        // 6월, 9월에 농업도에 비례해서 식량 수확 (모든 플레이어가)
         if(game.get_date().find("6월")!= std::string::npos || game.get_date().find("9월")!= std::string::npos) {
             cout << "즐거운 수확철~ 식량이 증가합니다!\n";
             
             // 각 유저에 대해
             vector<User*>::iterator it;
+
             for(it = game.get_users().begin(); it != game.get_users().end(); it++) {
-                // player가 가지고 있는 모든 영지에 대해
+
+                cout << "유저들 : " << (*it)->get_total_rice() << "\n";
+
                 vector<State*> user_states = (*it)->get_own_states();
+                
+                cout << "테스트 : " << user_states.at(0)->get_state_name() << "\n";
+                
+                cout << "유저들 : " << (*it)->get_total_rice() << "\n";
+
                 vector<State*>::iterator iter;
                 int total_gain = 0;
 
@@ -90,20 +98,134 @@ int main(int argc, char *argv[]) {
                     total_gain += (*iter)->get_agriculture_degree() * 20;
                 }
 
+                cout << (*it)->get_user_id() << "의 획득 식량 " << total_gain << "\n";
+
                 (*it)->increase_total_rice(total_gain);
             }
         }
 
+        // AI 차례가 아닐 때만 실행.
+
+        // ... 아래는 나중에 다 함수로 빼자
+
         // 플레이어 명령
-        string next;
-        cin >> next;
+        Player *player = static_cast<Player*>(game.get_users().at(0));
+
+        string input_state;
+        string input_hero;
+        string command;
+
+        cout << "영지를 선택하십시오.\n";
+        vector<State*> mystate = player->get_own_states();
+        vector<State*>::iterator mystateIter;
+        for(mystateIter = mystate.begin(); mystateIter != mystate.end(); mystateIter++) {
+            cout << (*mystateIter)->get_state_id() << ". "<< (*mystateIter) -> get_state_name() << "\n";
+        }
+        cin >> input_state;
+        
+        cout << "임무를 수행할 영웅을 선택하십시오.\n";
+        State& select_state = player->find_own_state(static_cast<StateId>(atoi(input_state.c_str())));
+        vector<GameUnit> unit_list = select_state.get_unit_list();
+        vector<GameUnit>::iterator unitIter;
+        for(unitIter = unit_list.begin(); unitIter != unit_list.end(); unitIter++) {
+            // 영웅에 대해 '군주'이거나 '등용' 상태이면 보여주기
+            if((*unitIter).get_status() == munonarch || (*unitIter).get_status() == developed) {
+                string status;
+                switch ((*unitIter).get_status())
+                {
+                    case munonarch:
+                        status = "군주";
+                        break;
+                    case developed:
+                        status = "등용";
+                        break;
+                    default:
+                        break;
+                }
+                cout << (*unitIter).get_name() << " : " << status << "\n";
+            }
+        }
+        // 번호로 부를 수 있게 해야하나 - 영웅 아이디가 없어서 번거로움..
+        // 존함을 정자로 입력해주시기 바랍니다!
+        cin >> input_hero;
+
+        GameUnit hero;
+        for(unitIter = unit_list.begin(); unitIter != unit_list.end(); unitIter++) {
+            if(input_hero == (*unitIter).get_name()) {
+                hero = *unitIter;   // 얕은 복사해도 괜찮다
+            }
+        }
+
+        cout << "행동을 선택하십시오.\n";
+        cout << "1. 인사 : 탐색(한번) or 등용(한번) or 이동(무제한) 중 한 행동을 할 수 있습니다.\n";
+        cout << "2. 내정 : 선택된 영웅의 정치에 비례하여 농업도를 향상\n";
+        cout << "3. 병사 : 모집 or 훈련 중 한 행동을 할 수 있습니다.\n";
+        cout << "4. 전쟁 : 인접한 적군의 영지를 선택해 공격\n";
+        cin >> command;
+
+        string detail_command;
+        switch(static_cast<Command>(atoi(command.c_str()))) {
+            case HR: // 인사
+                cout << "다음 중 행동을 하나 선택하세요.\n";
+                cout << "1. 탐색 : 현재 있는 영지의 영웅을 탐색할 수 있는 것으로, 미발견 상태의 인물을 발견하여 재야 상태로 바꾼다.\n";
+                cout << "2. 등용 : 탐색으로 발견되어 '재야' 상태이거나, 전쟁에서 진 상대편의 영웅(재야 상태)를 등용할 수 있는 것으로, 매력의 영향을 받는다.";
+                cout << "3. 이동 : 이동 : 본인이 등용한 장수를 다른 영지로 이동시킬 수 있다.";
+
+                cin >> detail_command;
+                switch(static_cast<Command>(atoi(detail_command.c_str()))) {
+                    case FindUnit: // 탐색
+                        player->command(FindUnit, hero);
+                        break;
+                    case GetUnit: // 등용
+                        // player->command(GetUnit, hero, 등용할 영웅);
+                        break;
+                    case MoveUnit: // 이동
+                        // player->command(MoveUnit, hero, 이동할 영지);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case Politic: // 내정
+                player->command(Politic, hero);
+                break;
+            case Soldier: // 병사
+                cout << "다음 중 행동을 하나 선택하세요.\n";
+                cout << "1. 모집 : 영웅의 무력에 영향을 받으며 병사를 모집한다.\n";
+                cout << "2. 훈련 : 영웅의 통솔에 영향을 받으며 병사를 훈련한다.\n";
+                
+                cin >> detail_command;
+                switch(static_cast<Command>(atoi(detail_command.c_str()))) {
+                    case GetSoldier:
+                        //player->command(GetSoldier, hero, 모집할 병사의 수);
+                        break;
+                    case TrainSolider:
+                        player->command(TrainSolider, hero);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case War: // 전쟁
+                //
+                break;
+            default:
+                break;
+        }
+
+        // cout << "영웅의 행동력이 소모됩니다.";
+        
+        GameAI *ai = static_cast<GameAI*>(game.get_users().at(1));
+
+        cout << player->get_user_id() << "의 곡식 : " << player->get_total_rice() << ", " 
+        << ai->get_user_id() << "의 곡식 : " << ai->get_total_rice() << "\n";
+        
 
         game.increase_total_turn();;
         game.set_user_turn(game.next_user_turn(current_user));
     }
 
     User *me = game.get_users().at(0);
-    // GameAI *ai = game.get_players().at(1);    // 이거는 vector<Player*>에 못들어가잖아 헐
     
     cout << (me->get_total_rice()) << "\n";
     cout << (me->get_user_id()) << "\n";

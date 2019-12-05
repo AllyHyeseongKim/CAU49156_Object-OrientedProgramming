@@ -20,6 +20,7 @@ class GameUnit {
 public:
 
     // constructor
+    GameUnit();
     GameUnit(std::string name, int strength, int leadership, int wisdom, int political, int attraction, UnitStatus status);
 
     // getter
