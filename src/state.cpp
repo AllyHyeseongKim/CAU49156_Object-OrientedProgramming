@@ -101,7 +101,10 @@ void State::hire_unit(GameUnit &hirng_unit, GameUnit &hired_unit) {
 
     hired_unit.set_can_move(false);
 
-    if ((rand() % 100) < 50 + attraction) {
+    int random = (rand() % 2) + 1;
+
+
+    if (random * 50 > 50 + attraction) {
         // cout << "실패!!!!!!!!!!!";
         return;
     }

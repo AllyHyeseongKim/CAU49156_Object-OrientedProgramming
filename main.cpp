@@ -498,6 +498,7 @@ int main(int argc, char *argv[]) {
                 // player 전쟁 정보 확인
                 if(aggress_state_id) {
                     GameUnit *ai_unit;
+                    aggress_hero->set_can_move(false);
 
                     if(ai->chk_own_state(aggress_state_id)) {
                         ai_unit = ai->defence_state(*current_state, *game.get_state_by_id(aggress_state_id), *aggress_hero, aggress_num_solider);
@@ -505,7 +506,7 @@ int main(int argc, char *argv[]) {
                         if(result)
                             cout << "공격에 성공했습니다.\n";
                         else
-                            cout << "공격에 실해했습니다.\n";
+                            cout << "공격에 실패했습니다.\n";
                     }
                     else {
                         State *state = game.get_state_by_id(aggress_state_id);
