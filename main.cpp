@@ -132,7 +132,7 @@ int main(int argc, char *argv[]) {
 
             ai->AI_algo(game.get_total_turn()/2);
 
-            game.increase_total_turn();;
+            game.increase_total_turn();
             game.set_user_turn(game.next_user_turn(current_user));
             continue;
         }
