@@ -31,6 +31,10 @@ void State::set_state_owner(User *owner) {
     this->state_owner = owner;
 }
 
+User *State::get_state_owner() {
+    return state_owner;
+}
+
 void State::set_near_state(StateId state_id) {
     near_states.push_back(state_id);
 }
@@ -95,9 +99,12 @@ void State::hire_unit(GameUnit &hirng_unit, GameUnit &hired_unit) {
 
     hired_unit.set_can_move(false);
 
-    if ((rand() % 100) < 50 + attraction)
+    if ((rand() % 100) < 50 + attraction) {
+        // cout << "실패!!!!!!!!!!!";
         return;
+    }
     hirng_unit.set_status(hired);
+    // cout << "성공!!!!!!!!";
 
     // unit_list에 추가하기
 }
@@ -165,7 +172,8 @@ bool State::check_win(GameUnit &selected_unit, int num_friendly_soldier, State &
 bool State::is_hired(GameUnit &selected_unit) {
     for(int i = 0; i < unit_list.size(); i++)
         if(unit_list[i] == selected_unit)
-            return true;
+            if(unit_list[i].get_status() == hired || unit_list[i].get_status() == munonarch)
+                return true;
 
     return false;
 } 

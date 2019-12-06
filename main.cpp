@@ -340,9 +340,9 @@ int main(int argc, char *argv[]) {
                         player->command(GetUnit, *hero, *developed_unit[selected_unit_index - 1]); 
 
                         if(current_state->is_hired(*developed_unit[selected_unit_index - 1]))
-                            cout << "등용되었습니다. " << endl;
+                            cout << developed_unit[selected_unit_index - 1]->get_name() <<  "이 등용되었습니다. " << endl;
                         else
-                            cout << "등용에 실패하셨습니다. " << endl;                 
+                            cout << developed_unit[selected_unit_index - 1]->get_name() <<  "을 등용에 실패하셨습니다. " << endl;
     
                         break;
                     }
@@ -485,6 +485,8 @@ int main(int argc, char *argv[]) {
 
         game.increase_total_turn();
         game.set_user_turn(game.next_user_turn(current_user));
+
+        
     }
 
     User *me = game.get_users().at(0);

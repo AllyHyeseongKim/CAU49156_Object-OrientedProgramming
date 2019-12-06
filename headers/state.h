@@ -46,6 +46,7 @@ public:
 
     // 해당 State의 주인인 유저를 설정
     void set_state_owner(User *owner);
+    User* get_state_owner();
     // 해당 State 주변의 State를 설정
     void set_near_state(StateId state_id);
     std::vector<StateId>& get_near_state();
