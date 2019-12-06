@@ -117,7 +117,7 @@ void State::move_unit(GameUnit &selected_unit, StateId moved_state_id) {
     state.unit_list.push_back(unit);
 }
 
-void State::war(GameUnit &selected_unit, int soldier, State &enamy_state, GameUnit &enamy_unit) {
+bool State::war(GameUnit &selected_unit, int soldier, State &enamy_state, GameUnit &enamy_unit) {
     assert(selected_unit.get_can_move());
     assert(state_soldier >= soldier);
     srand((unsigned int)time(0));
@@ -128,15 +128,18 @@ void State::war(GameUnit &selected_unit, int soldier, State &enamy_state, GameUn
         state_soldier = state_soldier - soldier * 0.1;
         enamy_state.state_owner = state_owner;
         state_owner->add_state(&enamy_state);
+        return true;
     }
     else {
         state_soldier = state_soldier - soldier * 0.5;
+        return false;
     }
 }
 
-void State::defense(GameUnit &selected_unit, State &enamy_state, GameUnit &enamy_unit, int enamy_soldier) {
+bool State::defense(GameUnit &selected_unit, State &enamy_state, GameUnit &enamy_unit, int enamy_soldier) {
     if (check_win(selected_unit, state_soldier, enamy_state, enamy_unit, enamy_soldier)) {
         state_soldier = state_soldier * 0.9;
+        return true;
     }
     else {
         state_soldier = 0;
@@ -144,6 +147,7 @@ void State::defense(GameUnit &selected_unit, State &enamy_state, GameUnit &enamy
             if (unit.get_status() == hired)
                 unit.set_status(developed);
         state_owner->erase_state(this);
+        return false;
     }
 }
 

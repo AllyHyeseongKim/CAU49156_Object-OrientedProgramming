@@ -202,7 +202,11 @@ int main(int argc, char *argv[]) {
                 
                 //참전하는 인공지능 유닛과 병력
                 pair<GameUnit*, int> ai_unit = ai->attack_state(*ai_war_states, *attacked_state, *war_hero);
-                attacked_state->defense(*war_hero, *ai_war_states, *ai_unit.first, ai_unit.second);
+                bool result = attacked_state->defense(*war_hero, *ai_war_states, *ai_unit.first, ai_unit.second);
+                if(result)
+                    cout << "방어에 성공했습니다.\n";
+                else
+                    cout << "방어에 실패했습니다.\n";
             }
             ai_aggress_state_id = (StateId)0;
         }
@@ -333,7 +337,12 @@ int main(int argc, char *argv[]) {
                         }
                         cin >> selected_unit_index;
                         unit_index = 1;
-                        player->command(GetUnit, *hero, *developed_unit[selected_unit_index - 1]);                    
+                        player->command(GetUnit, *hero, *developed_unit[selected_unit_index - 1]); 
+
+                        if(current_state->is_hired(*developed_unit[selected_unit_index - 1]))
+                            cout << "등용되었습니다. " << endl;
+                        else
+                            cout << "등용에 실패하셨습니다. " << endl;                 
     
                         break;
                     }
@@ -396,10 +405,13 @@ int main(int argc, char *argv[]) {
             case War: {// 전쟁
                 std::vector<StateId> state_id_list = current_state->get_near_state();
                 std::vector<State*> state_list = game.get_states();
+                vector<GameUnit*> developed_unit;
                 
                 int selected_state;
                 int state_index = 1;
                 bool flag = false;
+                int unit_index = 1;
+                int selected_unit_index;
                 
                 for(int i = 0; i < state_id_list.size(); i++) {
                     if (!player->chk_own_state(state_id_list[i])){
@@ -409,6 +421,28 @@ int main(int argc, char *argv[]) {
                 }
 
                 cin >> selected_state;
+
+                aggress_num_solider = 0;
+                while(aggress_num_solider > current_state->get_state_soilder()) {
+                    cout << "병사의 수를 입력하세요. 최대 유닛: " << current_state->get_state_soilder() << endl;
+                    cin >> aggress_num_solider;
+                }
+
+                cout << "전쟁에 내보낼 영웅을 고르시오\n";
+                            
+                for(int i = 0; i < unit_list.size(); i++){
+                    if(unit_list[i].get_status() == hired || unit_list[i].get_status() == munonarch){
+                        cout << unit_index <<':' << unit_list[i].get_name() <<
+                        " 무력: " << unit_list[i].get_strength() << " 통솔: " << unit_list[i].get_leadearship() <<
+                        " 지력: " << unit_list[i].get_wisdom() << "정치: " << unit_list[i].get_political() << 
+                        " 매력: " << unit_list[i].get_attraction() <<  endl;
+                        developed_unit.push_back(&unit_list[i]);
+                        unit_index++;
+                    }
+                }
+                cin >> selected_unit_index;
+        
+                aggress_hero = developed_unit[selected_unit_index - 1];
 
                 state_index = 1;
                 for(int i = 0; i < state_id_list.size(); i++) {
@@ -435,12 +469,17 @@ int main(int argc, char *argv[]) {
 
             if(ai->chk_own_state(aggress_state_id)) {
                 ai_unit = ai->defence_state(*current_state, *game.get_state_by_id(aggress_state_id), *aggress_hero, aggress_num_solider);
-                current_state->war(*aggress_hero, aggress_num_solider, *game.get_state_by_id(aggress_state_id), *ai_unit);
+                bool result = current_state->war(*aggress_hero, aggress_num_solider, *game.get_state_by_id(aggress_state_id), *ai_unit);
+                if(result)
+                    cout << "공격에 성공했습니다.\n";
+                else
+                    cout << "공격에 실해했습니다.\n";
             }
             else {
                 State *state = game.get_state_by_id(aggress_state_id);
                 player->add_state(state);
                 state->set_state_owner(player);
+                cout << "공격에 성공했습니다.\n";
             }
         }
 

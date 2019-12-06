@@ -78,8 +78,8 @@ public:
     // 영지를 전부 점령하면 승리
     // 인접한 영지만 공격 가능하다
     // ------------------------------------------------------------------------
-    void war(GameUnit &selected_unit, int soldier, State &enamy_state, GameUnit &enamy_unit);  // 침략
-    void defense(GameUnit &selected_unit, State &enamy_state, GameUnit &enamy_unit, int enamy_soldier);        // 방어
+    bool war(GameUnit &selected_unit, int soldier, State &enamy_state, GameUnit &enamy_unit);  // 침략
+    bool defense(GameUnit &selected_unit, State &enamy_state, GameUnit &enamy_unit, int enamy_soldier);        // 방어
 
     bool is_hired(GameUnit &selected_unit); 
     int get_state_soilder();
