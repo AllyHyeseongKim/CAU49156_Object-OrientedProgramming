@@ -223,110 +223,247 @@ int main(int argc, char *argv[]) {
         string command;
 
         State* current_state;
-        while(1) {
-            cout << "영지를 선택하십시오.\n";
-            vector<State*> mystate = player->get_own_states();
-            vector<State*>::iterator mystateIter;
-            // state_id 순서대로 출력되게 해야하나
-            for(mystateIter = mystate.begin(); mystateIter != mystate.end(); mystateIter++) {
-                cout << (*mystateIter)->get_state_id() << ". "<< (*mystateIter) -> get_state_name() << "\n";
-            }
-            cin >> input_state;
+        bool turn_continue = true;
 
-            State& select_state = player->find_own_state(static_cast<StateId>(atoi(input_state.c_str())));
-            current_state = &select_state;
-
-            cout << "현 도시 농업도 : " << select_state.get_agriculture_degree() << "\n";
-            cout << "현 도시 병사들의 훈련도 : " << select_state.get_soldier_degree() << "\n";
-            cout << "현 도시 병사수 : " << select_state.get_state_soilder() << "\n";
-
-            cout << "현 영지에서 명령을 하시겠습니까? y/n\n";
-            string input;
-            cin >> input;
-            if(input == "y") break;
-        }
-        
-        cout << "임무를 수행할 영웅을 선택하십시오.\n";
-        
-        vector<GameUnit> &unit_list = current_state->get_unit_list();
-        vector<GameUnit>::iterator unitIter;
-        for(unitIter = unit_list.begin(); unitIter != unit_list.end(); unitIter++) {
-            // 영웅에 대해 '군주'이거나 '등용' 상태이면 보여주기
-            if(((*unitIter).get_status() == munonarch || (*unitIter).get_status() == hired) && (*unitIter).get_can_move()) {
-                string status;
-                switch ((*unitIter).get_status())
-                {
-                    case munonarch:
-                        status = "군주";
-                        break;
-                    case hired:
-                        status = "등용";
-                        break;
-                    default:
-                        break;
+        while(turn_continue) {
+            while(1) {
+                cout << "영지를 선택하십시오. 명령을 끝내려면 q를 입력하세요.\n";
+                vector<State*> mystate = player->get_own_states();
+                vector<State*>::iterator mystateIter;
+                // state_id 순서대로 출력되게 해야하나
+                for(mystateIter = mystate.begin(); mystateIter != mystate.end(); mystateIter++) {
+                    cout << (*mystateIter)->get_state_id() << ". "<< (*mystateIter) -> get_state_name() << "\n";
                 }
-                cout << (*unitIter).get_name() << " : " << status << "\n";
-            }
-        }
-        // 번호로 부를 수 있게 해야하나 - 영웅 아이디가 없어서 번거로움..
-        // 존함을 정자로 입력해주시기 바랍니다!
-        cout << "이름 : ";
-        cin >> input_hero;
+                cin >> input_state;
 
-        GameUnit *hero;
-        for(unitIter = unit_list.begin(); unitIter != unit_list.end(); unitIter++) {
-            if(input_hero == (*unitIter).get_name()) {
-                hero = &(*unitIter);   
-            }
-        }
+                if (input_state == "q"){
+                    turn_continue = false;
+                    break;
+                }
 
-        // 이전에 영웅의 행동력을 확인?
 
-        cout << "행동을 선택하십시오.\n";
-        cout << "1. 인사 : 탐색(한번) or 등용(한번) or 이동(무제한) 중 한 행동을 할 수 있습니다.\n";
-        cout << "2. 내정 : 선택된 영웅의 정치에 비례하여 농업도를 향상\n";
-        cout << "3. 병사 : 모집 or 훈련 중 한 행동을 할 수 있습니다.\n";
-        cout << "4. 전쟁 : 인접한 적군의 영지를 선택해 공격\n";
-        cin >> command;
+                State& select_state = player->find_own_state(static_cast<StateId>(atoi(input_state.c_str())));
+                current_state = &select_state;
 
-        string detail_command;
+                cout << "현 도시 농업도 : " << select_state.get_agriculture_degree() << "\n";
+                cout << "현 도시 병사들의 훈련도 : " << select_state.get_soldier_degree() << "\n";
+                cout << "현 도시 병사수 : " << select_state.get_state_soilder() << "\n";
 
-        switch(static_cast<Command>(atoi(command.c_str()))) {
-            case HR: // 인사
-                cout << "다음 중 행동을 하나 선택하세요.\n";
-                cout << "1. 탐색 : 현재 있는 영지의 영웅을 탐색할 수 있는 것으로, 미발견 상태의 인물을 발견하여 재야 상태로 바꾼다.\n";
-                cout << "2. 등용 : 탐색으로 발견되어 '재야' 상태이거나, 전쟁에서 진 상대편의 영웅(재야 상태)를 등용할 수 있는 것으로, 매력의 영향을 받는다.\n";
-                cout << "3. 이동 : 본인이 등용한 장수를 다른 영지로 이동시킬 수 있다.\n";
-
-                cin >> detail_command;
+                cout << "현 영지에서 명령을 하시겠습니까? y/n\n";
+                string input;
+                cin >> input;
+                if(input != "y") continue;
                 
-                switch(atoi(detail_command.c_str())) {
-                    case 1: {// 탐색 
-                        player->command(FindUnit, *hero);
+                vector<GameUnit> &unit_list = current_state->get_unit_list();
+                vector<GameUnit>::iterator unitIter;
+                bool flag = false;
+
+                //행동할 수 있는 유닛 확인
+                for(unitIter = unit_list.begin(); unitIter != unit_list.end(); unitIter++){
+                    if(((*unitIter).get_status() == munonarch || (*unitIter).get_status() == hired) && (*unitIter).get_can_move()) {
+                        cout << (*unitIter).get_name() << endl;
+                        flag = true;
                         break;
                     }
-                    case 2: {// 등용
-                        int unit_index = 1;
-                        int selected_unit_index;
-                        int num_develop = 0;
-                        vector<GameUnit*> developed_unit;
-                        cout << unit_list.size() << endl;
+                }
+
+                if(!flag) {
+                    cout << "활동할 수 있는 영웅이 없습니다\n";
+                    continue;
+                }
+                
+                cout << "임무를 수행할 영웅을 선택하십시오. 종료를 하려면 q를 입력하세요.\n";
+                
+                for(unitIter = unit_list.begin(); unitIter != unit_list.end(); unitIter++) {
+                    // 영웅에 대해 '군주'이거나 '등용' 상태이면 보여주기
+                    if(((*unitIter).get_status() == munonarch || (*unitIter).get_status() == hired) && (*unitIter).get_can_move()) {
+                        string status;
+                        switch ((*unitIter).get_status())
+                        {
+                            case munonarch:
+                                status = "군주";
+                                break;
+                            case hired:
+                                status = "등용";
+                                break;
+                            default:
+                                break;
+                        }
+                        cout << (*unitIter).get_name() << " : " << status << "\n";
+                    }
+                }
+                // 번호로 부를 수 있게 해야하나 - 영웅 아이디가 없어서 번거로움..
+                // 존함을 정자로 입력해주시기 바랍니다!
+                cout << "이름 : ";
+                cin >> input_hero;
+
+                if (input_hero == "q")
+                    continue;
+
+                GameUnit *hero;
+                for(unitIter = unit_list.begin(); unitIter != unit_list.end(); unitIter++) {
+                    if(input_hero == (*unitIter).get_name()) {
+                        hero = &(*unitIter);   
+                    }
+                }
+
+                if(!hero->get_can_move()) {
+                    cout << hero->get_name() << "의 행동력이 부족합니다\n";
+                    continue;
+                }
+
+                // 이전에 영웅의 행동력을 확인?
+
+                cout << "행동을 선택하십시오.\n";
+                cout << "1. 인사 : 탐색(한번) or 등용(한번) or 이동(무제한) 중 한 행동을 할 수 있습니다.\n";
+                cout << "2. 내정 : 선택된 영웅의 정치에 비례하여 농업도를 향상\n";
+                cout << "3. 병사 : 모집 or 훈련 중 한 행동을 할 수 있습니다.\n";
+                cout << "4. 전쟁 : 인접한 적군의 영지를 선택해 공격\n";
+                cin >> command;
+
+                string detail_command;
+
+                switch(static_cast<Command>(atoi(command.c_str()))) {
+                    case HR: // 인사
+                        cout << "다음 중 행동을 하나 선택하세요.\n";
+                        cout << "1. 탐색 : 현재 있는 영지의 영웅을 탐색할 수 있는 것으로, 미발견 상태의 인물을 발견하여 재야 상태로 바꾼다.\n";
+                        cout << "2. 등용 : 탐색으로 발견되어 '재야' 상태이거나, 전쟁에서 진 상대편의 영웅(재야 상태)를 등용할 수 있는 것으로, 매력의 영향을 받는다.\n";
+                        cout << "3. 이동 : 본인이 등용한 장수를 다른 영지로 이동시킬 수 있다.\n";
+
+                        cin >> detail_command;
+                        
+                        switch(atoi(detail_command.c_str())) {
+                            case 1: {// 탐색 
+                                player->command(FindUnit, *hero);
+                                break;
+                            }
+                            case 2: {// 등용
+                                int unit_index = 1;
+                                int selected_unit_index;
+                                int num_develop = 0;
+                                vector<GameUnit*> developed_unit;
+                                cout << unit_list.size() << endl;
 
 
-                        for(int i = 0; i < unit_list.size(); i++){
-                            if(unit_list[i].get_status() == developed){
-                                num_develop++;
+                                for(int i = 0; i < unit_list.size(); i++){
+                                    if(unit_list[i].get_status() == developed){
+                                        num_develop++;
+                                    }
+                                }
+                                if (num_develop == 0) {
+                                    cout << "등용할 영웅이 없습니다.\n";
+                                    break;
+                                }
+                                    
+                                cout << "등용할 영웅을 고르시오\n";
+                                    
+                                for(int i = 0; i < unit_list.size(); i++){
+                                    if(unit_list[i].get_status() == developed){
+                                        cout << unit_index <<':' << unit_list[i].get_name() <<
+                                        " 무력: " << unit_list[i].get_strength() << " 통솔: " << unit_list[i].get_leadearship() <<
+                                        " 지력: " << unit_list[i].get_wisdom() << "정치: " << unit_list[i].get_political() << 
+                                        " 매력: " << unit_list[i].get_attraction() <<  endl;
+                                        developed_unit.push_back(&unit_list[i]);
+                                        unit_index++;
+                                    }
+                                }
+                                cin >> selected_unit_index;
+                                unit_index = 1;
+                                player->command(GetUnit, *hero, *developed_unit[selected_unit_index - 1]); 
+
+                                if(current_state->is_hired(*developed_unit[selected_unit_index - 1]))
+                                    cout << developed_unit[selected_unit_index - 1]->get_name() <<  "이 등용되었습니다. " << endl;
+                                else
+                                    cout << developed_unit[selected_unit_index - 1]->get_name() <<  "을 등용에 실패하셨습니다. " << endl;
+            
+                                break;
+                            }
+                            case 3: {// 이동
+                                std::vector<State*> state_list = player->get_own_states();
+                                int selected_index;
+                                StateId selected_state_id;
+                                cout << "\n 옮길 지역을 입력해주세요.\n";
+                                for (int i = 1; i <= state_list.size(); i++) {
+                                    cout << i << ": " << state_list[i]->get_state_name() << endl;
+                                }
+                                
+                                while(true) {
+                                    cin >> selected_index;
+
+                                    for (int i = 1; i <= state_list.size(); i++) {
+                                        if(selected_index == i) {
+                                            selected_state_id = state_list[i]->get_state_id();
+                                        }
+                                    }
+
+                                    if(player->chk_own_state(selected_state_id))
+                                        break;
+                                    cout << "\n 옳바른 지역을 입력해주세요.\n";
+                                } 
+
+                                player->command(MoveUnit, *hero, selected_state_id);
+                                break;
                             }
                         }
-                        if (num_develop == 0) {
-                            cout << "등용할 영웅이 없습니다.\n";
-                            break;
+                        break;
+                    case Politic: // 내정
+                        player->command(Politic, *hero);
+                        break;
+                    case Soldier: // 병사
+                        cout << "다음 중 행동을 하나 선택하세요.\n";
+                        cout << "1. 모집 : 영웅의 무력에 영향을 받으며 병사를 모집한다.\n";
+                        cout << "2. 훈련 : 영웅의 통솔에 영향을 받으며 병사를 훈련한다.\n";
+                        
+                        cin >> detail_command;
+                        switch(atoi(detail_command.c_str())) {
+                            int num_soldier;
+                            case 1:
+                                while (true) {
+                                    cout << "모집할 병사의 수를 입력하세요\n";
+                                    cin >> num_soldier;
+                                    if(num_soldier <= player->get_total_rice())
+                                        break;
+                                    cout << "식량이 부족합니다\n";
+                                }
+                                player->command(GetSoldier, *hero, num_soldier);
+                                break;
+                            case 2:
+                                player->command(TrainSolider, *hero);
+                                break;
+                            default:
+                                break;
                         }
-                            
-                        cout << "등용할 영웅을 고르시오\n";
-                            
+                        break;
+                    case War: {// 전쟁
+                        std::vector<StateId> state_id_list = current_state->get_near_state();
+                        std::vector<State*> state_list = game.get_states();
+                        vector<GameUnit*> developed_unit;
+                        
+                        int selected_state;
+                        int state_index = 1;
+                        bool flag = false;
+                        int unit_index = 1;
+                        int selected_unit_index;
+                        
+                        for(int i = 0; i < state_id_list.size(); i++) {
+                            if (!player->chk_own_state(state_id_list[i])){
+                                cout << state_index << ": " << state_list.at(state_id_list[i] - 1)->get_state_name() << endl;
+                                state_index++;
+                            }
+                        }
+
+                        cin >> selected_state;
+
+                        aggress_num_solider = 0;
+                        while(aggress_num_solider > current_state->get_state_soilder()) {
+                            cout << "병사의 수를 입력하세요. 최대 유닛: " << current_state->get_state_soilder() << endl;
+                            cin >> aggress_num_solider;
+                        }
+
+                        cout << "전쟁에 내보낼 영웅을 고르시오\n";
+                                    
                         for(int i = 0; i < unit_list.size(); i++){
-                            if(unit_list[i].get_status() == developed){
+                            if(unit_list[i].get_status() == hired || unit_list[i].get_status() == munonarch){
                                 cout << unit_index <<':' << unit_list[i].get_name() <<
                                 " 무력: " << unit_list[i].get_strength() << " 통솔: " << unit_list[i].get_leadearship() <<
                                 " 지력: " << unit_list[i].get_wisdom() << "정치: " << unit_list[i].get_political() << 
@@ -336,150 +473,47 @@ int main(int argc, char *argv[]) {
                             }
                         }
                         cin >> selected_unit_index;
-                        unit_index = 1;
-                        player->command(GetUnit, *hero, *developed_unit[selected_unit_index - 1]); 
-
-                        if(current_state->is_hired(*developed_unit[selected_unit_index - 1]))
-                            cout << developed_unit[selected_unit_index - 1]->get_name() <<  "이 등용되었습니다. " << endl;
-                        else
-                            cout << developed_unit[selected_unit_index - 1]->get_name() <<  "을 등용에 실패하셨습니다. " << endl;
-    
-                        break;
-                    }
-                    case 3: {// 이동
-                        std::vector<State*> state_list = player->get_own_states();
-                        int selected_index;
-                        StateId selected_state_id;
-                        cout << "\n 옮길 지역을 입력해주세요.\n";
-                        for (int i = 1; i <= state_list.size(); i++) {
-                            cout << i << ": " << state_list[i]->get_state_name() << endl;
-                        }
-                        
-                        while(true) {
-                            cin >> selected_index;
-
-                            for (int i = 1; i <= state_list.size(); i++) {
-                                if(selected_index == i) {
-                                    selected_state_id = state_list[i]->get_state_id();
-                                }
-                            }
-
-                            if(player->chk_own_state(selected_state_id))
-                                break;
-                            cout << "\n 옳바른 지역을 입력해주세요.\n";
-                        } 
-
-                        player->command(MoveUnit, *hero, selected_state_id);
-                        break;
-                    }
-                }
-                break;
-            case Politic: // 내정
-                player->command(Politic, *hero);
-                break;
-            case Soldier: // 병사
-                cout << "다음 중 행동을 하나 선택하세요.\n";
-                cout << "1. 모집 : 영웅의 무력에 영향을 받으며 병사를 모집한다.\n";
-                cout << "2. 훈련 : 영웅의 통솔에 영향을 받으며 병사를 훈련한다.\n";
                 
-                cin >> detail_command;
-                switch(atoi(detail_command.c_str())) {
-                    int num_soldier;
-                    case 1:
-                        while (true) {
-                            cout << "모집할 병사의 수를 입력하세요\n";
-                            cin >> num_soldier;
-                            if(num_soldier <= player->get_total_rice())
-                                break;
-                            cout << "식량이 부족합니다\n";
+                        aggress_hero = developed_unit[selected_unit_index - 1];
+
+                        state_index = 1;
+                        for(int i = 0; i < state_id_list.size(); i++) {
+                            if (!player->chk_own_state(state_id_list[i])){
+                                if(selected_state == state_index) {
+                                    aggress_state_id = state_id_list[i];
+                                    aggress_hero = hero;
+                                }
+                                state_index++;
+                            }
                         }
-                        player->command(GetSoldier, *hero, num_soldier);
+
                         break;
-                    case 2:
-                        player->command(TrainSolider, *hero);
-                        break;
+                    }
                     default:
                         break;
                 }
-                break;
-            case War: {// 전쟁
-                std::vector<StateId> state_id_list = current_state->get_near_state();
-                std::vector<State*> state_list = game.get_states();
-                vector<GameUnit*> developed_unit;
-                
-                int selected_state;
-                int state_index = 1;
-                bool flag = false;
-                int unit_index = 1;
-                int selected_unit_index;
-                
-                for(int i = 0; i < state_id_list.size(); i++) {
-                    if (!player->chk_own_state(state_id_list[i])){
-                        cout << state_index << ": " << state_list.at(state_id_list[i] - 1)->get_state_name() << endl;
-                        state_index++;
+
+                cout << input_hero << "의 행동력이 소모됩니다.\n\n";
+
+                // player 전쟁 정보 확인
+                if(aggress_state_id) {
+                    GameUnit *ai_unit;
+
+                    if(ai->chk_own_state(aggress_state_id)) {
+                        ai_unit = ai->defence_state(*current_state, *game.get_state_by_id(aggress_state_id), *aggress_hero, aggress_num_solider);
+                        bool result = current_state->war(*aggress_hero, aggress_num_solider, *game.get_state_by_id(aggress_state_id), *ai_unit);
+                        if(result)
+                            cout << "공격에 성공했습니다.\n";
+                        else
+                            cout << "공격에 실해했습니다.\n";
+                    }
+                    else {
+                        State *state = game.get_state_by_id(aggress_state_id);
+                        player->add_state(state);
+                        state->set_state_owner(player);
+                        cout << "공격에 성공했습니다.\n";
                     }
                 }
-
-                cin >> selected_state;
-
-                aggress_num_solider = 0;
-                while(aggress_num_solider > current_state->get_state_soilder()) {
-                    cout << "병사의 수를 입력하세요. 최대 유닛: " << current_state->get_state_soilder() << endl;
-                    cin >> aggress_num_solider;
-                }
-
-                cout << "전쟁에 내보낼 영웅을 고르시오\n";
-                            
-                for(int i = 0; i < unit_list.size(); i++){
-                    if(unit_list[i].get_status() == hired || unit_list[i].get_status() == munonarch){
-                        cout << unit_index <<':' << unit_list[i].get_name() <<
-                        " 무력: " << unit_list[i].get_strength() << " 통솔: " << unit_list[i].get_leadearship() <<
-                        " 지력: " << unit_list[i].get_wisdom() << "정치: " << unit_list[i].get_political() << 
-                        " 매력: " << unit_list[i].get_attraction() <<  endl;
-                        developed_unit.push_back(&unit_list[i]);
-                        unit_index++;
-                    }
-                }
-                cin >> selected_unit_index;
-        
-                aggress_hero = developed_unit[selected_unit_index - 1];
-
-                state_index = 1;
-                for(int i = 0; i < state_id_list.size(); i++) {
-                    if (!player->chk_own_state(state_id_list[i])){
-                        if(selected_state == state_index) {
-                            aggress_state_id = state_id_list[i];
-                            aggress_hero = hero;
-                        }
-                        state_index++;
-                    }
-                }
-
-                break;
-            }
-            default:
-                break;
-        }
-
-        cout << input_hero << "의 행동력이 소모됩니다.\n\n";
-
-        // player 전쟁 정보 확인
-        if(aggress_state_id) {
-            GameUnit *ai_unit;
-
-            if(ai->chk_own_state(aggress_state_id)) {
-                ai_unit = ai->defence_state(*current_state, *game.get_state_by_id(aggress_state_id), *aggress_hero, aggress_num_solider);
-                bool result = current_state->war(*aggress_hero, aggress_num_solider, *game.get_state_by_id(aggress_state_id), *ai_unit);
-                if(result)
-                    cout << "공격에 성공했습니다.\n";
-                else
-                    cout << "공격에 실해했습니다.\n";
-            }
-            else {
-                State *state = game.get_state_by_id(aggress_state_id);
-                player->add_state(state);
-                state->set_state_owner(player);
-                cout << "공격에 성공했습니다.\n";
             }
         }
 
