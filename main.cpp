@@ -100,17 +100,18 @@ int main(int argc, char *argv[]) {
             cout << "즐거운 수확철~ 식량이 증가합니다!\n";
             
             // 각 유저에 대해
-            vector<User*>::iterator it;
+            vector<User*> users = game.get_users();
 
-            for(it = game.get_users().begin(); it != game.get_users().end(); it++) {
 
-                cout << "유저들 : " << (*it)->get_total_rice() << "\n";
+            for(int i = 0; i < users.size(); i++) {
 
-                vector<State*> user_states = (*it)->get_own_states();
+                cout << "유저들 : " << users[i]->get_total_rice() << "\n";
+
+                vector<State*> user_states = users[i]->get_own_states();
                 
                 cout << "테스트 : " << user_states.at(0)->get_state_name() << "\n";
                 
-                cout << "유저들 : " << (*it)->get_total_rice() << "\n";
+                cout << "유저들 : " << users[i]->get_total_rice() << "\n";
 
                 vector<State*>::iterator iter;
                 int total_gain = 0;
@@ -119,9 +120,9 @@ int main(int argc, char *argv[]) {
                     total_gain += (*iter)->get_agriculture_degree() * 20;
                 }
 
-                cout << (*it)->get_user_id() << "의 획득 식량 " << total_gain << "\n";
+                cout << users[i]->get_user_id() << "의 획득 식량 " << total_gain << "\n";
 
-                (*it)->increase_total_rice(total_gain);
+                users[i]->increase_total_rice(total_gain);
             }
         }
 
@@ -303,14 +304,29 @@ int main(int argc, char *argv[]) {
                     case 2: {// 등용
                         int unit_index = 1;
                         int selected_unit_index;
+                        int num_develop = 0;
                         vector<GameUnit*> developed_unit;
+                        cout << unit_list.size() << endl;
+
+
+                        for(int i = 0; i < unit_list.size(); i++){
+                            if(unit_list[i].get_status() == developed){
+                                num_develop++;
+                            }
+                        }
+                        if (num_develop == 0) {
+                            cout << "등용할 영웅이 없습니다.\n";
+                            break;
+                        }
+                            
                         cout << "등용할 영웅을 고르시오\n";
+                            
                         for(int i = 0; i < unit_list.size(); i++){
                             if(unit_list[i].get_status() == developed){
                                 cout << unit_index <<':' << unit_list[i].get_name() <<
-                                "무력: " << unit_list[i].get_strength() << "통솔: " << unit_list[i].get_leadearship() <<
-                                "지력: " << unit_list[i].get_wisdom() << "정치: " << unit_list[i].get_political() << 
-                                "매력: " << unit_list[i].get_attraction() <<  endl;
+                                " 무력: " << unit_list[i].get_strength() << " 통솔: " << unit_list[i].get_leadearship() <<
+                                " 지력: " << unit_list[i].get_wisdom() << "정치: " << unit_list[i].get_political() << 
+                                " 매력: " << unit_list[i].get_attraction() <<  endl;
                                 developed_unit.push_back(&unit_list[i]);
                                 unit_index++;
                             }
