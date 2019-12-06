@@ -333,13 +333,7 @@ int main(int argc, char *argv[]) {
                         }
                         cin >> selected_unit_index;
                         unit_index = 1;
-                        for(int i = 0; i < unit_list.size(); i++){
-                            if(unit_list[i].get_status() == developed && selected_unit_index == unit_index){
-                                player->command(GetUnit, *hero, *developed_unit[selected_unit_index]);
-                                unit_index++;
-                            }
-                        }
-                        
+                        player->command(GetUnit, *hero, *developed_unit[selected_unit_index - 1]);                    
     
                         break;
                     }
@@ -407,7 +401,7 @@ int main(int argc, char *argv[]) {
                 int state_index = 1;
                 bool flag = false;
                 
-                for(int i = 1; i <= state_id_list.size(); i++) {
+                for(int i = 0; i < state_id_list.size(); i++) {
                     if (!player->chk_own_state(state_id_list[i])){
                         cout << state_index << ": " << state_list.at(state_id_list[i] - 1)->get_state_name() << endl;
                         state_index++;
@@ -417,7 +411,7 @@ int main(int argc, char *argv[]) {
                 cin >> selected_state;
 
                 state_index = 1;
-                for(int i = 1; i <= state_id_list.size(); i++) {
+                for(int i = 0; i < state_id_list.size(); i++) {
                     if (!player->chk_own_state(state_id_list[i])){
                         if(selected_state == state_index) {
                             aggress_state_id = state_id_list[i];
