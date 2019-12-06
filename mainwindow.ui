@@ -16,7 +16,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>게임</string>
+   <string>&lt;Total War : KOREA&gt;</string>
   </property>
   <widget class="QWidget" name="buttonGrid" native="true">
    <property name="geometry">
@@ -44,6 +44,9 @@
     <property name="autoFillBackground">
      <bool>false</bool>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
+    </property>
     <property name="text">
      <string>경기도</string>
     </property>
@@ -64,6 +67,9 @@
     </property>
     <property name="autoFillBackground">
      <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
     </property>
     <property name="text">
      <string>충청도</string>
@@ -86,6 +92,9 @@
     <property name="autoFillBackground">
      <bool>false</bool>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
+    </property>
     <property name="text">
      <string>전라도</string>
     </property>
@@ -106,6 +115,9 @@
     </property>
     <property name="autoFillBackground">
      <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
     </property>
     <property name="text">
      <string>경상도</string>
@@ -128,6 +140,9 @@
     <property name="autoFillBackground">
      <bool>false</bool>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
+    </property>
     <property name="text">
      <string>황해도</string>
     </property>
@@ -148,6 +163,9 @@
     </property>
     <property name="autoFillBackground">
      <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
     </property>
     <property name="text">
      <string>강원도</string>
@@ -172,6 +190,9 @@
     </property>
     <property name="autoFillBackground">
      <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
     </property>
     <property name="text">
      <string>함경도</string>
@@ -203,6 +224,9 @@
     <property name="autoFillBackground">
      <bool>false</bool>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
+    </property>
     <property name="text">
      <string>평안도</string>
     </property>
@@ -224,6 +248,9 @@
     <property name="autoFillBackground">
      <bool>false</bool>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
+    </property>
     <property name="text">
      <string>제주도</string>
     </property>
@@ -242,7 +269,7 @@
     <string>imageView</string>
    </property>
   </widget>
-  <widget class="QWidget" name="labelContainer" native="true">
+  <widget class="QWidget" name="container3" native="true">
    <property name="geometry">
     <rect>
      <x>290</x>
@@ -348,7 +375,7 @@
     </property>
    </widget>
   </widget>
-  <widget class="QWidget" name="labelContainer_2" native="true">
+  <widget class="QWidget" name="container2" native="true">
    <property name="geometry">
     <rect>
      <x>260</x>
@@ -374,6 +401,9 @@
       <family>Nanum Gothic</family>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
+    </property>
     <property name="text">
      <string>내정</string>
     </property>
@@ -395,6 +425,9 @@
       <family>Nanum Gothic</family>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
+    </property>
     <property name="text">
      <string>병사</string>
     </property>
@@ -415,6 +448,9 @@
      <font>
       <family>Nanum Gothic</family>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
     </property>
     <property name="text">
      <string>전쟁</string>
@@ -439,6 +475,9 @@
      <font>
       <family>Nanum Gothic</family>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
     </property>
     <property name="text">
      <string>인사</string>
@@ -469,7 +508,7 @@
     </property>
    </widget>
   </widget>
-  <widget class="QWidget" name="labelContainer_3" native="true">
+  <widget class="QWidget" name="container1" native="true">
    <property name="geometry">
     <rect>
      <x>260</x>
@@ -502,13 +541,13 @@
      <string>Todo</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label1_2">
+   <widget class="QLabel" name="label_state">
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>45</y>
+      <y>40</y>
       <width>200</width>
-      <height>16</height>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
@@ -519,13 +558,246 @@
     <property name="text">
      <string>TextLabel</string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+    </property>
    </widget>
   </widget>
+  <widget class="QWidget" name="container4" native="true">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>15</y>
+     <width>311</width>
+     <height>131</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <widget class="QLabel" name="title4">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>10</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>NanumGothic</family>
+      <pointsize>17</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>ID 입력</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="id">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>45</y>
+      <width>211</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <kerning>false</kerning>
+     </font>
+    </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
+    <property name="statusTip">
+     <string notr="true"/>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-bottom: 1.5px solid #888888; background-color:#00000000; border-top: 0;</string>
+    </property>
+    <property name="frame">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_id_confirm">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>80</y>
+      <width>91</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Nanum Gothic</family>
+      <underline>false</underline>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
+    </property>
+    <property name="text">
+     <string>확인</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="container5" native="true">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>15</y>
+     <width>311</width>
+     <height>221</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <widget class="QPushButton" name="btn_hero_2">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>85</y>
+      <width>211</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Nanum Gothic</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
+    </property>
+    <property name="text">
+     <string>견훤 (전라도에서 시작)</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_hero_1">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>45</y>
+      <width>211</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Nanum Gothic</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
+    </property>
+    <property name="text">
+     <string>이성계 (함경도에서 시작)</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="title5">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>10</y>
+      <width>121</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>NanumGothic</family>
+      <pointsize>17</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>영웅 선택</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_hero_3">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>125</y>
+      <width>211</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Nanum Gothic</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
+    </property>
+    <property name="text">
+     <string>문무왕 (경상도에서 시작)</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_hero_4">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>165</y>
+      <width>211</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Nanum Gothic</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
+    </property>
+    <property name="text">
+     <string>고려 광종 (황해도에서 시작)</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+   </widget>
+  </widget>
+  <zorder>container5</zorder>
   <zorder>imageView</zorder>
-  <zorder>labelContainer</zorder>
+  <zorder>container3</zorder>
   <zorder>buttonGrid</zorder>
-  <zorder>labelContainer_2</zorder>
-  <zorder>labelContainer_3</zorder>
+  <zorder>container2</zorder>
+  <zorder>container1</zorder>
+  <zorder>container4</zorder>
  </widget>
  <resources/>
  <connections/>

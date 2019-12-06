@@ -6,25 +6,35 @@
 #include <QGraphicsPixmapItem>
 #include <QLabel>
 #include <QLayout>
+#include <iostream>
+
+GameController game;
+State *initial_state;
+string user_id;
 
 MainWindow::MainWindow(QWidget *parent): QDialog(parent), ui(new Ui::MainWindow){
-    this->ui->setupUi(this);
+    setFilePath();
+    initBoard();
+
+//    gameStart();
+}
+
+void MainWindow::initBoard(){
+    ui->setupUi(this);
 
     QPixmap pic("../map.png");
     if(pic.isNull()){
         pic = QPixmap("/Users/herojeff/WorkSpace/OOPS-Project4/map.png");
     }
     QPixmap scaled=pic.scaled ( 291, 371, Qt::KeepAspectRatio, Qt::FastTransformation );
-    this->ui->imageView->setPixmap(scaled);
-    this->ui->imageView->lower();
+    ui->imageView->setPixmap(scaled);
+    ui->imageView->lower();
 
     QColor black(0,0,0);
     QColor transparentBlack(0,0,0,70);
 
-    QToolButton *mapButtons[] = {this->ui->map1,this->ui->map2,this->ui->map3,this->ui->map4,this->ui->map5,this->ui->map6,this->ui->map7,this->ui->map8,this->ui->map9};
+    QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
     for(int i=0;i<9;i++){
-        mapButtons[i]->setStyleSheet("color: #FFFFFF; border-radius: 10px; background-color: #40000000;");
-
         QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
         effect->setBlurRadius(5);
         effect->setXOffset(0.2);
@@ -33,10 +43,8 @@ MainWindow::MainWindow(QWidget *parent): QDialog(parent), ui(new Ui::MainWindow)
         mapButtons[i]->setGraphicsEffect(effect);
     }
 
-    QPushButton *controlButtons[] = {this->ui->btn1,this->ui->btn2,this->ui->btn3,this->ui->btn4};
+    QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4};
     for(int i=0;i<4;i++){
-        controlButtons[i]->setStyleSheet("border-radius: 5px;background-color: #007aff;color: white;");
-
         QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
         effect->setBlurRadius(20);
         effect->setXOffset(0.2);
@@ -45,59 +53,55 @@ MainWindow::MainWindow(QWidget *parent): QDialog(parent), ui(new Ui::MainWindow)
         controlButtons[i]->setGraphicsEffect(effect);
     }
 
+    ui->id->setAttribute(Qt::WA_MacShowFocusRect,0);
+
     setText1(0);
     setText2(0);
     setText3(0, 0);
     setText4(0);
 
-    gameStart();
+    ui->buttonGrid->hide();
+    ui->container1->hide();
+    ui->container2->hide();
+    ui->container3->hide();
+    ui->container5->hide();
+
+    connect(ui->id,  SIGNAL(returnPressed()),ui->btn_id_confirm,SIGNAL(released()));
+    connect(ui->btn_id_confirm, SIGNAL(released()),this, SLOT(setUserID()));
+    connect(ui->btn_hero_1, SIGNAL(released()),this, SLOT(setHero1()));
+    connect(ui->btn_hero_2, SIGNAL(released()),this, SLOT(setHero2()));
+    connect(ui->btn_hero_3, SIGNAL(released()),this, SLOT(setHero3()));
+    connect(ui->btn_hero_4, SIGNAL(released()),this, SLOT(setHero4()));
+    connect(ui->map1, SIGNAL(released()),this, SLOT(clickMap1()));
+    connect(ui->map2, SIGNAL(released()),this, SLOT(clickMap2()));
+    connect(ui->map3, SIGNAL(released()),this, SLOT(clickMap3()));
+    connect(ui->map4, SIGNAL(released()),this, SLOT(clickMap4()));
+    connect(ui->map5, SIGNAL(released()),this, SLOT(clickMap5()));
+    connect(ui->map6, SIGNAL(released()),this, SLOT(clickMap6()));
+    connect(ui->map7, SIGNAL(released()),this, SLOT(clickMap7()));
+    connect(ui->map8, SIGNAL(released()),this, SLOT(clickMap8()));
+    connect(ui->map9, SIGNAL(released()),this, SLOT(clickMap9()));
+    connect(ui->btn1, SIGNAL(released()),this, SLOT(clickMapActionBtn1()));
+    connect(ui->btn2, SIGNAL(released()),this, SLOT(clickMapActionBtn2()));
+    connect(ui->btn3, SIGNAL(released()),this, SLOT(clickMapActionBtn3()));
+    connect(ui->btn4, SIGNAL(released()),this, SLOT(clickMapActionBtn4()));
+}
+
+bool fileExists (const std::string& name) {
+    ifstream f(name.c_str());
+    return f.good();
+}
+
+void MainWindow::setFilePath(){
+    if(!fileExists("data/game_state_data.txt")){
+        game.set_states("/Users/herojeff/WorkSpace/OOPS-Project4/data/game_state_data.txt");
+    }
+    else{
+        game.set_states("data/game_state_data.txt");    // 나중에 set_user와 합쳐서 set_game으로 발전?
+    }
 }
 
 void MainWindow::gameStart(){
-    GameController game;
-    game.set_states("data/game_state_data.txt");    // 나중에 set_user와 합쳐서 set_game으로 발전?
-
-    string user_id;
-    string hero;
-
-    // 게임 시나리오
-    // 나중에 display.cpp 로 빼든가 알아서~
-
-    cout << "<Total War : KOREA> 게임에 오신 것을 환영합니다!\n";
-    cout << "당신의 ID를 입력해주세요 : ";
-    cin >> user_id;
-    cout << "당신의 세력을 고르십시오.\n";
-    cout << "1. 이성계 (함경도에서 시작)\n";
-    cout << "2. 견훤 (전라도에서 시작)\n";
-    cout << "3. 문무왕 (경상도에서 시작)\n";
-    cout << "4. 고려 광종 (황해도에서 시작)\n";
-    cin >> hero;
-
-    State *initial_state;
-
-    switch(atoi(hero.c_str())) {
-        case 1:
-            cout << "당신은 '이성계'를 선택했습니다! 함경도에서 시작합니다!\n";
-            initial_state = game.get_states().at(0); // 함경도
-            break;
-        case 2:
-            cout << "당신은 '견훤'를 선택했습니다! 전라도에서 시작합니다!\n";
-            initial_state = game.get_states().at(7); // 전라도
-            break;
-        case 3:
-            cout << "당신은 '문무왕'를 선택했습니다! 경상도에서 시작합니다!\n";
-            initial_state = game.get_states().at(6); // 경상도
-            break;
-        case 4:
-            cout << "당신은 '고려 광종'를 선택했습니다! 황해도에서 시작합니다!\n";
-            initial_state = game.get_states().at(3); // 황해도
-            break;
-        default:
-            cout << "에러";
-    }
-    cout << "\n";
-
-    // player 생성, 선택한 영웅에 맞는 영지 추가
     Player *player = new Player(user_id);
     GameAI *ai = new GameAI("AI");
     player->add_state(initial_state);
@@ -587,25 +591,106 @@ void MainWindow::gameStart(){
     return;
 }
 
+void MainWindow::clickMap1(){
+
+}
+void MainWindow::clickMap2(){
+
+}
+void MainWindow::clickMap3(){
+
+}
+void MainWindow::clickMap4(){
+
+}
+void MainWindow::clickMap5(){
+
+}
+void MainWindow::clickMap6(){
+
+}
+void MainWindow::clickMap7(){
+
+}
+void MainWindow::clickMap8(){
+
+}
+void MainWindow::clickMap9(){
+
+}
+void MainWindow::clickMapActionBtn1(){
+
+}
+void MainWindow::clickMapActionBtn2(){
+
+}
+void MainWindow::clickMapActionBtn3(){
+
+}
+void MainWindow::clickMapActionBtn4(){
+
+}
+
+void MainWindow::setStateLabel(QString state){
+    ui->label_state->setText(state);
+}
+void MainWindow::setUserID(){
+    user_id = ui->id->text().toStdString();
+    if(user_id.compare("")){
+        ui->container4->hide();
+        ui->container5->show();
+    }
+}
+void MainWindow::setHero(){
+    ui->container5->hide();
+    ui->container1->show();
+    ui->container2->show();
+    ui->container3->show();
+    ui->buttonGrid->show();
+}
+
+void MainWindow::setHero1(){
+    setStateLabel(QString("이성계를 선택했습니다!\n함경도에서 시작합니다!"));
+    initial_state = game.get_states().at(0);
+    setHero();
+}
+
+void MainWindow::setHero2(){
+    setStateLabel(QString("견훤을 선택했습니다!\n전라도에서 시작합니다!"));
+    initial_state = game.get_states().at(7);
+    setHero();
+}
+void MainWindow::setHero3(){
+    setStateLabel(QString("문무왕을 선택했습니다!\n경상도에서 시작합니다!"));
+    initial_state = game.get_states().at(6);
+    setHero();
+}
+
+void MainWindow::setHero4(){
+    setStateLabel(QString("고려 광종을 선택했습니다!\n황해도에서 시작합니다!"));
+    initial_state = game.get_states().at(3);
+    setHero();
+}
+
 void MainWindow::setText1(int a){
     QString final = "현재 금 : ";
     final = final.append(QString::number(a));
-    this->ui->label1->setText(final);
+    ui->label1->setText(final);
 }
 void MainWindow::setText2(int a){
     QString final = "현재 식량 : ";
     final = final.append(QString::number(a));
-    this->ui->label2->setText(final);
+    ui->label2->setText(final);
 }
 void MainWindow::setText3(int a, int b){
     QString final = "현재 도시 농/상업 : ";
     final = final.append(QString::number(a).append(" / ").append(QString::number(b)));
-    this->ui->label3->setText(final);
+    ui->label3->setText(final);
 }
 void MainWindow::setText4(int a){
     QString final = "현재 도시 병사 수 : ";
     final = final.append(QString::number(a));
-    this->ui->label4->setText(final);
+    ui->label4->setText(final);
 }
 
 MainWindow::~MainWindow()
