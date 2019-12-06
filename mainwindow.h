@@ -17,15 +17,16 @@ public:
 
     void setText1(int a);
     void setText2(int a);
-    void setText3(int a, int b);
-    void setText4(int a);
     void gameStart();
     void initBoard();
     void setHero();
     void setFilePath();
-    void setStateLabel(QString state);
     void gameInit();
-
+    void showAlert(QString n);
+    void showSelection(QString message, QString cancel, QString accept);
+    void showList(std::vector<QString> list);
+    void setText4(int a, int b);
+    void setText3(int a);
 public slots:
     void setUserID();
     void setHero1();
@@ -47,6 +48,11 @@ public slots:
     void clickMapActionBtn4();
     void setText5(QString a);
     void setText6(int a, QString name);
+    void closeAlert();
+    void closeSelectionCancel();
+    void closeSelectionAccept();
+    void closeList();
+    void clickMapActionBtn5();
 private:
     Ui::MainWindow *ui;
 };

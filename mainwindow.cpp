@@ -14,10 +14,52 @@ GameController game;
 Player *player;
 GameAI *ai;
 State *initial_state;
+bool turn_continue;
 
 MainWindow::MainWindow(QWidget *parent): QDialog(parent), ui(new Ui::MainWindow){
     setFilePath();
     initBoard();
+    setFixedSize(590, 440);
+}
+
+void MainWindow::showAlert(QString n){
+    ui->alert_label->setText(n);
+    ui->alertDialog->raise();
+    ui->alertDialog->show();
+}
+void MainWindow::closeAlert(){
+    ui->alertDialog->hide();
+}
+void MainWindow::showSelection(QString message, QString cancel, QString accept){
+    ui->selection_label->setText(message);
+    ui->selection_accept_btn->setText(accept);
+    ui->selection_cancel_btn->setText(cancel);
+    ui->selectionDialog->raise();
+    ui->selectionDialog->show();
+}
+void MainWindow::closeSelectionCancel(){
+    ui->selectionDialog->hide();
+}
+void MainWindow::closeSelectionAccept(){
+    ui->selectionDialog->hide();
+}
+void MainWindow::showList(std::vector<QString> list){
+    QVBoxLayout *layout=new QVBoxLayout();
+    for (QString item : list) {
+        QPushButton *button = new QPushButton();
+        button->setFixedSize(120,32);
+        button->setStyleSheet("border-radius: 5px;background-color: #007aff;color: white;");
+        button->setText(item);
+        connect(button, SIGNAL(released()),this, SLOT(closeList()));
+        layout->addWidget(button);
+    }
+    layout->setAlignment(Qt::AlignCenter);
+    ui->listDialog->setLayout(layout); // Add the layout to widget!
+    ui->listDialog->raise();
+    ui->listDialog->show();
+}
+void MainWindow::closeList(){
+    ui->listDialog->hide();
 }
 
 void MainWindow::gameInit(){
@@ -40,6 +82,8 @@ void MainWindow::gameInit(){
 
     // 시작 플레이어 - 사용자(player)부터 시작한다
     game.set_user_turn(player);
+//    std::vector<QString> selectionStrings = {"a", "b"};
+//    showList(selectionStrings);
 
 //    gameStart();
 }
@@ -71,7 +115,7 @@ void MainWindow::gameStart(){
 
         // 6월, 9월에 농업도에 비례해서 식량 수확 (모든 플레이어가)
         if(game.get_date().find("6월")!= std::string::npos || game.get_date().find("9월")!= std::string::npos) {
-            setStateLabel(QString::fromStdString("즐거운 수확철~\n식량이 증가합니다!"));
+            showAlert(QString::fromStdString("즐거운 수확철~\n식량이 증가합니다!"));
             // 각 유저에 대해
             vector<User*> users = game.get_users();
             for(int i = 0; i < users.size(); i++) {
@@ -84,7 +128,7 @@ void MainWindow::gameStart(){
                 for(iter = user_states.begin(); iter != user_states.end(); iter++) {
                     total_gain += (*iter)->get_agriculture_degree() * 20;
                 }
-                cout << users[i]->get_user_id() << "의 획득 식량 " << total_gain << "\n";
+                showAlert(QString::fromStdString(users[i]->get_user_id()).append(QString::fromStdString(" : ")).append(total_gain).append("식량 획득"));
                 users[i]->increase_total_rice(total_gain);
             }
         }
@@ -136,19 +180,21 @@ void MainWindow::gameStart(){
                 vector<GameUnit> &unit_list = attacked_state->get_unit_list();
                 vector<GameUnit>::iterator unitIter;
 
+                vector<QString> show_list;
 
-                cout << "\n" << attacked_state->get_state_name() << " 이 공격당했습니다. 출전시킬 영웅을 고르시오.\n";
                 for(unitIter = unit_list.begin(); unitIter != unit_list.end(); unitIter++) {
                     if((*unitIter).get_status() == munonarch || (*unitIter).get_status() == hired) {
-                        cout << hero_index << ". " << (*unitIter).get_name() << "\n";
+                        show_list.push_back(QString::fromStdString((*unitIter).get_name()));
                         hero_index++;
                     }
                 }
+//                int selected_index = showList(show_list);
+                showAlert(QString::fromStdString(attacked_state->get_state_name()).append(" 이 공격당했습니다.\n출전시킬 영웅을 고르시오."));
 
                 bool flag = false;
 
                 while(1){
-                    cin >> selectd_hero_index;
+//                    cin >> selectd_hero_index;
                     hero_index = 1;
                     for(unitIter = unit_list.begin(); unitIter != unit_list.end(); unitIter++) {
                         if((*unitIter).get_status() == munonarch || (*unitIter).get_status() == hired) {
@@ -160,23 +206,20 @@ void MainWindow::gameStart(){
                         }
                     }
                     if(flag) break;
-                    cout << "제대로된 영웅을 선택하세요 \n";
                 }
 
                 //참전하는 인공지능 유닛과 병력
                 pair<GameUnit*, int> ai_unit = ai->attack_state(*ai_war_states, *attacked_state, *war_hero);
                 bool result = attacked_state->defense(*war_hero, *ai_war_states, *ai_unit.first, ai_unit.second);
                 if(result)
-                    cout << "방어에 성공했습니다.\n";
+                    showAlert("방어에 성공했습니다.\n");
                 else
-                    cout << "방어에 실패했습니다.\n";
+                    showAlert("방어에 실패했습니다.\n");
             }
             ai_aggress_state_id = (StateId)0;
         }
 
-        cout << "----------------------------\n";
-        cout << "현재 식량 : " << current_user->get_total_rice() << "\n";
-        cout << "----------------------------\n";
+        setText2(current_user->get_total_rice());
 
         // 플레이어 명령
         Player *player = static_cast<Player*>(game.get_users().at(0));
@@ -186,36 +229,27 @@ void MainWindow::gameStart(){
         string command;
 
         State* current_state;
-        bool turn_continue = true;
+        turn_continue = true;
 
         while(turn_continue) {
             while(1) {
                 cout << "영지를 선택하십시오. 명령을 끝내려면 q를 입력하세요.\n";
                 vector<State*> mystate = player->get_own_states();
                 vector<State*>::iterator mystateIter;
+                vector<QString> show_list;
                 // state_id 순서대로 출력되게 해야하나
                 for(mystateIter = mystate.begin(); mystateIter != mystate.end(); mystateIter++) {
-                    cout << (*mystateIter)->get_state_id() << ". "<< (*mystateIter) -> get_state_name() << "\n";
+                    QString final = QString::fromStdString(std::to_string((*mystateIter)->get_state_id())).append(". ");
+                    final = final.append(QString::fromStdString((*mystateIter) -> get_state_name()));
+                    show_list.push_back(final);
                 }
-                cin >> input_state;
-
-                if (input_state == "q"){
-                    turn_continue = false;
-                    break;
-                }
-
+                show_list.push_back("턴 종료");
 
                 State& select_state = player->find_own_state(static_cast<StateId>(atoi(input_state.c_str())));
                 current_state = &select_state;
 
-                cout << "현 도시 농업도 : " << select_state.get_agriculture_degree() << "\n";
-                cout << "현 도시 병사들의 훈련도 : " << select_state.get_soldier_degree() << "\n";
-                cout << "현 도시 병사수 : " << select_state.get_state_soilder() << "\n";
-
-                cout << "현 영지에서 명령을 하시겠습니까? y/n\n";
-                string input;
-                cin >> input;
-                if(input != "y") continue;
+                setText3(select_state.get_agriculture_degree());
+                setText4(select_state.get_state_soilder(), select_state.get_soldier_degree());
 
                 vector<GameUnit> &unit_list = current_state->get_unit_list();
                 vector<GameUnit>::iterator unitIter;
@@ -535,16 +569,19 @@ void MainWindow::initBoard(){
 
     setText1(0);
     setText2(0);
-    setText3(0, 0);
-    setText4(0);
-    setText5("ㅁㅇㄹㅁㄴㅇㄹ");
-    setText6(0, "ㅁㄴㅇㄹ");
+    setText3(0);
+    setText4(0, 0);
+    setText5("");
+    setText6(0, "");
 
     ui->buttonGrid->hide();
-    ui->container1->hide();
     ui->container2->hide();
     ui->container3->hide();
     ui->container5->hide();
+    ui->alertDialog->hide();
+    ui->selectionDialog->hide();
+    ui->listDialog->hide();
+
 
     connect(ui->id,  SIGNAL(returnPressed()),ui->btn_id_confirm,SIGNAL(released()));
     connect(ui->btn_id_confirm, SIGNAL(released()),this, SLOT(setUserID()));
@@ -565,6 +602,11 @@ void MainWindow::initBoard(){
     connect(ui->btn2, SIGNAL(released()),this, SLOT(clickMapActionBtn2()));
     connect(ui->btn3, SIGNAL(released()),this, SLOT(clickMapActionBtn3()));
     connect(ui->btn4, SIGNAL(released()),this, SLOT(clickMapActionBtn4()));
+    connect(ui->btn5, SIGNAL(released()),this, SLOT(clickMapActionBtn5()));
+    connect(ui->alert_btn, SIGNAL(released()),this, SLOT(closeAlert()));
+    connect(ui->selection_cancel_btn, SIGNAL(released()),this, SLOT(closeSelectionCancel()));
+    connect(ui->selection_accept_btn, SIGNAL(released()),this, SLOT(closeSelectionAccept()));
+    connect(ui->selection_accept_btn, SIGNAL(released()),this, SLOT(closeSelectionAccept()));
 }
 
 bool fileExists (const std::string& name) {
@@ -609,7 +651,7 @@ void MainWindow::clickMap9(){
 
 }
 void MainWindow::clickMapActionBtn1(){
-
+    showAlert("Btn1");
 }
 void MainWindow::clickMapActionBtn2(){
 
@@ -620,10 +662,10 @@ void MainWindow::clickMapActionBtn3(){
 void MainWindow::clickMapActionBtn4(){
 
 }
+void MainWindow::clickMapActionBtn5(){
 
-void MainWindow::setStateLabel(QString state){
-    ui->label_state->setText(state);
 }
+
 void MainWindow::setUserID(){
     string user_id;
     user_id = ui->id->text().toStdString();
@@ -635,32 +677,28 @@ void MainWindow::setUserID(){
 }
 void MainWindow::setHero(){
     ui->container5->hide();
-    ui->container1->show();
     ui->container2->show();
     ui->container3->show();
     ui->buttonGrid->show();
     gameInit();
 }
-
 void MainWindow::setHero1(){
-    setStateLabel(QString("이성계를 선택했습니다!\n함경도에서 시작합니다!"));
+    showAlert(QString("이성계를 선택했습니다!\n함경도에서 시작합니다!"));
     initial_state = game.get_states().at(0);
     setHero();
 }
-
 void MainWindow::setHero2(){
-    setStateLabel(QString("견훤을 선택했습니다!\n전라도에서 시작합니다!"));
+    showAlert(QString("견훤을 선택했습니다!\n전라도에서 시작합니다!"));
     initial_state = game.get_states().at(7);
     setHero();
 }
 void MainWindow::setHero3(){
-    setStateLabel(QString("문무왕을 선택했습니다!\n경상도에서 시작합니다!"));
+    showAlert(QString("문무왕을 선택했습니다!\n경상도에서 시작합니다!"));
     initial_state = game.get_states().at(6);
     setHero();
 }
-
 void MainWindow::setHero4(){
-    setStateLabel(QString("고려 광종을 선택했습니다!\n황해도에서 시작합니다!"));
+    showAlert(QString("고려 광종을 선택했습니다!\n황해도에서 시작합니다!"));
     initial_state = game.get_states().at(3);
     setHero();
 }
@@ -675,14 +713,16 @@ void MainWindow::setText2(int a){
     final = final.append(QString::number(a));
     ui->label2->setText(final);
 }
-void MainWindow::setText3(int a, int b){
-    QString final = "현재 도시 농/상업 : ";
-    final = final.append(QString::number(a).append(" / ").append(QString::number(b)));
+void MainWindow::setText3(int a){
+    QString final = "현재 도시 농업 : ";
+    final = final.append(QString::number(a));
     ui->label3->setText(final);
 }
-void MainWindow::setText4(int a){
-    QString final = "현재 도시 병사 수 : ";
+void MainWindow::setText4(int a, int b){
+    QString final = "현재 도시 병사 수 / 훈련도 : ";
     final = final.append(QString::number(a));
+    final = final.append(" / ");
+    final = final.append(QString::number(b));
     ui->label4->setText(final);
 }
 void MainWindow::setText5(QString a){

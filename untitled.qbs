@@ -25,7 +25,7 @@ QtApplication {
         "src/game_unit.cpp",
         "src/player.cpp",
         "src/state.cpp",
-        "src/user.cpp"
+        "src/user.cpp",
     ]
 
     install: true

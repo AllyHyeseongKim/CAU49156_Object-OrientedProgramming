@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>590</width>
-    <height>442</height>
+    <height>440</height>
    </rect>
   </property>
   <property name="font">
@@ -273,7 +273,7 @@
    <property name="geometry">
     <rect>
      <x>290</x>
-     <y>230</y>
+     <y>200</y>
      <width>251</width>
      <height>191</height>
     </rect>
@@ -415,9 +415,9 @@
    <property name="geometry">
     <rect>
      <x>260</x>
-     <y>95</y>
+     <y>15</y>
      <width>311</width>
-     <height>131</height>
+     <height>201</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -543,47 +543,13 @@
      <string>액션</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QWidget" name="container1" native="true">
-   <property name="geometry">
-    <rect>
-     <x>260</x>
-     <y>15</y>
-     <width>311</width>
-     <height>101</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
-   <widget class="QLabel" name="title1">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>10</y>
-      <width>101</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>NanumGothic</family>
-      <pointsize>17</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Todo</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_state">
+   <widget class="QPushButton" name="btn5">
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>40</y>
-      <width>200</width>
-      <height>41</height>
+      <y>125</y>
+      <width>101</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="font">
@@ -591,11 +557,14 @@
       <family>Nanum Gothic</family>
      </font>
     </property>
-    <property name="text">
-     <string>TextLabel</string>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
     </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+    <property name="text">
+     <string>턴 종료</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>
@@ -827,12 +796,179 @@
     </property>
    </widget>
   </widget>
+  <widget class="QWidget" name="alertDialog" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>590</width>
+     <height>440</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #BF000000;</string>
+   </property>
+   <widget class="QPushButton" name="alert_btn">
+    <property name="geometry">
+     <rect>
+      <x>235</x>
+      <y>360</y>
+      <width>120</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Nanum Gothic</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
+    </property>
+    <property name="text">
+     <string>확인</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="alert_label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>140</y>
+      <width>591</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Nanum Gothic</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:#00000000; color:white;</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="selectionDialog" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>590</width>
+     <height>440</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #BF000000;</string>
+   </property>
+   <widget class="QPushButton" name="selection_cancel_btn">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>360</y>
+      <width>120</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Nanum Gothic</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
+    </property>
+    <property name="text">
+     <string>확인</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="selection_label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>140</y>
+      <width>591</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Nanum Gothic</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:#00000000; color:white;</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="selection_accept_btn">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>360</y>
+      <width>120</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Nanum Gothic</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
+    </property>
+    <property name="text">
+     <string>확인</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="listDialog" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>590</width>
+     <height>440</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #BF000000;</string>
+   </property>
+  </widget>
   <zorder>container5</zorder>
+  <zorder>alertDialog</zorder>
+  <zorder>selectionDialog</zorder>
+  <zorder>listDialog</zorder>
   <zorder>imageView</zorder>
   <zorder>container3</zorder>
   <zorder>buttonGrid</zorder>
   <zorder>container2</zorder>
-  <zorder>container1</zorder>
   <zorder>container4</zorder>
  </widget>
  <resources/>
