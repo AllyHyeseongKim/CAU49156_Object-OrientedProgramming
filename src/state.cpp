@@ -27,8 +27,8 @@ void State::set_agriculture_degree(int degree) {
     agriculture_degree = degree;
 }
 
-void State::set_state_owner(User &owner) {
-    this->state_owner = &owner;
+void State::set_state_owner(User *owner) {
+    this->state_owner = owner;
 }
 
 void State::set_near_state(StateId state_id) {
@@ -127,6 +127,7 @@ void State::war(GameUnit &selected_unit, int soldier, State &enamy_state, GameUn
     if (check_win(selected_unit, soldier, enamy_state, enamy_unit, enamy_state.state_soldier)) {
         state_soldier = state_soldier - soldier * 0.1;
         enamy_state.state_owner = state_owner;
+        state_owner->add_state(&enamy_state);
     }
     else {
         state_soldier = state_soldier - soldier * 0.5;
@@ -142,6 +143,7 @@ void State::defense(GameUnit &selected_unit, State &enamy_state, GameUnit &enamy
         for (GameUnit &unit: unit_list)
             if (unit.get_status() == hired)
                 unit.set_status(developed);
+        state_owner->erase_state(this);
     }
 }
 
@@ -182,4 +184,10 @@ void State::set_unit_status(GameUnit &unit, UnitStatus status) {
 
 int State::get_state_soilder() {
     return state_soldier;
+}
+
+void State::reset_can_move() {
+    for(int i = 0; i < unit_list.size(); i++) {
+        unit_list[i].set_can_move(true);
+    }
 }

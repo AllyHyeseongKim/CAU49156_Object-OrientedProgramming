@@ -37,35 +37,29 @@ void GameAI::AI_algo(int total_turn) {
 }
 
 
-StateId GameAI::attack_state(State &enamy_state, GameUnit &enamy_unit) {
+std::pair<GameUnit*, int> GameAI::attack_state(State &ai_state, State &enamy_state, GameUnit &enamy_unit) {
     GameUnit *unit;
-    StateId attacked_state_id;
-    for(int i = 0; i < own_states.size(); i++) {
-        std::vector<GameUnit> &list = own_states[i]->get_unit_list();
-        std::vector<StateId> &near_state = own_states[i]->get_near_state();
 
-        for(int j = 0; j < list.size(); i++) {
-            if(list[j].get_status() == hired || list[j].get_status() == munonarch) {
-                unit = &list[j]; // unit = &unit[j]; 수정
+    std::vector<GameUnit> &list = ai_state.get_unit_list();
+    for(int i = 0; i < list.size(); i++) {
+        if(list[i].get_status() == hired || list[i].get_status() == munonarch) {
+            unit = &list[i]; // unit = &unit[j]; 수정
                 break;
-            }
-        }
-        for(StateId &id: near_state) {
-            if(!chk_own_state(id)) {
-                own_states[i]->war(*unit, own_states[i]->get_state_soilder(), enamy_state, enamy_unit);
-                attacked_state_id = id;
-            }
         }
     }
-    return attacked_state_id;
+    ai_state.war(*unit, ai_state.get_state_soilder(), enamy_state, enamy_unit);
+    return make_pair(unit, ai_state.get_state_soilder());
 }
 
 
-void GameAI::defence_state(State& attecked_state, State &enamy_state, GameUnit &enamy_unit, int num_enamy_soldier) {
+GameUnit* GameAI::defence_state(State& attecked_state, State &enamy_state, GameUnit &enamy_unit, int num_enamy_soldier) {
     std::vector<GameUnit>& unit_list= attecked_state.get_unit_list();
     
     for(int i = 0; i < unit_list.size(); i++) {
-        if(unit_list[i].get_status() == munonarch || unit_list[i].get_status() == hired)
-            attecked_state.defense(unit_list[i], enamy_state, enamy_unit, num_enamy_soldier) ;
+        if(unit_list[i].get_status() == munonarch || unit_list[i].get_status() == hired) {
+            attecked_state.defense(unit_list[i], enamy_state, enamy_unit, num_enamy_soldier);
+            return &unit_list[i];
+        }
     }
+    return &unit_list[0];
 }

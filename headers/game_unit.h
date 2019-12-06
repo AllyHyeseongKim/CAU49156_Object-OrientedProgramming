@@ -4,7 +4,7 @@
 #include <string>
 using namespace std;
 
-typedef enum {undeveloped, developed, hired, munonarch} UnitStatus;
+typedef enum {undeveloped, hired, developed, munonarch} UnitStatus;
 
 class GameUnit {
     std::string name;

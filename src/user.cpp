@@ -26,6 +26,13 @@ void User::add_state(State* state) {
     this->own_states.push_back(state);
 }
 
+void User::erase_state(State* state) {
+    for(int i = 0; i < own_states.size(); i++) {
+        if(own_states[i] == state) {
+            own_states.erase(own_states.begin() + i);
+        }
+    }
+}
 std::string User::get_user_id() {
     return user_id;
 }

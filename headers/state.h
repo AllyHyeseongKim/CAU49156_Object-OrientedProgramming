@@ -45,7 +45,7 @@ public:
     void set_agriculture_degree(int degree);
 
     // 해당 State의 주인인 유저를 설정
-    void set_state_owner(User &owner);
+    void set_state_owner(User *owner);
     // 해당 State 주변의 State를 설정
     void set_near_state(StateId state_id);
     std::vector<StateId>& get_near_state();
@@ -86,6 +86,7 @@ public:
 
     std::vector<GameUnit>& get_unit_list();
     void set_unit_status(GameUnit &unit, UnitStatus status);
+    void reset_can_move();
     // void lose_the_war();
 
 private:

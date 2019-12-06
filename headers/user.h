@@ -25,6 +25,7 @@ public:
     
     // 유저가 소유한 영지 추가
     void add_state(State* state);
+    void erase_state(State* state);
 
     std::string get_user_id();
     std::vector<State*> get_own_states();
