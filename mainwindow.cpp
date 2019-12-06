@@ -6,107 +6,24 @@
 #include <QGraphicsPixmapItem>
 #include <QLabel>
 #include <QLayout>
+#include <QString>
 #include <iostream>
+#include <string>
 
 GameController game;
+Player *player;
+GameAI *ai;
 State *initial_state;
-string user_id;
 
 MainWindow::MainWindow(QWidget *parent): QDialog(parent), ui(new Ui::MainWindow){
     setFilePath();
     initBoard();
-
-//    gameStart();
 }
 
-void MainWindow::initBoard(){
-    ui->setupUi(this);
-
-    QPixmap pic("../map.png");
-    if(pic.isNull()){
-        pic = QPixmap("/Users/herojeff/WorkSpace/OOPS-Project4/map.png");
-    }
-    QPixmap scaled=pic.scaled ( 291, 371, Qt::KeepAspectRatio, Qt::FastTransformation );
-    ui->imageView->setPixmap(scaled);
-    ui->imageView->lower();
-
-    QColor black(0,0,0);
-    QColor transparentBlack(0,0,0,70);
-
-    QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
-    for(int i=0;i<9;i++){
-        QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
-        effect->setBlurRadius(5);
-        effect->setXOffset(0.2);
-        effect->setYOffset(0.5);
-        effect->setColor(transparentBlack);
-        mapButtons[i]->setGraphicsEffect(effect);
-    }
-
-    QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4};
-    for(int i=0;i<4;i++){
-        QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
-        effect->setBlurRadius(20);
-        effect->setXOffset(0.2);
-        effect->setYOffset(0.5);
-        effect->setColor(transparentBlack);
-        controlButtons[i]->setGraphicsEffect(effect);
-    }
-
-    ui->id->setAttribute(Qt::WA_MacShowFocusRect,0);
-
-    setText1(0);
-    setText2(0);
-    setText3(0, 0);
-    setText4(0);
-
-    ui->buttonGrid->hide();
-    ui->container1->hide();
-    ui->container2->hide();
-    ui->container3->hide();
-    ui->container5->hide();
-
-    connect(ui->id,  SIGNAL(returnPressed()),ui->btn_id_confirm,SIGNAL(released()));
-    connect(ui->btn_id_confirm, SIGNAL(released()),this, SLOT(setUserID()));
-    connect(ui->btn_hero_1, SIGNAL(released()),this, SLOT(setHero1()));
-    connect(ui->btn_hero_2, SIGNAL(released()),this, SLOT(setHero2()));
-    connect(ui->btn_hero_3, SIGNAL(released()),this, SLOT(setHero3()));
-    connect(ui->btn_hero_4, SIGNAL(released()),this, SLOT(setHero4()));
-    connect(ui->map1, SIGNAL(released()),this, SLOT(clickMap1()));
-    connect(ui->map2, SIGNAL(released()),this, SLOT(clickMap2()));
-    connect(ui->map3, SIGNAL(released()),this, SLOT(clickMap3()));
-    connect(ui->map4, SIGNAL(released()),this, SLOT(clickMap4()));
-    connect(ui->map5, SIGNAL(released()),this, SLOT(clickMap5()));
-    connect(ui->map6, SIGNAL(released()),this, SLOT(clickMap6()));
-    connect(ui->map7, SIGNAL(released()),this, SLOT(clickMap7()));
-    connect(ui->map8, SIGNAL(released()),this, SLOT(clickMap8()));
-    connect(ui->map9, SIGNAL(released()),this, SLOT(clickMap9()));
-    connect(ui->btn1, SIGNAL(released()),this, SLOT(clickMapActionBtn1()));
-    connect(ui->btn2, SIGNAL(released()),this, SLOT(clickMapActionBtn2()));
-    connect(ui->btn3, SIGNAL(released()),this, SLOT(clickMapActionBtn3()));
-    connect(ui->btn4, SIGNAL(released()),this, SLOT(clickMapActionBtn4()));
-}
-
-bool fileExists (const std::string& name) {
-    ifstream f(name.c_str());
-    return f.good();
-}
-
-void MainWindow::setFilePath(){
-    if(!fileExists("data/game_state_data.txt")){
-        game.set_states("/Users/herojeff/WorkSpace/OOPS-Project4/data/game_state_data.txt");
-    }
-    else{
-        game.set_states("data/game_state_data.txt");    // 나중에 set_user와 합쳐서 set_game으로 발전?
-    }
-}
-
-void MainWindow::gameStart(){
-    Player *player = new Player(user_id);
-    GameAI *ai = new GameAI("AI");
+void MainWindow::gameInit(){
+    ai = new GameAI("AI");
     player->add_state(initial_state);
     initial_state->set_state_owner(player);
-
     // AI 생성, 플레이어가 선택하지 않은 영지 중 자신의 영지를 하나 선택
     // 데모를 위해 랜덤으로 하지 않음
     if(initial_state->get_state_id() == Hamgyeongdo) {
@@ -124,7 +41,10 @@ void MainWindow::gameStart(){
     // 시작 플레이어 - 사용자(player)부터 시작한다
     game.set_user_turn(player);
 
-    // 게임 시작
+//    gameStart();
+}
+
+void MainWindow::gameStart(){
     while(game.check_game_judge() == NOTHING) { // 게임 종료 조건 넣기, WIN이나 LOSE면 탈출
         // 모든 지역에 있는 유닛들 행동력 회복
         {
@@ -144,39 +64,27 @@ void MainWindow::gameStart(){
 
         // 현재 플레이어 설정
         User* current_user = game.get_user_turn();
-        cout << "----------------------------\n";
-        cout << "현재 턴 : " << current_user->get_user_id() << "\n";
+        setText6(game.get_total_turn(), QString::fromStdString(current_user->get_user_id()));
 
         // 총 턴과 날짜 표시
-        cout << "턴 : " << game.get_total_turn() << " , " << "날짜 : " << game.get_date() << "\n";
+        setText5(QString::fromStdString(game.get_date()));
 
         // 6월, 9월에 농업도에 비례해서 식량 수확 (모든 플레이어가)
         if(game.get_date().find("6월")!= std::string::npos || game.get_date().find("9월")!= std::string::npos) {
-            cout << "즐거운 수확철~ 식량이 증가합니다!\n";
-
+            setStateLabel(QString::fromStdString("즐거운 수확철~\n식량이 증가합니다!"));
             // 각 유저에 대해
             vector<User*> users = game.get_users();
-
-
             for(int i = 0; i < users.size(); i++) {
-
                 cout << "유저들 : " << users[i]->get_total_rice() << "\n";
-
                 vector<State*> user_states = users[i]->get_own_states();
-
                 cout << "테스트 : " << user_states.at(0)->get_state_name() << "\n";
-
                 cout << "유저들 : " << users[i]->get_total_rice() << "\n";
-
                 vector<State*>::iterator iter;
                 int total_gain = 0;
-
                 for(iter = user_states.begin(); iter != user_states.end(); iter++) {
                     total_gain += (*iter)->get_agriculture_degree() * 20;
                 }
-
                 cout << users[i]->get_user_id() << "의 획득 식량 " << total_gain << "\n";
-
                 users[i]->increase_total_rice(total_gain);
             }
         }
@@ -187,7 +95,7 @@ void MainWindow::gameStart(){
 
             ai->AI_algo(game.get_total_turn()/2);
 
-            game.increase_total_turn();;
+            game.increase_total_turn();
             game.set_user_turn(game.next_user_turn(current_user));
             continue;
         }
@@ -587,8 +495,90 @@ void MainWindow::gameStart(){
 
     // 마지막에 game에서 동적할당된 state 등을 delete 해주기
     // player 들도 동적할당되서 delete 필요
+}
 
-    return;
+void MainWindow::initBoard(){
+    ui->setupUi(this);
+
+    QPixmap pic("../map.png");
+    if(pic.isNull()){
+        pic = QPixmap("/Users/herojeff/WorkSpace/OOPS-Project4/map.png");
+    }
+    QPixmap scaled=pic.scaled ( 291, 371, Qt::KeepAspectRatio, Qt::FastTransformation );
+    ui->imageView->setPixmap(scaled);
+    ui->imageView->lower();
+
+    QColor black(0,0,0);
+    QColor transparentBlack(0,0,0,70);
+
+    QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
+    for(int i=0;i<9;i++){
+        QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+        effect->setBlurRadius(5);
+        effect->setXOffset(0.2);
+        effect->setYOffset(0.5);
+        effect->setColor(transparentBlack);
+        mapButtons[i]->setGraphicsEffect(effect);
+    }
+
+    QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4};
+    for(int i=0;i<4;i++){
+        QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+        effect->setBlurRadius(20);
+        effect->setXOffset(0.2);
+        effect->setYOffset(0.5);
+        effect->setColor(transparentBlack);
+        controlButtons[i]->setGraphicsEffect(effect);
+    }
+
+    ui->id->setAttribute(Qt::WA_MacShowFocusRect,0);
+
+    setText1(0);
+    setText2(0);
+    setText3(0, 0);
+    setText4(0);
+    setText5("ㅁㅇㄹㅁㄴㅇㄹ");
+    setText6(0, "ㅁㄴㅇㄹ");
+
+    ui->buttonGrid->hide();
+    ui->container1->hide();
+    ui->container2->hide();
+    ui->container3->hide();
+    ui->container5->hide();
+
+    connect(ui->id,  SIGNAL(returnPressed()),ui->btn_id_confirm,SIGNAL(released()));
+    connect(ui->btn_id_confirm, SIGNAL(released()),this, SLOT(setUserID()));
+    connect(ui->btn_hero_1, SIGNAL(released()),this, SLOT(setHero1()));
+    connect(ui->btn_hero_2, SIGNAL(released()),this, SLOT(setHero2()));
+    connect(ui->btn_hero_3, SIGNAL(released()),this, SLOT(setHero3()));
+    connect(ui->btn_hero_4, SIGNAL(released()),this, SLOT(setHero4()));
+    connect(ui->map1, SIGNAL(released()),this, SLOT(clickMap1()));
+    connect(ui->map2, SIGNAL(released()),this, SLOT(clickMap2()));
+    connect(ui->map3, SIGNAL(released()),this, SLOT(clickMap3()));
+    connect(ui->map4, SIGNAL(released()),this, SLOT(clickMap4()));
+    connect(ui->map5, SIGNAL(released()),this, SLOT(clickMap5()));
+    connect(ui->map6, SIGNAL(released()),this, SLOT(clickMap6()));
+    connect(ui->map7, SIGNAL(released()),this, SLOT(clickMap7()));
+    connect(ui->map8, SIGNAL(released()),this, SLOT(clickMap8()));
+    connect(ui->map9, SIGNAL(released()),this, SLOT(clickMap9()));
+    connect(ui->btn1, SIGNAL(released()),this, SLOT(clickMapActionBtn1()));
+    connect(ui->btn2, SIGNAL(released()),this, SLOT(clickMapActionBtn2()));
+    connect(ui->btn3, SIGNAL(released()),this, SLOT(clickMapActionBtn3()));
+    connect(ui->btn4, SIGNAL(released()),this, SLOT(clickMapActionBtn4()));
+}
+
+bool fileExists (const std::string& name) {
+    ifstream f(name.c_str());
+    return f.good();
+}
+
+void MainWindow::setFilePath(){
+    if(!fileExists("data/game_state_data.txt")){
+        game.set_states("/Users/herojeff/WorkSpace/OOPS-Project4/data/game_state_data.txt");
+    }
+    else{
+        game.set_states("data/game_state_data.txt");    // 나중에 set_user와 합쳐서 set_game으로 발전?
+    }
 }
 
 void MainWindow::clickMap1(){
@@ -635,8 +625,10 @@ void MainWindow::setStateLabel(QString state){
     ui->label_state->setText(state);
 }
 void MainWindow::setUserID(){
+    string user_id;
     user_id = ui->id->text().toStdString();
     if(user_id.compare("")){
+        player = new Player(user_id);
         ui->container4->hide();
         ui->container5->show();
     }
@@ -647,6 +639,7 @@ void MainWindow::setHero(){
     ui->container2->show();
     ui->container3->show();
     ui->buttonGrid->show();
+    gameInit();
 }
 
 void MainWindow::setHero1(){
@@ -691,6 +684,15 @@ void MainWindow::setText4(int a){
     QString final = "현재 도시 병사 수 : ";
     final = final.append(QString::number(a));
     ui->label4->setText(final);
+}
+void MainWindow::setText5(QString a){
+    QString final = "날짜 : ";
+    final = final.append(a);
+    ui->label5->setText(final);
+}
+void MainWindow::setText6(int a, QString name){
+    QString final = QString("현재 턴 : ").append(QString::number(a)).append(", ").append(name);
+    ui->label6->setText(final);
 }
 
 MainWindow::~MainWindow()

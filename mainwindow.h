@@ -24,6 +24,8 @@ public:
     void setHero();
     void setFilePath();
     void setStateLabel(QString state);
+    void gameInit();
+
 public slots:
     void setUserID();
     void setHero1();
@@ -43,6 +45,8 @@ public slots:
     void clickMapActionBtn2();
     void clickMapActionBtn3();
     void clickMapActionBtn4();
+    void setText5(QString a);
+    void setText6(int a, QString name);
 private:
     Ui::MainWindow *ui;
 };
