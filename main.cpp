@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
     game.set_user_turn(player);
 
     // 게임 시작
-    while(1) { // 게임 종료 조건 넣기
+    while(game.check_game_judge() == NOTHING) { // 게임 종료 조건 넣기, WIN이나 LOSE면 탈출
         // 모든 지역에 있는 유닛들 행동력 회복
         {
             vector<State*> all_state = game.get_states();
@@ -485,16 +485,15 @@ int main(int argc, char *argv[]) {
 
         game.increase_total_turn();
         game.set_user_turn(game.next_user_turn(current_user));
-
-        
     }
 
-    User *me = game.get_users().at(0);
-    
-    cout << (me->get_total_rice()) << "\n";
-    cout << (me->get_user_id()) << "\n";
-    cout << (me->find_own_state(Hamgyeongdo).get_state_name()) << "\n";
-    cout << (me->find_own_state(Pyongando).get_state_name()) << "\n";
+    // 결과
+    if(game.check_game_judge() == WIN) {
+        // 승리의 간지나는 아스키코드~ㅎㅎ
+    }
+    if(game.check_game_judge() == LOSE) {
+        // 패배를 뼈저리게 느낄만한 아스키코드~
+    }
 
     // 마지막에 game에서 동적할당된 state 등을 delete 해주기
     // player 들도 동적할당되서 delete 필요
