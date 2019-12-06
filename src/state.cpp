@@ -93,7 +93,6 @@ void State::search_unit(GameUnit &selected_unit) {
 
 void State::hire_unit(GameUnit &hirng_unit, GameUnit &hired_unit) {
     assert(hired_unit.get_can_move());
-    srand((unsigned int)(time(0)));
     double attraction = hired_unit.get_attraction();
     attraction = (attraction > 50) ? attraction * 1.005 : attraction * 0.999;
 
