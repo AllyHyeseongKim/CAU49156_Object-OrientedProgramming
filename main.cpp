@@ -383,15 +383,15 @@ int main(int argc, char *argv[]) {
                                 int selected_index;
                                 StateId selected_state_id;
                                 cout << "\n 옮길 지역을 입력해주세요.\n";
-                                for (int i = 1; i <= state_list.size(); i++) {
-                                    cout << i << ": " << state_list[i]->get_state_name() << endl;
+                                for (int i = 0; i < state_list.size(); i++) {
+                                    cout << i + 1 << ": " << state_list[i]->get_state_name() << endl;
                                 }
                                 
                                 while(true) {
                                     cin >> selected_index;
 
-                                    for (int i = 1; i <= state_list.size(); i++) {
-                                        if(selected_index == i) {
+                                    for (int i = 0; i < state_list.size(); i++) {
+                                        if(selected_index == i + 1) {
                                             selected_state_id = state_list[i]->get_state_id();
                                         }
                                     }
@@ -402,7 +402,7 @@ int main(int argc, char *argv[]) {
                                 } 
 
                                 player->command(MoveUnit, *hero, selected_state_id);
-                                break;
+                                continue;
                             }
                         }
                         break;
