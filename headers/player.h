@@ -3,7 +3,7 @@
 
 #include "user.h"
 
-typedef enum {HR, Politic, Soldier, GetSoldier, TrainSolider, War, Defend, FindUnit, GetUnit, MoveUnit} Command;
+typedef enum {HR = 1, Politic, Soldier, War, GetSoldier, TrainSolider, Defend, FindUnit, GetUnit, MoveUnit} Command;
 class Player : public User {
 public:
     Player(std::string user_id);

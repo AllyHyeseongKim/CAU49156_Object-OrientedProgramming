@@ -46,6 +46,7 @@ void GameController::set_states(string game_state_file) {
         exit(1);
     }
 
+    State* state;
     while(!data.eof()) {
         string line;
         vector<string> token;
@@ -66,7 +67,7 @@ void GameController::set_states(string game_state_file) {
         if(line.front() == ':') { // 만약 해당 line이 State에 관한 정보라면
 
             // state 객체 생성
-            State* state = new State(static_cast<StateId>(atoi(token[0].c_str())), token[1]);
+            state = new State(static_cast<StateId>(atoi(token[0].c_str())), token[1]);
             this->states.push_back(state);
         
             // near_state 설정
@@ -74,7 +75,7 @@ void GameController::set_states(string game_state_file) {
                 state->set_near_state(static_cast<StateId>(atoi((*iter).c_str())));
             }
 
-        } else {  // 만야 해당 line이 GameUnit에 관한 정보라면
+        } else {  // 만약 해당 line이 GameUnit에 관한 정보라면
             
             // 영웅 스탯 int 형으로 변환
             int status[5];
@@ -82,9 +83,9 @@ void GameController::set_states(string game_state_file) {
                 status[i] = atoi(token[i+1].c_str());
             }
 
-            GameUnit *game_unit = new GameUnit(token[0], 
-                                status[0], status[1], status[2], status[3], status[4], 
-                                static_cast<UnitStatus>(atoi(token[6].c_str())));
+            state->add_unit_list(GameUnit(token[0], 
+                                status[0], status[1], status[2], status[3], status[4],
+                                static_cast<UnitStatus>(atoi(token[6].c_str()))));   
         }
     }
     data.close();

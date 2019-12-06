@@ -30,6 +30,7 @@ class State {
 
 public:
 
+    State();
     State(StateId state_id, string state_name);
     // 내정 --------------------------------------------------------------------
     // 정치에 비례하여 농업도 향상
@@ -48,6 +49,8 @@ public:
     // 해당 State 주변의 State를 설정
     void set_near_state(StateId state_id);
     std::vector<StateId>& get_near_state();
+
+    void add_unit_list(GameUnit unit);
 
     void agriculture(GameUnit &selected_unit);
 

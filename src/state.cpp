@@ -1,6 +1,8 @@
 #include "../headers/user.h"
 #include "../headers/state.h"
 
+State::State() {}
+
 State::State(StateId state_id, string state_name) {
     this->state_id = state_id;
     this->state_name = state_name;
@@ -35,6 +37,10 @@ void State::set_near_state(StateId state_id) {
 
 std::vector<StateId>& State::get_near_state() {
     return near_states;
+}
+
+void State::add_unit_list(GameUnit unit) {
+    unit_list.push_back(unit);
 }
 
 void State::agriculture(GameUnit &selected_unit) {
@@ -92,6 +98,8 @@ void State::hire_unit(GameUnit &hirng_unit, GameUnit &hired_unit) {
     if ((rand() % 100) < 50 + attraction)
         return;
     hirng_unit.set_status(hired);
+
+    // unit_list에 추가하기
 }
 
 void State::move_unit(GameUnit &selected_unit, StateId moved_state_id) {
