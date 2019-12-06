@@ -56,7 +56,10 @@ void State::agriculture(GameUnit &selected_unit) {
 void State::recurit_soldier(GameUnit &selected_unit, int num_soldier) {
     assert(selected_unit.get_can_move());
     assert(state_owner->get_total_rice() >= 0.5 * num_soldier);
-    assert(soldier_capacity >= state_soldier);
+    // assert(soldier_capacity >= state_soldier);
+
+    if(state_soldier > selected_unit.get_strength() * 20)
+        return;
 
     selected_unit.set_can_move(false);
     state_soldier += num_soldier;
@@ -67,7 +70,7 @@ void State::train_soldier(GameUnit &selected_unit) {
     assert(selected_unit.get_can_move());
 
     selected_unit.set_can_move(false);
-    soldier_capacity += selected_unit.get_leadearship() * 0.3;
+    soldier_degree += selected_unit.get_leadearship() * 0.3;
 }
 
 void State::set_soldier_degree(int degree) {
