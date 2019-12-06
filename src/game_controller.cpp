@@ -119,3 +119,14 @@ State *GameController::get_state_by_id(StateId id) {
     }
     return NULL;
 }
+
+Judge GameController::check_game_judge() {
+    // 만약 9개의 영지를 모두 점령했다면 승리
+    if((users.at(0)->get_own_states()).size() == 9) {
+        return WIN;
+    } else if((users.at(0)->get_own_states()).size() == 0) {
+        return LOSE;
+    } else {
+        return NOTHING;
+    }
+}

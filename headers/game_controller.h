@@ -8,6 +8,8 @@
 #include "player.h"
 #include "game_ai.h"
 
+typedef enum {WIN, LOSE, NOTHING} Judge;
+
 class GameController {
     
     User* user_turn;                 // 현재 차례인 유저의 아이디를 저장
@@ -44,6 +46,8 @@ public:
     void increase_total_turn();
 
     State *get_state_by_id(StateId id);
+
+    Judge check_game_judge();
 
 private:
     // void game_data_file_read();
