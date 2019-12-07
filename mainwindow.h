@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QDialog>
+#include <string>
+#include <iostream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -24,35 +26,30 @@ public:
     void gameInit();
     void showAlert(QString n);
     void showSelection(QString message, QString cancel, QString accept);
-    void showList(std::vector<QString> list);
     void setText4(int a, int b);
     void setText3(int a);
+    void gameLoop();
+    void clickMapActionBtnWrapUp();
+    void showList(std::vector<QString> list, bool should_show_back);
 public slots:
     void setUserID();
     void setHero1();
     void setHero2();
     void setHero3();
     void setHero4();
-    void clickMap1();
-    void clickMap2();
-    void clickMap3();
-    void clickMap4();
-    void clickMap5();
-    void clickMap6();
-    void clickMap7();
-    void clickMap8();
-    void clickMap9();
     void clickMapActionBtn1();
     void clickMapActionBtn2();
     void clickMapActionBtn3();
     void clickMapActionBtn4();
+    void clickMapActionBtn5();
     void setText5(QString a);
     void setText6(int a, QString name);
     void closeAlert();
     void closeSelectionCancel();
     void closeSelectionAccept();
     void closeList();
-    void clickMapActionBtn5();
+    void clickMap(int id);
+    void listHero(QString value);
 private:
     Ui::MainWindow *ui;
 };

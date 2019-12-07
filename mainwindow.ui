@@ -19,6 +19,9 @@
    <string>&lt;Total War : KOREA&gt;</string>
   </property>
   <widget class="QWidget" name="buttonGrid" native="true">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -45,7 +48,7 @@
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
+     <string notr="true">color: #000000; border-radius: 10px; background-color: #A0FFFFFF;</string>
     </property>
     <property name="text">
      <string>경기도</string>
@@ -69,7 +72,7 @@
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
+     <string notr="true">color: #000000; border-radius: 10px; background-color: #A0FFFFFF;</string>
     </property>
     <property name="text">
      <string>충청도</string>
@@ -93,7 +96,7 @@
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
+     <string notr="true">color: #000000; border-radius: 10px; background-color: #A0FFFFFF;</string>
     </property>
     <property name="text">
      <string>전라도</string>
@@ -117,7 +120,7 @@
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
+     <string notr="true">color: #000000; border-radius: 10px; background-color: #A0FFFFFF;</string>
     </property>
     <property name="text">
      <string>경상도</string>
@@ -141,7 +144,7 @@
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
+     <string notr="true">color: #000000; border-radius: 10px; background-color: #A0FFFFFF;</string>
     </property>
     <property name="text">
      <string>황해도</string>
@@ -165,7 +168,7 @@
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
+     <string notr="true">color: #000000; border-radius: 10px; background-color: #A0FFFFFF;</string>
     </property>
     <property name="text">
      <string>강원도</string>
@@ -192,7 +195,7 @@
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
+     <string notr="true">color: #000000; border-radius: 10px; background-color: #A0FFFFFF;</string>
     </property>
     <property name="text">
      <string>함경도</string>
@@ -225,7 +228,7 @@
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
+     <string notr="true">color: #000000; border-radius: 10px; background-color: #A0FFFFFF;</string>
     </property>
     <property name="text">
      <string>평안도</string>
@@ -249,7 +252,7 @@
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #FFFFFF; border-radius: 10px; background-color: #40000000;</string>
+     <string notr="true">color: #000000; border-radius: 10px; background-color: #A0FFFFFF;</string>
     </property>
     <property name="text">
      <string>제주도</string>
@@ -273,7 +276,7 @@
    <property name="geometry">
     <rect>
      <x>290</x>
-     <y>200</y>
+     <y>15</y>
      <width>251</width>
      <height>191</height>
     </rect>
@@ -304,7 +307,7 @@
      <rect>
       <x>139</x>
       <y>45</y>
-      <width>91</width>
+      <width>111</width>
       <height>20</height>
      </rect>
     </property>
@@ -415,7 +418,7 @@
    <property name="geometry">
     <rect>
      <x>260</x>
-     <y>15</y>
+     <y>210</y>
      <width>311</width>
      <height>201</height>
     </rect>
@@ -436,6 +439,9 @@
      <font>
       <family>Nanum Gothic</family>
      </font>
+    </property>
+    <property name="toolTip">
+     <string>선택된 영웅의 정치에 비례하여 농업도를 향상</string>
     </property>
     <property name="styleSheet">
      <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
@@ -461,6 +467,9 @@
       <family>Nanum Gothic</family>
      </font>
     </property>
+    <property name="toolTip">
+     <string>모집 or 훈련 중 한 행동을 할 수 있습니다.</string>
+    </property>
     <property name="styleSheet">
      <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
     </property>
@@ -484,6 +493,9 @@
      <font>
       <family>Nanum Gothic</family>
      </font>
+    </property>
+    <property name="toolTip">
+     <string>인접한 적군의 영지를 선택해 공격</string>
     </property>
     <property name="styleSheet">
      <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
@@ -511,6 +523,12 @@
      <font>
       <family>Nanum Gothic</family>
      </font>
+    </property>
+    <property name="toolTip">
+     <string>탐색(한번) or 등용(한번) or 이동(무제한) 중 한 행동을 할 수 있습니다.</string>
+    </property>
+    <property name="whatsThis">
+     <string/>
     </property>
     <property name="styleSheet">
      <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
