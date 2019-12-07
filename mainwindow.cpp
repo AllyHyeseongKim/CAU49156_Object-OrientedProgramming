@@ -10,6 +10,7 @@
 #include <QString>
 #include <iostream>
 #include <string>
+#include <cstring>
 
 GameController game;
 Player *player;
@@ -20,6 +21,8 @@ User* current_user;
 State *ai_war_states;
 State *attacked_state;
 GameUnit *war_hero;
+State* current_state;
+GameUnit *hero = NULL;
 
 QColor black(0,0,0);
 QColor transparentBlack(0,0,0,120);
@@ -33,7 +36,6 @@ MainWindow::MainWindow(QWidget *parent): QDialog(parent), ui(new Ui::MainWindow)
 
 void MainWindow::clickMap(int id){
     QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
-    State* current_state;
     State& select_state = player->find_own_state(static_cast<StateId>(id));
     current_state = &select_state;
 
@@ -88,226 +90,209 @@ void MainWindow::clickMap(int id){
         showList(show_list, true);
         showAlert("임무를 수행할 영웅을 선택하십시오.");
     }
-
-
-
-
-//    // 번호로 부를 수 있게 해야하나 - 영웅 아이디가 없어서 번거로움..
-//    // 존함을 정자로 입력해주시기 바랍니다!
-//    cout << "이름 : ";
-//    cin >> input_hero;
-
-//    if (input_hero == "q")
-//        continue;
-
-//    GameUnit *hero;
-//    for(unitIter = unit_list.begin(); unitIter != unit_list.end(); unitIter++) {
-//        if(input_hero == (*unitIter).get_name()) {
-//            hero = &(*unitIter);
-//        }
-//    }
-
-//    if(!hero->get_can_move()) {
-//        cout << hero->get_name() << "의 행동력이 부족합니다\n";
-//        continue;
-//    }
-
-//    // 이전에 영웅의 행동력을 확인?
-
-//    // 여기가 btn1~5 확인하던 곳!!!!!!!!!!!!!!!!
-
-//    // player 전쟁 정보 확인
-//    if(aggress_state_id) {
-//        GameUnit *ai_unit;
-//        aggress_hero->set_can_move(false);
-
-//        if(ai->chk_own_state(aggress_state_id)) {
-//            ai_unit = ai->defence_state(*current_state, *game.get_state_by_id(aggress_state_id), *aggress_hero, aggress_num_solider);
-//            bool result = current_state->war(*aggress_hero, aggress_num_solider, *game.get_state_by_id(aggress_state_id), *ai_unit);
-//            if(result)
-//                cout << "공격에 성공했습니다.\n";
-//            else
-//                cout << "공격에 실패했습니다.\n";
-//        }
-//        else {
-//            State *state = game.get_state_by_id(aggress_state_id);
-//            player->add_state(state);
-//            state->set_state_owner(player);
-//            cout << "공격에 성공했습니다.\n";
-//        }
-//    }
 }
 void MainWindow::clickMapActionBtn1(){
-//    cout << "다음 중 행동을 하나 선택하세요.\n";
-//    cout << "1. 탐색 : 현재 있는 영지의 영웅을 탐색할 수 있는 것으로, 미발견 상태의 인물을 발견하여 재야 상태로 바꾼다.\n";
-//    cout << "2. 등용 : 탐색으로 발견되어 '재야' 상태이거나, 전쟁에서 진 상대편의 영웅(재야 상태)를 등용할 수 있는 것으로, 매력의 영향을 받는다.\n";
-//    cout << "3. 이동 : 본인이 등용한 장수를 다른 영지로 이동시킬 수 있다.\n";
+    if(!hero->get_can_move()) {
+        QString final = QString::fromStdString(hero->get_name());
+        final.append("의 행동력이 부족합니다");
+        showAlert(final);
+        return;
+    }
+    showAlert("가나다");
+    cout << "1. 탐색 : 현재 있는 영지의 영웅을 탐색할 수 있는 것으로, 미발견 상태의 인물을 발견하여 재야 상태로 바꾼다.\n";
+    cout << "2. 등용 : 탐색으로 발견되어 '재야' 상태이거나, 전쟁에서 진 상대편의 영웅(재야 상태)를 등용할 수 있는 것으로, 매력의 영향을 받는다.\n";
+    cout << "3. 이동 : 본인이 등용한 장수를 다른 영지로 이동시킬 수 있다.\n";
 
-//    string detail_command;
-//    vector<GameUnit> &temp_unit_list = current_state->get_unit_list();
-//    cin >> detail_command;
+    vector<GameUnit> &temp_unit_list = current_state->get_unit_list();
 
-//    switch(atoi(detail_command.c_str())) {
-//        case 1: {// 탐색
-//            player->command(FindUnit, *hero);
-//            break;
-//        }
-//        case 2: {// 등용
-//            int unit_index = 1;
-//            int selected_unit_index;
-//            int num_develop = 0;
-//            vector<GameUnit*> developed_unit;
-//            cout << temp_unit_list.size() << endl;
+    switch(1) {
+        case 1: {// 탐색
+            player->command(FindUnit, *hero);
+            break;
+        }
+        case 2: {// 등용
+            int unit_index = 1;
+            int selected_unit_index;
+            int num_develop = 0;
+            vector<GameUnit*> developed_unit;
+            cout << temp_unit_list.size() << endl;
 
 
-//            for(int i = 0; i < temp_unit_list.size(); i++){
-//                if(temp_unit_list[i].get_status() == developed){
-//                    num_develop++;
-//                }
-//            }
-//            if (num_develop == 0) {
-//                cout << "등용할 영웅이 없습니다.\n";
-//                break;
-//            }
+            for(int i = 0; i < temp_unit_list.size(); i++){
+                if(temp_unit_list[i].get_status() == developed){
+                    num_develop++;
+                }
+            }
+            if (num_develop == 0) {
+                cout << "등용할 영웅이 없습니다.\n";
+                break;
+            }
 
-//            cout << "등용할 영웅을 고르시오\n";
+            cout << "등용할 영웅을 고르시오\n";
 
-//            for(int i = 0; i < temp_unit_list.size(); i++){
-//                if(temp_unit_list[i].get_status() == developed){
-//                    cout << unit_index <<':' << temp_unit_list[i].get_name() <<
-//                    " 무력: " << temp_unit_list[i].get_strength() << " 통솔: " << temp_unit_list[i].get_leadearship() <<
-//                    " 지력: " << temp_unit_list[i].get_wisdom() << "정치: " << temp_unit_list[i].get_political() <<
-//                    " 매력: " << temp_unit_list[i].get_attraction() <<  endl;
-//                    developed_unit.push_back(&temp_unit_list[i]);
-//                    unit_index++;
-//                }
-//            }
-//            cin >> selected_unit_index;
-//            unit_index = 1;
-//            player->command(GetUnit, *hero, *developed_unit[selected_unit_index - 1]);
+            for(int i = 0; i < temp_unit_list.size(); i++){
+                if(temp_unit_list[i].get_status() == developed){
+                    cout << unit_index <<':' << temp_unit_list[i].get_name() <<
+                    " 무력: " << temp_unit_list[i].get_strength() << " 통솔: " << temp_unit_list[i].get_leadearship() <<
+                    " 지력: " << temp_unit_list[i].get_wisdom() << "정치: " << temp_unit_list[i].get_political() <<
+                    " 매력: " << temp_unit_list[i].get_attraction() <<  endl;
+                    developed_unit.push_back(&temp_unit_list[i]);
+                    unit_index++;
+                }
+            }
+            cin >> selected_unit_index;
+            unit_index = 1;
+            player->command(GetUnit, *hero, *developed_unit[selected_unit_index - 1]);
 
-//            if(current_state->is_hired(*developed_unit[selected_unit_index - 1]))
-//                cout << developed_unit[selected_unit_index - 1]->get_name() <<  "이 등용되었습니다. " << endl;
-//            else
-//                cout << developed_unit[selected_unit_index - 1]->get_name() <<  "을 등용에 실패하셨습니다. " << endl;
+            if(current_state->is_hired(*developed_unit[selected_unit_index - 1]))
+                cout << developed_unit[selected_unit_index - 1]->get_name() <<  "이 등용되었습니다. " << endl;
+            else
+                cout << developed_unit[selected_unit_index - 1]->get_name() <<  "을 등용에 실패하셨습니다. " << endl;
 
-//            break;
-//        }
-//        case 3: {// 이동
-//            std::vector<State*> state_list = player->get_own_states();
-//            int selected_index;
-//            StateId selected_state_id;
-//            cout << "\n 옮길 지역을 입력해주세요.\n";
-//            for (int i = 0; i < state_list.size(); i++) {
-//                cout << i + 1 << ": " << state_list[i]->get_state_name() << endl;
-//            }
+            break;
+        }
+        case 3: {// 이동
+            std::vector<State*> state_list = player->get_own_states();
+            int selected_index;
+            StateId selected_state_id;
+            cout << "\n 옮길 지역을 입력해주세요.\n";
+            for (int i = 0; i < state_list.size(); i++) {
+                cout << i + 1 << ": " << state_list[i]->get_state_name() << endl;
+            }
 
-//            while(true) {
-//                cin >> selected_index;
+            while(true) {
+                cin >> selected_index;
 
-//                for (int i = 0; i < state_list.size(); i++) {
-//                    if(selected_index == i + 1) {
-//                        selected_state_id = state_list[i]->get_state_id();
-//                    }
-//                }
+                for (int i = 0; i < state_list.size(); i++) {
+                    if(selected_index == i + 1) {
+                        selected_state_id = state_list[i]->get_state_id();
+                    }
+                }
 
-//                if(player->chk_own_state(selected_state_id))
-//                    break;
-//                cout << "\n 옳바른 지역을 입력해주세요.\n";
-//            }
+                if(player->chk_own_state(selected_state_id))
+                    break;
+                cout << "\n 바른 지역을 입력해주세요.\n";
+            }
 
-//            player->command(MoveUnit, *hero, selected_state_id);
-//            return;
-//        }
-//    }
-//    clickMapActionBtnWrapUp();
+            player->command(MoveUnit, *hero, selected_state_id);
+            return;
+        }
+    }
+    clickMapActionBtnWrapUp();
 }
 void MainWindow::clickMapActionBtn2(){
-//    player->command(Politic, *hero);
-//    clickMapActionBtnWrapUp();
+    if(!hero->get_can_move()) {
+        QString final = QString::fromStdString(hero->get_name());
+        final.append("의 행동력이 부족합니다");
+        showAlert(final);
+        return;
+    }
+    player->command(Politic, *hero);
+    clickMapActionBtnWrapUp();
 }
 void MainWindow::clickMapActionBtn3(){
-//    cout << "다음 중 행동을 하나 선택하세요.\n";
-//    cout << "1. 모집 : 영웅의 무력에 영향을 받으며 병사를 모집한다.\n";
-//    cout << "2. 훈련 : 영웅의 통솔에 영향을 받으며 병사를 훈련한다.\n";
-
-//    cin >> detail_command;
-//    switch(atoi(detail_command.c_str())) {
-//        int num_soldier;
-//        case 1:
-//            while (true) {
-//                cout << "모집할 병사의 수를 입력하세요\n";
-//                cin >> num_soldier;
-//                if(num_soldier <= player->get_total_rice())
-//                    break;
-//                cout << "식량이 부족합니다\n";
-//            }
-//            player->command(GetSoldier, *hero, num_soldier);
-//            break;
-//        case 2:
-//            player->command(TrainSolider, *hero);
-//            break;
-//        default:
-//            break;
-//    }
-//    clickMapActionBtnWrapUp();
+    if(!hero->get_can_move()) {
+        QString final = QString::fromStdString(hero->get_name());
+        final.append("의 행동력이 부족합니다");
+        showAlert(final);
+        return;
+    }
+    showSelection("1. 모집 : 영웅의 무력에 영향을 받으며 병사를 모집한다.\n\n2. 훈련 : 영웅의 통솔에 영향을 받으며 병사를 훈련한다.", "모집", "훈련");
 }
 void MainWindow::clickMapActionBtn4(){
-//    std::vector<StateId> state_id_list = current_state->get_near_state();
-//    std::vector<State*> state_list = game.get_states();
-//    vector<GameUnit*> developed_unit;
+    if(!hero->get_can_move()) {
+        QString final = QString::fromStdString(hero->get_name());
+        final.append("의 행동력이 부족합니다");
+        showAlert(final);
+        return;
+    }
+    std::vector<StateId> state_id_list = current_state->get_near_state();
+    std::vector<State*> state_list = game.get_states();
+    vector<GameUnit*> developed_unit;
+    vector<GameUnit> &unit_list = current_state->get_unit_list();
 
-//    int selected_state;
-//    int state_index = 1;
-//    bool flag = false;
-//    int unit_index = 1;
-//    int selected_unit_index;
+    GameUnit *aggress_hero = 0;
+    StateId aggress_state_id = (StateId)0;
+    int selected_state;
+    int state_index = 1;
+    bool flag = false;
+    int unit_index = 1;
+    int selected_unit_index;
+    int aggress_num_solider = 0;
 
-//    for(int i = 0; i < state_id_list.size(); i++) {
-//        if (!player->chk_own_state(state_id_list[i])){
-//            cout << state_index << ": " << state_list.at(state_id_list[i] - 1)->get_state_name() << endl;
-//            state_index++;
-//        }
-//    }
 
-//    cin >> selected_state;
+    for(int i = 0; i < state_id_list.size(); i++) {
+        if (!player->chk_own_state(state_id_list[i])){
+            cout << state_index << ": " << state_list.at(state_id_list[i] - 1)->get_state_name() << endl;
+            state_index++;
+        }
+    }
 
-//    aggress_num_solider = 0;
-//    while(aggress_num_solider > current_state->get_state_soilder()) {
-//        cout << "병사의 수를 입력하세요. 최대 유닛: " << current_state->get_state_soilder() << endl;
-//        cin >> aggress_num_solider;
-//    }
+    cin >> selected_state;
 
-//    cout << "전쟁에 내보낼 영웅을 고르시오\n";
+    aggress_num_solider = 0;
+    while(aggress_num_solider > current_state->get_state_soilder()) {
+        cout << "병사의 수를 입력하세요. 최대 유닛: " << current_state->get_state_soilder() << endl;
+        cin >> aggress_num_solider;
+    }
 
-//    for(int i = 0; i < unit_list.size(); i++){
-//        if(unit_list[i].get_status() == hired || unit_list[i].get_status() == munonarch){
-//            cout << unit_index <<':' << unit_list[i].get_name() <<
-//            " 무력: " << unit_list[i].get_strength() << " 통솔: " << unit_list[i].get_leadearship() <<
-//            " 지력: " << unit_list[i].get_wisdom() << "정치: " << unit_list[i].get_political() <<
-//            " 매력: " << unit_list[i].get_attraction() <<  endl;
-//            developed_unit.push_back(&unit_list[i]);
-//            unit_index++;
-//        }
-//    }
-//    cin >> selected_unit_index;
+    cout << "전쟁에 내보낼 영웅을 고르시오\n";
 
-//    aggress_hero = developed_unit[selected_unit_index - 1];
+    for(int i = 0; i < unit_list.size(); i++){
+        if(unit_list[i].get_status() == hired || unit_list[i].get_status() == munonarch){
+            cout << unit_index <<':' << unit_list[i].get_name() <<
+            " 무력: " << unit_list[i].get_strength() << " 통솔: " << unit_list[i].get_leadearship() <<
+            " 지력: " << unit_list[i].get_wisdom() << "정치: " << unit_list[i].get_political() <<
+            " 매력: " << unit_list[i].get_attraction() <<  endl;
+            developed_unit.push_back(&unit_list[i]);
+            unit_index++;
+        }
+    }
+    cin >> selected_unit_index;
 
-//    state_index = 1;
-//    for(int i = 0; i < state_id_list.size(); i++) {
-//        if (!player->chk_own_state(state_id_list[i])){
-//            if(selected_state == state_index) {
-//                aggress_state_id = state_id_list[i];
-//                aggress_hero = hero;
-//            }
-//            state_index++;
-//        }
-//    }
-//    clickMapActionBtnWrapUp();
+    aggress_hero = developed_unit[selected_unit_index - 1];
+
+    state_index = 1;
+    for(int i = 0; i < state_id_list.size(); i++) {
+        if (!player->chk_own_state(state_id_list[i])){
+            if(selected_state == state_index) {
+                aggress_state_id = state_id_list[i];
+                aggress_hero = hero;
+            }
+            state_index++;
+        }
+    }
+    clickMapActionBtnWrapUp();
 }
 void MainWindow::clickMapActionBtnWrapUp(){
-//    cout << input_hero << "의 행동력이 소모됩니다.\n\n";
+    QString final = QString::fromStdString(hero->get_name());
+    final = final.append("의 행동력이 소모됩니다.");
+    showAlert(final);
+    // player 전쟁 정보 확인
+    // 전쟁시 필요한 정보들
+    StateId aggress_state_id = (StateId)0;
+    int aggress_num_solider = 0;
+    GameUnit *aggress_hero = 0;
+
+    if(aggress_state_id) {
+        GameUnit *ai_unit;
+        aggress_hero->set_can_move(false);
+
+        if(ai->chk_own_state(aggress_state_id)) {
+            ai_unit = ai->defence_state(*current_state, *game.get_state_by_id(aggress_state_id), *aggress_hero, aggress_num_solider);
+            bool result = current_state->war(*aggress_hero, aggress_num_solider, *game.get_state_by_id(aggress_state_id), *ai_unit);
+            if(result)
+                cout << "공격에 성공했습니다.\n";
+            else
+                cout << "공격에 실패했습니다.\n";
+        }
+        else {
+            State *state = game.get_state_by_id(aggress_state_id);
+            player->add_state(state);
+            state->set_state_owner(player);
+            cout << "공격에 성공했습니다.\n";
+        }
+    }
 }
 void MainWindow::clickMapActionBtn5(){
     game.increase_total_turn();
@@ -335,6 +320,29 @@ void MainWindow::showSelection(QString message, QString cancel, QString accept){
     ui->selection_cancel_btn->setText(cancel);
     ui->selectionDialog->raise();
     ui->selectionDialog->show();
+
+    if(!cancel.compare("모집")){
+        connect(ui->selection_accept_btn, SIGNAL(released()),this, SLOT(selectionRecruitA()));
+        connect(ui->selection_cancel_btn, SIGNAL(released()),this, SLOT(selectionRecruitC()));
+    }
+
+}
+void MainWindow::selectionRecruitA(){
+//    cout << hero->get_name();
+    player->command(TrainSolider, *hero);
+    clickMapActionBtnWrapUp();
+}
+void MainWindow::selectionRecruitC(){
+    int num_soldier;
+    while (true) {
+        cout << "모집할 병사의 수를 입력하세요\n";
+        cin >> num_soldier;
+        if(num_soldier <= player->get_total_rice())
+            break;
+        cout << "식량이 부족합니다\n";
+    }
+    player->command(GetSoldier, *hero, num_soldier);
+    clickMapActionBtnWrapUp();
 }
 void MainWindow::closeSelectionCancel(){
     ui->selectionDialog->hide();
@@ -354,36 +362,37 @@ void MainWindow::showList(std::vector<QString> list, bool should_show_back){
         button->setFixedSize(120,32);
         button->setStyleSheet("border-radius: 5px;background-color: #007aff;color: white;");
         button->setText(item);
-        paramMapper -> setMapping (button, item) ;
-        connect (paramMapper, SIGNAL(mapped(QString)), this, SLOT(listHero(QString))) ;
+        paramMapper->setMapping(button, item);
+        connect(button, SIGNAL(released()),paramMapper, SLOT(map()));
         layout->addWidget(button);
     }
+    connect(paramMapper, SIGNAL(mapped(QString)), this, SLOT(listHero(QString))) ;
 
     layout->setAlignment(Qt::AlignCenter);
     ui->listDialog->setLayout(layout); // Add the layout to widget!
     ui->listDialog->raise();
     ui->listDialog->show();
 }
-void MainWindow::closeList(){
+void MainWindow::closeList(bool success){
     ui->listDialog->hide();
-    QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4};
-    for(int i=0;i<4;i++){
-        controlButtons[i]->setStyleSheet("border-radius: 5px;background-color: #007aff;color: white;");
-        controlButtons[i]->setDisabled(true);
-        QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
-        effect->setBlurRadius(20);
-        effect->setXOffset(0.2);
-        effect->setYOffset(0.5);
-        effect->setColor(transparentBlue);
-        controlButtons[i]->setGraphicsEffect(effect);
+    if(success){
+        QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4};
+        for(int i=0;i<4;i++){
+            controlButtons[i]->setStyleSheet("border-radius: 5px;background-color: #007aff;color: white;");
+            controlButtons[i]->setEnabled(true);
+            QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+            effect->setBlurRadius(20);
+            effect->setXOffset(0.2);
+            effect->setYOffset(0.5);
+            effect->setColor(transparentBlue);
+            controlButtons[i]->setGraphicsEffect(effect);
+        }
     }
 }
 
-void MainWindow::listHero(QString value){
-    bool flag = false;
-
+void MainWindow::listDefenceHero(QString value){
     if(!value.compare("돌아가기")){
-        closeList();
+        closeList(false);
         return;
     }
 
@@ -406,6 +415,38 @@ void MainWindow::listHero(QString value){
     attacked_state = NULL;
     war_hero = NULL;
 //    ai_aggress_state_id = 0;
+
+
+}
+
+void MainWindow::listHero(QString value){
+    if(!value.compare("돌아가기")){
+        closeList(false);
+        return;
+    }
+
+    string str = value.toStdString();
+    char cstr[str.size() + 1];
+    strcpy(cstr, str.c_str());
+    char *token = std::strtok(cstr, " ");
+    token = std::strtok(cstr, " ");
+    string firstWord = std::strtok(cstr, " :");
+
+    vector<GameUnit> &unit_list = current_state->get_unit_list();
+    vector<GameUnit>::iterator unitIter;
+    for(GameUnit &unit : unit_list){
+        if(!unit.get_name().compare(firstWord)) {
+            cout << firstWord<<endl;
+            hero = &unit;
+            closeList(true);
+            return;
+        }
+    }
+
+    if(!hero->get_can_move()) {
+        cout << hero->get_name() << "의 행동력이 부족합니다\n";
+        return;
+    }
 }
 
 void MainWindow::gameInit(){
@@ -443,14 +484,8 @@ void MainWindow::gameLoop(){
     for(int i = 0; i < all_state.size(); i++)
         all_state[i]->reset_can_move();
 
-    // 전쟁시 필요한 정보들
-    StateId aggress_state_id = (StateId)0;
-    int aggress_num_solider = 0;
-    GameUnit *aggress_hero = 0;
 
     StateId ai_aggress_state_id = (StateId)0;
-    int ai_aggress_num_solider = 0;
-    GameUnit *ai_aggress_hero = 0;
 
     // 현재 플레이어 설정
     current_user = game.get_user_turn();
@@ -617,6 +652,7 @@ void MainWindow::initBoard(){
     connect(ui->btn_hero_2, SIGNAL(released()),this, SLOT(setHero2()));
     connect(ui->btn_hero_3, SIGNAL(released()),this, SLOT(setHero3()));
     connect(ui->btn_hero_4, SIGNAL(released()),this, SLOT(setHero4()));
+
 
     QSignalMapper* signalMapper = new QSignalMapper (this) ;
     connect(ui->map1, SIGNAL(released()),signalMapper, SLOT(map()));

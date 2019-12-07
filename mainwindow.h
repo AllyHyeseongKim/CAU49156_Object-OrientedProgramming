@@ -47,9 +47,12 @@ public slots:
     void closeAlert();
     void closeSelectionCancel();
     void closeSelectionAccept();
-    void closeList();
+    void closeList(bool success);
     void clickMap(int id);
     void listHero(QString value);
+    void listDefenceHero(QString value);
+    void selectionRecruitC();
+    void selectionRecruitA();
 private:
     Ui::MainWindow *ui;
 };
