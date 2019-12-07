@@ -305,9 +305,9 @@
    <widget class="QLabel" name="label2">
     <property name="geometry">
      <rect>
-      <x>139</x>
+      <x>30</x>
       <y>45</y>
-      <width>111</width>
+      <width>200</width>
       <height>20</height>
      </rect>
     </property>
@@ -326,24 +326,6 @@
       <x>30</x>
       <y>105</y>
       <width>200</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Nanum Gothic</family>
-     </font>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label1">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>45</y>
-      <width>101</width>
       <height>20</height>
      </rect>
     </property>
@@ -627,7 +609,7 @@
      <rect>
       <x>60</x>
       <y>45</y>
-      <width>211</width>
+      <width>207</width>
       <height>21</height>
      </rect>
     </property>
@@ -643,7 +625,7 @@
      <string notr="true"/>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-bottom: 1.5px solid #888888; background-color:#00000000; border-top: 0;</string>
+     <string notr="true">border-bottom: 1.5px solid #007aff; background-color:#00000000; border-top: 0;</string>
     </property>
     <property name="frame">
      <bool>false</bool>
@@ -979,15 +961,104 @@
     <string notr="true">background-color: #BF000000;</string>
    </property>
   </widget>
-  <zorder>container5</zorder>
-  <zorder>alertDialog</zorder>
-  <zorder>selectionDialog</zorder>
+  <widget class="QWidget" name="inputDialog" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>590</width>
+     <height>440</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #BF000000;</string>
+   </property>
+   <widget class="QLineEdit" name="line_edit">
+    <property name="geometry">
+     <rect>
+      <x>235</x>
+      <y>210</y>
+      <width>120</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>NanumGothic</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-bottom: 1.5px solid #007aff; background-color:#00000000; border-top: 0; color:white;</string>
+    </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhNone</set>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="input_label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>591</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Nanum Gothic</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:#00000000; color:white;</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="input_accept_btn">
+    <property name="geometry">
+     <rect>
+      <x>235</x>
+      <y>360</y>
+      <width>120</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Nanum Gothic</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
+    </property>
+    <property name="text">
+     <string>확인</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+   </widget>
+  </widget>
   <zorder>listDialog</zorder>
+  <zorder>selectionDialog</zorder>
+  <zorder>alertDialog</zorder>
+  <zorder>container5</zorder>
   <zorder>imageView</zorder>
   <zorder>container3</zorder>
   <zorder>buttonGrid</zorder>
   <zorder>container2</zorder>
   <zorder>container4</zorder>
+  <zorder>inputDialog</zorder>
  </widget>
  <resources/>
  <connections/>

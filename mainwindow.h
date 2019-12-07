@@ -17,7 +17,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void setText1(int a);
     void setText2(int a);
     void gameStart();
     void initBoard();
@@ -30,7 +29,8 @@ public:
     void setText3(int a);
     void gameLoop();
     void clickMapActionBtnWrapUp();
-    void showList(std::vector<QString> list, bool should_show_back);
+    void showList(std::vector<QString> list, bool should_show_back, int mode);
+    void showInputDialog(std::string title, int mode);
 public slots:
     void setUserID();
     void setHero1();
@@ -50,9 +50,17 @@ public slots:
     void closeList(bool success);
     void clickMap(int id);
     void listHero(QString value);
+    void listHero1(QString value);
     void listDefenceHero(QString value);
     void selectionRecruitC();
     void selectionRecruitA();
+    void hardHR1();
+    void hardHR2();
+    void hardHR3();
+    void chooseMap(int id);
+    void highlightMap();
+    void closeInputDialogRecruit();
+    void closeInputDialogWar();
 private:
     Ui::MainWindow *ui;
 };

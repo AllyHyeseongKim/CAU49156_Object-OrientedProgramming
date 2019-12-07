@@ -11,6 +11,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <QIntValidator>
 
 GameController game;
 Player *player;
@@ -23,6 +24,11 @@ State *attacked_state;
 GameUnit *war_hero;
 State* current_state;
 GameUnit *hero = NULL;
+QVBoxLayout *showListLayout;
+vector<GameUnit*> dev_list;
+vector<QString> dev;
+int aggress_num_solider = 0;
+GameUnit* aggress_hero;
 
 QColor black(0,0,0);
 QColor transparentBlack(0,0,0,120);
@@ -56,10 +62,19 @@ void MainWindow::clickMap(int id){
     vector<GameUnit> &unit_list = current_state->get_unit_list();
     vector<GameUnit>::iterator unitIter;
     bool flag = false;
-
     //행동할 수 있는 유닛 확인
     vector<GameUnit> available_list;
     vector<QString> show_list;
+    for(unitIter = unit_list.begin(); unitIter != unit_list.end(); unitIter++){
+        if(((*unitIter).get_status() == munonarch || (*unitIter).get_status() == hired) && (*unitIter).get_can_move()) {
+            flag = true;
+            break;
+        }
+    }
+
+    if(!flag) {
+        showAlert("활동할 수 있는 영웅이 없습니다.");
+    }
 
     for(unitIter = unit_list.begin(); unitIter != unit_list.end(); unitIter++){
         if(((*unitIter).get_status() == munonarch || (*unitIter).get_status() == hired) && (*unitIter).get_can_move()) {
@@ -87,9 +102,75 @@ void MainWindow::clickMap(int id){
         return;
     }
     else{
-        showList(show_list, true);
+        showList(show_list, true, 2);
         showAlert("임무를 수행할 영웅을 선택하십시오.");
     }
+}
+void MainWindow::chooseMap(int id){
+    State& select_state = player->find_own_state(static_cast<StateId>(id));
+    current_state = &select_state;
+
+    player->command(MoveUnit, *hero, id);
+    showAlert("이동 완료");
+
+    QSignalMapper* signalMapper = new QSignalMapper (this) ;
+    connect(ui->map1, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map2, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map3, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map4, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map5, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map6, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map7, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map8, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map9, SIGNAL(released()),signalMapper, SLOT(map()));
+    signalMapper -> setMapping (ui->map1, 1) ;
+    signalMapper -> setMapping (ui->map2, 2) ;
+    signalMapper -> setMapping (ui->map3, 3) ;
+    signalMapper -> setMapping (ui->map4, 4) ;
+    signalMapper -> setMapping (ui->map5, 5) ;
+    signalMapper -> setMapping (ui->map6, 6) ;
+    signalMapper -> setMapping (ui->map7, 7) ;
+    signalMapper -> setMapping (ui->map8, 8) ;
+    signalMapper -> setMapping (ui->map9, 9) ;
+    connect (signalMapper, SIGNAL(mapped(int)), this, SLOT(clickMap(int)));
+
+    closeList(false);
+}
+void MainWindow::highlightMap(){
+    QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
+    for(QToolButton *button : mapButtons){
+        button->setDisabled(true);
+        button->setStyleSheet("color: #CCCCCC; border-radius: 10px; background-color: #80000000;");
+    }
+    vector<State*> mystate = player->get_own_states();
+    for(State *state : mystate){
+        mapButtons[state->get_state_id() - 1]->setEnabled(true);
+        mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #000000; border-radius: 10px; background-color: #A0FFFFFF;");
+    }
+    mapButtons[current_state->get_state_id()]->setDisabled(true);
+    mapButtons[current_state->get_state_id()]->setStyleSheet("color: #CCCCCC; border-radius: 10px; background-color: #80000000;");
+
+    QSignalMapper* signalMapper = new QSignalMapper (this) ;
+    connect(ui->map1, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map2, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map3, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map4, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map5, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map6, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map7, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map8, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map9, SIGNAL(released()),signalMapper, SLOT(map()));
+    signalMapper -> setMapping (ui->map1, 1) ;
+    signalMapper -> setMapping (ui->map2, 2) ;
+    signalMapper -> setMapping (ui->map3, 3) ;
+    signalMapper -> setMapping (ui->map4, 4) ;
+    signalMapper -> setMapping (ui->map5, 5) ;
+    signalMapper -> setMapping (ui->map6, 6) ;
+    signalMapper -> setMapping (ui->map7, 7) ;
+    signalMapper -> setMapping (ui->map8, 8) ;
+    signalMapper -> setMapping (ui->map9, 9) ;
+    connect (signalMapper, SIGNAL(mapped(int)), this, SLOT(clickMap(int)));
+
 }
 void MainWindow::clickMapActionBtn1(){
     if(!hero->get_can_move()) {
@@ -98,87 +179,9 @@ void MainWindow::clickMapActionBtn1(){
         showAlert(final);
         return;
     }
-    showAlert("가나다");
-    cout << "1. 탐색 : 현재 있는 영지의 영웅을 탐색할 수 있는 것으로, 미발견 상태의 인물을 발견하여 재야 상태로 바꾼다.\n";
-    cout << "2. 등용 : 탐색으로 발견되어 '재야' 상태이거나, 전쟁에서 진 상대편의 영웅(재야 상태)를 등용할 수 있는 것으로, 매력의 영향을 받는다.\n";
-    cout << "3. 이동 : 본인이 등용한 장수를 다른 영지로 이동시킬 수 있다.\n";
 
-    vector<GameUnit> &temp_unit_list = current_state->get_unit_list();
-
-    switch(1) {
-        case 1: {// 탐색
-            player->command(FindUnit, *hero);
-            break;
-        }
-        case 2: {// 등용
-            int unit_index = 1;
-            int selected_unit_index;
-            int num_develop = 0;
-            vector<GameUnit*> developed_unit;
-            cout << temp_unit_list.size() << endl;
-
-
-            for(int i = 0; i < temp_unit_list.size(); i++){
-                if(temp_unit_list[i].get_status() == developed){
-                    num_develop++;
-                }
-            }
-            if (num_develop == 0) {
-                cout << "등용할 영웅이 없습니다.\n";
-                break;
-            }
-
-            cout << "등용할 영웅을 고르시오\n";
-
-            for(int i = 0; i < temp_unit_list.size(); i++){
-                if(temp_unit_list[i].get_status() == developed){
-                    cout << unit_index <<':' << temp_unit_list[i].get_name() <<
-                    " 무력: " << temp_unit_list[i].get_strength() << " 통솔: " << temp_unit_list[i].get_leadearship() <<
-                    " 지력: " << temp_unit_list[i].get_wisdom() << "정치: " << temp_unit_list[i].get_political() <<
-                    " 매력: " << temp_unit_list[i].get_attraction() <<  endl;
-                    developed_unit.push_back(&temp_unit_list[i]);
-                    unit_index++;
-                }
-            }
-            cin >> selected_unit_index;
-            unit_index = 1;
-            player->command(GetUnit, *hero, *developed_unit[selected_unit_index - 1]);
-
-            if(current_state->is_hired(*developed_unit[selected_unit_index - 1]))
-                cout << developed_unit[selected_unit_index - 1]->get_name() <<  "이 등용되었습니다. " << endl;
-            else
-                cout << developed_unit[selected_unit_index - 1]->get_name() <<  "을 등용에 실패하셨습니다. " << endl;
-
-            break;
-        }
-        case 3: {// 이동
-            std::vector<State*> state_list = player->get_own_states();
-            int selected_index;
-            StateId selected_state_id;
-            cout << "\n 옮길 지역을 입력해주세요.\n";
-            for (int i = 0; i < state_list.size(); i++) {
-                cout << i + 1 << ": " << state_list[i]->get_state_name() << endl;
-            }
-
-            while(true) {
-                cin >> selected_index;
-
-                for (int i = 0; i < state_list.size(); i++) {
-                    if(selected_index == i + 1) {
-                        selected_state_id = state_list[i]->get_state_id();
-                    }
-                }
-
-                if(player->chk_own_state(selected_state_id))
-                    break;
-                cout << "\n 바른 지역을 입력해주세요.\n";
-            }
-
-            player->command(MoveUnit, *hero, selected_state_id);
-            return;
-        }
-    }
-    clickMapActionBtnWrapUp();
+    vector<QString> v = {"탐색", "등용", "이동", "현재 있는 영지의 영웅을 탐색할 수 있는 것으로, 미발견 상태의 인물을 발견하여 재야 상태로 바꾼다.", "탐색으로 발견되어 '재야' 상태이거나, 전쟁에서 진 상대편의 영웅(재야 상태)를 등용할 수 있는 것으로, 매력의 영향을 받는다.", "본인이 등용한 장수를 다른 영지로 이동시킬 수 있다."};
+    showList(v, true, 0);
 }
 void MainWindow::clickMapActionBtn2(){
     if(!hero->get_can_move()) {
@@ -206,6 +209,7 @@ void MainWindow::clickMapActionBtn4(){
         showAlert(final);
         return;
     }
+
     std::vector<StateId> state_id_list = current_state->get_near_state();
     std::vector<State*> state_list = game.get_states();
     vector<GameUnit*> developed_unit;
@@ -218,7 +222,6 @@ void MainWindow::clickMapActionBtn4(){
     bool flag = false;
     int unit_index = 1;
     int selected_unit_index;
-    int aggress_num_solider = 0;
 
 
     for(int i = 0; i < state_id_list.size(); i++) {
@@ -228,15 +231,11 @@ void MainWindow::clickMapActionBtn4(){
         }
     }
 
-    cin >> selected_state;
 
-    aggress_num_solider = 0;
-    while(aggress_num_solider > current_state->get_state_soilder()) {
-        cout << "병사의 수를 입력하세요. 최대 유닛: " << current_state->get_state_soilder() << endl;
-        cin >> aggress_num_solider;
-    }
+    showInputDialog(to_string(current_state->get_state_soilder()).append("명 중 얼마의 병사를 이끄시겠습니까?"), 0);
 
-    cout << "전쟁에 내보낼 영웅을 고르시오\n";
+    //todo
+    vector<QString> show_list;
 
     for(int i = 0; i < unit_list.size(); i++){
         if(unit_list[i].get_status() == hired || unit_list[i].get_status() == munonarch){
@@ -248,7 +247,9 @@ void MainWindow::clickMapActionBtn4(){
             unit_index++;
         }
     }
-    cin >> selected_unit_index;
+
+    showList(show_list, false, 4);
+    showAlert("전쟁에 내보낼 영웅을 고르시오.");
 
     aggress_hero = developed_unit[selected_unit_index - 1];
 
@@ -268,11 +269,10 @@ void MainWindow::clickMapActionBtnWrapUp(){
     QString final = QString::fromStdString(hero->get_name());
     final = final.append("의 행동력이 소모됩니다.");
     showAlert(final);
+    closeList(false);
     // player 전쟁 정보 확인
     // 전쟁시 필요한 정보들
     StateId aggress_state_id = (StateId)0;
-    int aggress_num_solider = 0;
-    GameUnit *aggress_hero = 0;
 
     if(aggress_state_id) {
         GameUnit *ai_unit;
@@ -282,15 +282,15 @@ void MainWindow::clickMapActionBtnWrapUp(){
             ai_unit = ai->defence_state(*current_state, *game.get_state_by_id(aggress_state_id), *aggress_hero, aggress_num_solider);
             bool result = current_state->war(*aggress_hero, aggress_num_solider, *game.get_state_by_id(aggress_state_id), *ai_unit);
             if(result)
-                cout << "공격에 성공했습니다.\n";
+                showAlert("공격에 성공했습니다.");
             else
-                cout << "공격에 실패했습니다.\n";
+                showAlert("공격에 실패했습니다.");
         }
         else {
             State *state = game.get_state_by_id(aggress_state_id);
             player->add_state(state);
             state->set_state_owner(player);
-            cout << "공격에 성공했습니다.\n";
+            showAlert("공격에 성공했습니다.");
         }
     }
 }
@@ -311,8 +311,61 @@ void MainWindow::showAlert(QString n){
     ui->alertDialog->raise();
     ui->alertDialog->show();
 }
+
 void MainWindow::closeAlert(){
     ui->alertDialog->hide();
+}
+void MainWindow::showInputDialog(string title, int mode){
+    ui->input_label->setText(QString::fromStdString(title));
+    ui->inputDialog->show();
+
+    switch (mode){
+    case 0:{//전쟁
+        connect(ui->input_accept_btn, SIGNAL(released()), this, SLOT(closeInputDialogWar()));
+        break;
+    }
+    case 1:{//모집할 병사 수
+        connect(ui->input_accept_btn, SIGNAL(released()), this, SLOT(closeInputDialogRecruit()));
+        break;
+    }
+
+    }
+}
+void MainWindow::closeInputDialogWar(){
+    string result = ui->line_edit->text().toStdString();
+    char cstr[result.size() + 1];
+    strcpy(cstr, result.c_str());
+    int number = std::atoi(cstr);
+
+    if(number > current_state->get_state_soilder() || number < 0){
+        ui->line_edit->setText("");
+    }
+    else{
+        ui->inputDialog->hide();
+        ui->line_edit->setText("");
+        aggress_num_solider = number;
+    }
+}
+void MainWindow::closeInputDialogRecruit(){
+    string result = ui->line_edit->text().toStdString();
+    char cstr[result.size()+1];
+    strcpy(cstr, result.c_str());
+    int num_soldier = std::atoi(cstr);
+
+    cout<<num_soldier<<"...........";
+
+    if(num_soldier > player->get_total_rice()){
+        ui->line_edit->setText("");
+        showAlert("식량이 부족합니다.");
+    }
+    else{
+        ui->inputDialog->hide();
+        ui->line_edit->setText("");
+        player->command(GetSoldier, *hero, num_soldier);
+        clickMapActionBtnWrapUp();
+    }
+
+
 }
 void MainWindow::showSelection(QString message, QString cancel, QString accept){
     ui->selection_label->setText(message);
@@ -328,21 +381,11 @@ void MainWindow::showSelection(QString message, QString cancel, QString accept){
 
 }
 void MainWindow::selectionRecruitA(){
-//    cout << hero->get_name();
     player->command(TrainSolider, *hero);
     clickMapActionBtnWrapUp();
 }
 void MainWindow::selectionRecruitC(){
-    int num_soldier;
-    while (true) {
-        cout << "모집할 병사의 수를 입력하세요\n";
-        cin >> num_soldier;
-        if(num_soldier <= player->get_total_rice())
-            break;
-        cout << "식량이 부족합니다\n";
-    }
-    player->command(GetSoldier, *hero, num_soldier);
-    clickMapActionBtnWrapUp();
+    showInputDialog("모집할 병사의 수를 입력하세요.", 1);
 }
 void MainWindow::closeSelectionCancel(){
     ui->selectionDialog->hide();
@@ -350,28 +393,171 @@ void MainWindow::closeSelectionCancel(){
 void MainWindow::closeSelectionAccept(){
     ui->selectionDialog->hide();
 }
-void MainWindow::showList(std::vector<QString> list, bool should_show_back){
+void MainWindow::showList(std::vector<QString> list, bool should_show_back, int mode){
     if(should_show_back){
         list.push_back(QString::fromStdString("돌아가기"));
     }
 
-    QVBoxLayout *layout=new QVBoxLayout();
-    QSignalMapper* paramMapper = new QSignalMapper (this) ;
-    for (QString item : list) {
-        QPushButton *button = new QPushButton();
-        button->setFixedSize(120,32);
-        button->setStyleSheet("border-radius: 5px;background-color: #007aff;color: white;");
-        button->setText(item);
-        paramMapper->setMapping(button, item);
-        connect(button, SIGNAL(released()),paramMapper, SLOT(map()));
-        layout->addWidget(button);
+    showListLayout = new QVBoxLayout();
+    QSignalMapper* paramMapper = new QSignalMapper (this);
+    switch(mode){
+    case 0: {//hard_code
+        QPushButton *button1 = new QPushButton();
+        QPushButton *button2 = new QPushButton();
+        QPushButton *button3 = new QPushButton();
+        button1->setFixedSize(120,32);
+        button2->setFixedSize(120,32);
+        button3->setFixedSize(120,32);
+        button1->setStyleSheet("border-radius: 5px;background-color: #007aff;color: white;");
+        button2->setStyleSheet("border-radius: 5px;background-color: #007aff;color: white;");
+        button3->setStyleSheet("border-radius: 5px;background-color: #007aff;color: white;");
+        button1->setText(list[0]);
+        button1->setToolTip(list[3]);
+        button2->setText(list[1]);
+        button2->setToolTip(list[4]);
+        button3->setText(list[2]);
+        button3->setToolTip(list[5]);
+        connect(button1, SIGNAL(released()),this, SLOT(hardHR1()));
+        connect(button2, SIGNAL(released()),this, SLOT(hardHR2()));
+        connect(button3, SIGNAL(released()),this, SLOT(hardHR3()));
+        showListLayout->addWidget(button1);
+        showListLayout->addWidget(button2);
+        showListLayout->addWidget(button3);
+        break;
     }
-    connect(paramMapper, SIGNAL(mapped(QString)), this, SLOT(listHero(QString))) ;
+    case 1:{//war incoming
+        for (QString item : list) {
+            QPushButton *button = new QPushButton();
+            button->setFixedSize(120,32);
+            button->setStyleSheet("border-radius: 5px;background-color: #007aff;color: white;");
+            button->setText(item);
+            paramMapper->setMapping(button, item);
+            connect(button, SIGNAL(released()),paramMapper, SLOT(map()));
+            showListLayout->addWidget(button);
+        }
+        connect(paramMapper, SIGNAL(mapped(QString)), this, SLOT(listDefenceHero(QString)));
+        break;
+    }
+    case 2:{//default hero selector
+        for (QString item : list) {
+            QPushButton *button = new QPushButton();
+            button->setFixedSize(120,32);
+            button->setStyleSheet("border-radius: 5px;background-color: #007aff;color: white;");
+            button->setText(item);
+            paramMapper->setMapping(button, item);
+            connect(button, SIGNAL(released()),paramMapper, SLOT(map()));
+            showListLayout->addWidget(button);
+        }
+        connect(paramMapper, SIGNAL(mapped(QString)), this, SLOT(listHero(QString)));
+        break;
+    }
+    case 3:{//todo : 등용할 영웅
+        for(int i=0;i<list.size();i+=2){
+            QPushButton *button = new QPushButton();
+            button->setFixedSize(120,32);
+            button->setStyleSheet("border-radius: 5px;background-color: #007aff;color: white;");
+            button->setText(list[i]);
+            button->setToolTip(list[i+1]);
+            paramMapper->setMapping(button, list[i]);
+            connect(button, SIGNAL(released()),paramMapper, SLOT(map()));
+            showListLayout->addWidget(button);
+        }
+        connect(paramMapper, SIGNAL(mapped(QString)), this, SLOT(listHero1(QString)));
+        closeList(false);
+        break;
+    }
+    case 4:{//todo : 전쟁에 참여할 영웅
+        break;
+    }
+    }
 
-    layout->setAlignment(Qt::AlignCenter);
-    ui->listDialog->setLayout(layout); // Add the layout to widget!
+    showListLayout->setAlignment(Qt::AlignCenter);
+    ui->listDialog->setLayout(showListLayout); // Add the layout to widget!
     ui->listDialog->raise();
     ui->listDialog->show();
+}
+void MainWindow::hardHR1(){
+    player->command(FindUnit, *hero);
+    clickMapActionBtnWrapUp();
+}
+void MainWindow::hardHR2(){
+    vector<GameUnit> &temp_unit_list = current_state->get_unit_list();
+    int unit_index = 1;
+    int selected_unit_index;
+    int num_develop = 0;
+    vector<GameUnit*> developed_unit;
+    cout << temp_unit_list.size() << endl;
+
+
+    for(int i = 0; i < temp_unit_list.size(); i++){
+        if(temp_unit_list[i].get_status() == developed){
+            num_develop++;
+        }
+    }
+    if (num_develop == 0) {
+        showAlert("등용할 영웅이 없습니다.");
+        return;
+    }
+    for(int i = 0; i < temp_unit_list.size(); i++){
+        if(temp_unit_list[i].get_status() == developed){
+            dev.push_back(QString::fromStdString(temp_unit_list[i].get_name()));
+            string toolTipText = "무력: ";
+            toolTipText = toolTipText.append(to_string(temp_unit_list[i].get_strength()));
+            toolTipText = toolTipText.append("\n통솔: ");
+            toolTipText = toolTipText.append(to_string(temp_unit_list[i].get_leadearship()));
+            toolTipText = toolTipText.append("\n지력: ");
+            toolTipText = toolTipText.append(to_string(temp_unit_list[i].get_wisdom()));
+            toolTipText = toolTipText.append("\n정치: ");
+            toolTipText = toolTipText.append(to_string(temp_unit_list[i].get_political()));
+            toolTipText = toolTipText.append("\n매력: ");
+            toolTipText = toolTipText.append(to_string(temp_unit_list[i].get_attraction()));
+            dev.push_back(QString::fromStdString(toolTipText));
+            dev_list.push_back(&temp_unit_list[i]);
+
+        }
+    }
+
+    showList(dev, false, 3);
+
+
+}
+void MainWindow::hardHR3(){
+    //todo
+    StateId selected_state_id;
+    showAlert("옮길 지역을 입력해주세요.");
+    closeList(false);
+    QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
+
+    QSignalMapper* signalMapper = new QSignalMapper (this) ;
+    connect(ui->map1, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map2, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map3, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map4, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map5, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map6, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map7, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map8, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map9, SIGNAL(released()),signalMapper, SLOT(map()));
+    signalMapper -> setMapping (ui->map1, 1) ;
+    signalMapper -> setMapping (ui->map2, 2) ;
+    signalMapper -> setMapping (ui->map3, 3) ;
+    signalMapper -> setMapping (ui->map4, 4) ;
+    signalMapper -> setMapping (ui->map5, 5) ;
+    signalMapper -> setMapping (ui->map6, 6) ;
+    signalMapper -> setMapping (ui->map7, 7) ;
+    signalMapper -> setMapping (ui->map8, 8) ;
+    signalMapper -> setMapping (ui->map9, 9) ;
+    connect (signalMapper, SIGNAL(mapped(int)), this, SLOT(chooseMap(int)));
+
+    for(QToolButton *button : mapButtons){
+        button->setDisabled(true);
+        button->setStyleSheet("color: #CCCCCC; border-radius: 10px; background-color: #80000000;");
+    }
+    vector<State*> mystate = player->get_own_states();
+    for(State *state : mystate){
+        mapButtons[state->get_state_id() - 1]->setEnabled(true);
+        mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #000000; border-radius: 10px; background-color: #A0FFFFFF;");
+    }
 }
 void MainWindow::closeList(bool success){
     ui->listDialog->hide();
@@ -388,6 +574,9 @@ void MainWindow::closeList(bool success){
             controlButtons[i]->setGraphicsEffect(effect);
         }
     }
+    for (QObject *item : ui->listDialog->children()){
+        delete item;
+    }
 }
 
 void MainWindow::listDefenceHero(QString value){
@@ -396,8 +585,15 @@ void MainWindow::listDefenceHero(QString value){
         return;
     }
 
+    string str = value.toStdString();
+    char cstr[str.size() + 1];
+    strcpy(cstr, str.c_str());
+    char *token = std::strtok(cstr, " ");
+    token = std::strtok(cstr, " ");
+    string firstWord = std::strtok(cstr, " :");
+
     for(GameUnit item : attacked_state->get_unit_list()){
-        if(!item.get_name().compare(value.toStdString())){
+        if(!item.get_name().compare(firstWord)){
             war_hero = &item;
             break;
         }
@@ -436,12 +632,47 @@ void MainWindow::listHero(QString value){
     vector<GameUnit>::iterator unitIter;
     for(GameUnit &unit : unit_list){
         if(!unit.get_name().compare(firstWord)) {
-            cout << firstWord<<endl;
             hero = &unit;
             closeList(true);
             return;
         }
     }
+
+    if(!hero->get_can_move()) {
+        showAlert(QString::fromStdString(hero->get_name()).append("의 행동력이 부족합니다"));
+        return;
+    }
+}
+
+void MainWindow::listHero1(QString value){
+    if(!value.compare("돌아가기")){
+        closeList(false);
+        return;
+    }
+
+    string str = value.toStdString();
+    char cstr[str.size() + 1];
+    strcpy(cstr, str.c_str());
+    char *token = std::strtok(cstr, " ");
+    token = std::strtok(cstr, " ");
+    string firstWord = std::strtok(cstr, " :");
+
+
+    int i;
+    for(i=0;i<dev_list.size();i++){
+        if(!dev_list[i]->get_name().compare(firstWord)){
+            break;
+        }
+    }
+
+    player->command(GetUnit, *hero, *dev_list[i]);
+
+    if(current_state->is_hired(*dev_list[i]))
+        cout << dev_list[i]->get_name() <<  "이 등용되었습니다. " << endl;
+    else
+        cout << dev_list[i]->get_name() <<  "을 등용에 실패하셨습니다. " << endl;
+    clickMapActionBtnWrapUp();
+
 
     if(!hero->get_can_move()) {
         cout << hero->get_name() << "의 행동력이 부족합니다\n";
@@ -469,8 +700,6 @@ void MainWindow::gameInit(){
 
     // 시작 플레이어 - 사용자(player)부터 시작한다
     game.set_user_turn(player);
-//    std::vector<QString> selectionStrings = {"a", "b"};
-//    showList(selectionStrings);
 
 
     setText2(player->get_total_rice());
@@ -562,7 +791,7 @@ void MainWindow::gameLoop(){
                     show_list.push_back(QString::fromStdString((*unitIter).get_name()));
                 }
             }
-            showList(show_list, false);
+            showList(show_list, false, 1);
             showAlert(QString::fromStdString(attacked_state->get_state_name()).append("이 공격당했습니다.\n출전시킬 영웅을 고르세요."));
         }
     }
@@ -595,6 +824,27 @@ void MainWindow::gameLoop(){
         mapButtons[state->get_state_id() - 1]->setEnabled(true);
         mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #000000; border-radius: 10px; background-color: #A0FFFFFF;");
     }
+
+    QSignalMapper* signalMapper = new QSignalMapper (this) ;
+    connect(ui->map1, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map2, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map3, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map4, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map5, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map6, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map7, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map8, SIGNAL(released()),signalMapper, SLOT(map()));
+    connect(ui->map9, SIGNAL(released()),signalMapper, SLOT(map()));
+    signalMapper -> setMapping (ui->map1, 1) ;
+    signalMapper -> setMapping (ui->map2, 2) ;
+    signalMapper -> setMapping (ui->map3, 3) ;
+    signalMapper -> setMapping (ui->map4, 4) ;
+    signalMapper -> setMapping (ui->map5, 5) ;
+    signalMapper -> setMapping (ui->map6, 6) ;
+    signalMapper -> setMapping (ui->map7, 7) ;
+    signalMapper -> setMapping (ui->map8, 8) ;
+    signalMapper -> setMapping (ui->map9, 9) ;
+    connect (signalMapper, SIGNAL(mapped(int)), this, SLOT(clickMap(int)));
 }
 
 void MainWindow::initBoard(){
@@ -630,7 +880,6 @@ void MainWindow::initBoard(){
 
     ui->id->setAttribute(Qt::WA_MacShowFocusRect,0);
 
-    setText1(0);
     setText2(0);
     setText3(0);
     setText4(0, 0);
@@ -642,6 +891,7 @@ void MainWindow::initBoard(){
     ui->container3->hide();
     ui->container5->hide();
     ui->alertDialog->hide();
+    ui->inputDialog->hide();
     ui->selectionDialog->hide();
     ui->listDialog->hide();
 
@@ -673,7 +923,7 @@ void MainWindow::initBoard(){
     signalMapper -> setMapping (ui->map7, 7) ;
     signalMapper -> setMapping (ui->map8, 8) ;
     signalMapper -> setMapping (ui->map9, 9) ;
-    connect (signalMapper, SIGNAL(mapped(int)), this, SLOT(clickMap(int))) ;
+    connect (signalMapper, SIGNAL(mapped(int)), this, SLOT(clickMap(int)));
 
     connect(ui->btn1, SIGNAL(released()),this, SLOT(clickMapActionBtn1()));
     connect(ui->btn2, SIGNAL(released()),this, SLOT(clickMapActionBtn2()));
@@ -683,7 +933,6 @@ void MainWindow::initBoard(){
 
     connect(ui->alert_btn, SIGNAL(released()),this, SLOT(closeAlert()));
     connect(ui->selection_cancel_btn, SIGNAL(released()),this, SLOT(closeSelectionCancel()));
-    connect(ui->selection_accept_btn, SIGNAL(released()),this, SLOT(closeSelectionAccept()));
     connect(ui->selection_accept_btn, SIGNAL(released()),this, SLOT(closeSelectionAccept()));
 }
 
@@ -718,31 +967,26 @@ void MainWindow::setHero(){
     gameInit();
 }
 void MainWindow::setHero1(){
-    showAlert(QString("이성계를 선택했습니다!\n함경도에서 시작합니다!"));
+    showAlert(QString("이성계를 선택했습니다.\n함경도에서 시작합니다!"));
     initial_state = game.get_states().at(0);
     setHero();
 }
 void MainWindow::setHero2(){
-    showAlert(QString("견훤을 선택했습니다!\n전라도에서 시작합니다!"));
+    showAlert(QString("견훤을 선택했습니다.\n전라도에서 시작합니다!"));
     initial_state = game.get_states().at(7);
     setHero();
 }
 void MainWindow::setHero3(){
-    showAlert(QString("문무왕을 선택했습니다!\n경상도에서 시작합니다!"));
+    showAlert(QString("문무왕을 선택했습니다.\n경상도에서 시작합니다!"));
     initial_state = game.get_states().at(6);
     setHero();
 }
 void MainWindow::setHero4(){
-    showAlert(QString("고려 광종을 선택했습니다!\n황해도에서 시작합니다!"));
+    showAlert(QString("고려 광종을 선택했습니다.\n황해도에서 시작합니다!"));
     initial_state = game.get_states().at(3);
     setHero();
 }
 
-void MainWindow::setText1(int a){
-    QString final = "현재 금 : ";
-    final = final.append(QString::number(a));
-    ui->label1->setText(final);
-}
 void MainWindow::setText2(int a){
     QString final = "현재 식량 : ";
     final = final.append(QString::number(a));
