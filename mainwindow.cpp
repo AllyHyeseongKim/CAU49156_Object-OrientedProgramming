@@ -63,6 +63,7 @@ void MainWindow::clickMap(int id){
         current_soldier_count = select_state.get_state_soilder();
         current_soldier_degree = select_state.get_soldier_degree();
 
+        //영토 표시
         for(QToolButton *button : mapButtons){
             button->setDisabled(true);
             button->setStyleSheet("color: #CCCCCC; border-radius: 10px; background-color: #80000000;");
@@ -71,6 +72,11 @@ void MainWindow::clickMap(int id){
         for(State *state : mystate){
             mapButtons[state->get_state_id() - 1]->setEnabled(true);
             mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #000000; border-radius: 10px; background-color: #A0FFFFFF;");
+        }
+        vector<State*> aistate = ai->get_own_states();
+        for(State *state : aistate){
+            mapButtons[state->get_state_id() - 1]->setDisabled(true);
+            mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #FFFFFF; border-radius: 10px; background-color: #A0800000;");
         }
         mapButtons[id-1]->setStyleSheet("border-radius: 10px;background-color: #007aff;color: white;");
 
@@ -130,7 +136,6 @@ void MainWindow::clickMap(int id){
                     toolTipText = toolTipText.append("\n매력: ");
                     toolTipText = toolTipText.append(to_string(unitIter->get_attraction()));
                     show_list.push_back(QString::fromStdString(toolTipText));
-//                    cout<<toolTipText;
                     flag = true;
                 }
             }
@@ -142,20 +147,23 @@ void MainWindow::clickMap(int id){
     else if(clickMapParam==1){//영웅 이동
         player->command(MoveUnit, *hero, (StateId)id);
         showAlert("이동 완료");
-        QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4};
-        for(int i=0;i<4;i++){
-            controlButtons[i]->setStyleSheet("border-radius: 5px;background-color: #007aff;color: white;");
-            controlButtons[i]->setEnabled(true);
-            QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
-            effect->setBlurRadius(20);
-            effect->setXOffset(0.2);
-            effect->setYOffset(0.5);
-            effect->setColor(transparentBlue);
-            controlButtons[i]->setGraphicsEffect(effect);
+        for(QToolButton *button : mapButtons){
+            button->setDisabled(true);
+            button->setStyleSheet("color: #CCCCCC; border-radius: 10px; background-color: #80000000;");
+        }
+        vector<State*> mystate = player->get_own_states();
+        for(State *state : mystate){
+            mapButtons[state->get_state_id() - 1]->setEnabled(true);
+            mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #000000; border-radius: 10px; background-color: #A0FFFFFF;");
+        }
+        vector<State*> aistate = ai->get_own_states();
+        for(State *state : aistate){
+            mapButtons[state->get_state_id() - 1]->setDisabled(true);
+            mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #FFFFFF; border-radius: 10px; background-color: #A0800000;");
         }
         clickMapParam=0;
     }
-    else if(clickMapParam==2){
+    else if(clickMapParam==2){//전쟁
         aggress_state_id = (StateId)id;
         int originalPosition = current_state->get_state_id();
 //        State& select_state = player->find_own_state(static_cast<StateId>(id));
@@ -271,12 +279,6 @@ void MainWindow::clickMapActionBtn5(){
     game.increase_total_turn();
     game.set_user_turn(game.next_user_turn(current_user));
     gameLoop();
-    if(game.check_game_judge() == WIN) {
-        showAlert("승리");
-    }
-    if(game.check_game_judge() == LOSE) {
-        showAlert("패배");
-    }
 }
 
 void MainWindow::showAlert(QString n){
@@ -334,14 +336,19 @@ void MainWindow::closeInputDialogRecruit(){
     strcpy(cstr, result.c_str());
     int num_soldier = std::atoi(cstr);
 
-    current_soldier_count += num_soldier;
-    setText4(current_soldier_count, current_soldier_degree);
 
-    if(num_soldier > player->get_total_rice() || !result.compare("")){
+
+    if(num_soldier > player->get_total_rice()){
         ui->line_edit->setText("");
         showAlert("식량이 부족합니다.");
     }
+    else if(!result.compare("")){
+        ui->line_edit->setText("");
+        showAlert("값이 비정상입니다.");
+    }
     else{
+        current_soldier_count += num_soldier;
+        setText4(current_soldier_count, current_soldier_degree);
         ui->inputDialog->hide();
         ui->inputDialog->lower();
         ui->line_edit->setText("");
@@ -440,7 +447,6 @@ void MainWindow::showList(std::vector<QString> list, bool should_show_back, int 
                 button->setText(list[i]);
                 button->setToolTip(list[i+1]);
             }
-            cout<<list[i].toStdString();
             paramMapper->setMapping(button, list[i]);
             connect(button, SIGNAL(released()),paramMapper, SLOT(map()));
             showListLayout->addWidget(button);
@@ -566,17 +572,61 @@ void MainWindow::listHero2(QString value){
     aggress_hero->set_can_move(false);
 
     QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
+    //전쟁 후 영토 표시
     for(QToolButton *button : mapButtons){
         button->setDisabled(true);
         button->setStyleSheet("color: #CCCCCC; border-radius: 10px; background-color: #80000000;");
     }
-    vector<State*> mystate = player->get_own_states();
-    for(State *state : mystate){
+    for(State *state : player->get_own_states()){
         mapButtons[state->get_state_id() - 1]->setEnabled(true);
         mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #000000; border-radius: 10px; background-color: #A0FFFFFF;");
     }
+    for(State *state : ai->get_own_states()){
+        mapButtons[state->get_state_id() - 1]->setDisabled(true);
+        mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #FFFFFF; border-radius: 10px; background-color: #A0800000;");
+    }
+
+    checkWin();
 
     closeList(false);
+}
+void MainWindow::checkWin(){
+    if(game.check_game_judge() == WIN) {
+        showAlert("승리");
+        QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
+        for(QToolButton *button : mapButtons){
+            button->setEnabled(false);
+        }
+        QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4,ui->btn5};
+        for(int i=0;i<5;i++){
+            controlButtons[i]->setStyleSheet("border-radius: 5px;background-color: #80000000;color: #CCCCCC;");
+            controlButtons[i]->setDisabled(true);
+            QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+            effect->setBlurRadius(20);
+            effect->setXOffset(0.2);
+            effect->setYOffset(0.5);
+            effect->setColor(QColor(180,180,180,120));
+            controlButtons[i]->setGraphicsEffect(effect);
+        }
+    }
+    if(game.check_game_judge() == LOSE) {
+        showAlert("패배");
+        QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
+        for(QToolButton *button : mapButtons){
+            button->setEnabled(false);
+        }
+        QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4,ui->btn5};
+        for(int i=0;i<5;i++){
+            controlButtons[i]->setStyleSheet("border-radius: 5px;background-color: #80000000;color: #CCCCCC;");
+            controlButtons[i]->setDisabled(true);
+            QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+            effect->setBlurRadius(20);
+            effect->setXOffset(0.2);
+            effect->setYOffset(0.5);
+            effect->setColor(QColor(180,180,180,120));
+            controlButtons[i]->setGraphicsEffect(effect);
+        }
+    }
 }
 void MainWindow::hardHR1(){
     player->command(FindUnit, *hero);
@@ -631,6 +681,7 @@ void MainWindow::hardHR3(){
 
     closeList(false);
     QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
+    //내 땅만 표시
     clickMapParam=1;
 
     QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4,ui->btn5};
@@ -699,16 +750,34 @@ void MainWindow::listDefenceHero(QString value){
     pair<GameUnit*, int> ai_unit = ai->attack_state(*ai_war_states, *attacked_state, *war_hero);
     bool result = attacked_state->defense(*war_hero, *ai_war_states, *ai_unit.first, ai_unit.second);
     if(result)
-        showAlert("방어에 성공했습니다.\n");
-    else
-        showAlert("방어에 실패했습니다.\n");
+        showAlert("방어에 성공했습니다.");
+    else{
+        showAlert("방어에 실패했습니다.");
+    }
 
     ai_war_states = NULL;
     attacked_state = NULL;
     war_hero = NULL;
 //    ai_aggress_state_id = 0;
+    closeList(false);
 
-
+    QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
+    //한 판 끝날 때마다 영토 표시
+    turn_continue = true;
+    for(QToolButton *button : mapButtons){
+        button->setDisabled(true);
+        button->setStyleSheet("color: #CCCCCC; border-radius: 10px; background-color: #80000000;");
+    }
+    vector<State*> mystate = player->get_own_states();
+    for(State *state : mystate){
+        mapButtons[state->get_state_id() - 1]->setEnabled(true);
+        mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #000000; border-radius: 10px; background-color: #A0FFFFFF;");
+    }
+    vector<State*> aistate = ai->get_own_states();
+    for(State *state : aistate){
+        mapButtons[state->get_state_id() - 1]->setDisabled(true);
+        mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #FFFFFF; border-radius: 10px; background-color: #A0800000;");
+    }
 }
 
 void MainWindow::listHero(QString value){
@@ -789,6 +858,9 @@ void MainWindow::gameInit(){
         ai->add_state(game.get_states().at(0));
         game.get_states().at(0)->set_state_owner(ai);
     }
+    if(!player->get_user_id().compare("admin")){
+        cheat();
+    }
 
     // users에 player와 ai 업캐스팅해서 추가
     game.add_user(player);
@@ -798,12 +870,15 @@ void MainWindow::gameInit(){
     game.set_user_turn(player);
 
 
+
     setText2(player->get_total_rice());
     setText4(0,20);
     gameLoop();
 }
 
 void MainWindow::gameLoop(){
+
+    checkWin();
     clickMapParam=0;
     // 모든 지역에 있는 유닛들 행동력 회복
     vector<State*> all_state = game.get_states();
@@ -832,11 +907,6 @@ void MainWindow::gameLoop(){
         effect->setColor(QColor(180,180,180,120));
         controlButtons[i]->setGraphicsEffect(effect);
     }
-
-
-
-    // 총 턴과 날짜 표시
-
 
 
     // 6월, 9월에 농업도에 비례해서 식량 수확 (모든 플레이어가)
@@ -894,8 +964,6 @@ void MainWindow::gameLoop(){
             attacked_state->set_state_owner(ai);
         }
         else {
-
-
             vector<GameUnit> &unit_list = attacked_state->get_unit_list();
             vector<GameUnit>::iterator unitIter;
 
@@ -918,6 +986,7 @@ void MainWindow::gameLoop(){
     string command;
 
     QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
+    //한 판 끝날 때마다 영토 표시
     turn_continue = true;
     for(QToolButton *button : mapButtons){
         button->setDisabled(true);
@@ -927,6 +996,11 @@ void MainWindow::gameLoop(){
     for(State *state : mystate){
         mapButtons[state->get_state_id() - 1]->setEnabled(true);
         mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #000000; border-radius: 10px; background-color: #A0FFFFFF;");
+    }
+    vector<State*> aistate = ai->get_own_states();
+    for(State *state : aistate){
+        mapButtons[state->get_state_id() - 1]->setDisabled(true);
+        mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #FFFFFF; border-radius: 10px; background-color: #A0800000;");
     }
 
 }
@@ -942,7 +1016,7 @@ void MainWindow::initBoard(){
     ui->imageView->setPixmap(scaled);
     ui->imageView->lower();
 
-
+    ui->line_edit->setValidator( new QIntValidator(0, 2147000000, this) );
 
     QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
     for(int i=0;i<9;i++){
@@ -1056,24 +1130,64 @@ void MainWindow::setHero(){
     gameInit();
 }
 void MainWindow::setHero1(){
-    showAlert(QString("이성계를 선택했습니다.\n함경도에서 시작합니다!"));
+    if(!player->get_user_id().compare("admin")){
+        showAlert(QString("치트 활성화"));
+    }
+    else{
+        showAlert(QString("이성계를 선택했습니다.\n함경도에서 시작합니다!"));
+    }
     initial_state = game.get_states().at(0);
     setHero();
 }
 void MainWindow::setHero2(){
-    showAlert(QString("견훤을 선택했습니다.\n전라도에서 시작합니다!"));
+    if(!player->get_user_id().compare("admin")){
+        showAlert(QString("치트 활성화"));
+    }
+    else{
+        showAlert(QString("견훤을 선택했습니다.\n전라도에서 시작합니다!"));
+    }
     initial_state = game.get_states().at(7);
     setHero();
 }
 void MainWindow::setHero3(){
-    showAlert(QString("문무왕을 선택했습니다.\n경상도에서 시작합니다!"));
+    if(!player->get_user_id().compare("admin")){
+        showAlert(QString("치트 활성화"));
+    }
+    else{
+        showAlert(QString("문무왕을 선택했습니다.\n경상도에서 시작합니다!"));
+    }
     initial_state = game.get_states().at(6);
     setHero();
 }
 void MainWindow::setHero4(){
-    showAlert(QString("고려 광종을 선택했습니다.\n황해도에서 시작합니다!"));
+    if(!player->get_user_id().compare("admin")){
+        showAlert(QString("치트 활성화"));
+    }
+    else{
+        showAlert(QString("고려 광종을 선택했습니다.\n황해도에서 시작합니다!"));
+    }
     initial_state = game.get_states().at(3);
     setHero();
+}
+
+
+void MainWindow::cheat(){
+    int skip = initial_state->get_state_id() - 1;
+    for(int i=0;i<9;i++){
+        if(i!=skip){
+            ai->erase_state(game.get_states()[i]);
+            player->add_state(game.get_states()[i]);
+            game.get_states()[i]->set_state_owner(player);
+        }
+        else if(i==skip){
+            game.get_states()[skip]->set_state_owner(ai);
+            player->erase_state(game.get_states()[skip]);
+            ai->add_state(game.get_states()[skip]);
+        }
+    }
+    for(int i=0;i<31;i++){
+        game.increase_total_turn();
+    }
 }
 
 void MainWindow::setText2(int a){

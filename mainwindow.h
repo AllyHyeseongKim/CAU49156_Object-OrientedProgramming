@@ -33,6 +33,8 @@ public:
     void disconnectMap();
     void clickMapActionBtnWrapUp(bool shouldShowDone);
     void showLoadingDialog();
+    void checkWin();
+    void cheat();
 public slots:
     void hideLoadingDialog();
     void setUserID();
