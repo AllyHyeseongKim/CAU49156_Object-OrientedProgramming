@@ -1,8 +1,11 @@
-# OOPS-project4
+# OOPS (Object-Oriented Programming with Polymorphism)
+### Project4
+
 Project4 for Object-Oriented Programming
 
-
+#### Objective and Functionality
 Our project is a console game 4 groups of military forces try to compete over the land of Korea.
+
 The process to execute the exciting game is as follows:
 	The player of the game first chooses one of the groups when the game starts and becomes the king of the group. 
 	There are 4 actions he or she can choose: human resource management, internal affairs, soldier, and war. 
