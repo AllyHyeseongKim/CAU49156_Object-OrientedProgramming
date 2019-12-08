@@ -877,6 +877,9 @@ void MainWindow::gameInit(){
     else if(!player->get_user_id().compare("admin2")){
         cheat(2);
     }
+    else if(!player->get_user_id().compare("admin3")){
+        cheat(3);
+    }
 
     // users에 player와 ai 업캐스팅해서 추가
     game.add_user(player);
@@ -963,7 +966,7 @@ void MainWindow::gameLoop(){
 
         for(int i = 0; i < ai_states.size() && flag; i++) {
             vector<StateId> near_state = ai_states[i]->get_near_state();
-            for(int j = 0; i < near_state.size() && flag; j++) {
+            for(int j = 0; j < near_state.size() && flag; j++) {
                 if(!ai->chk_own_state(near_state[j])) {
                     ai_aggress_state_id = near_state[j];
                     ai_war_states = ai_states[i];
@@ -973,8 +976,9 @@ void MainWindow::gameLoop(){
         }
 
         // 빈 도시인가?
-
         attacked_state = game.get_state_by_id(ai_aggress_state_id);
+        int k = ai_aggress_state_id;
+        cout << attacked_state->get_state_name();
         if(!player->chk_own_state(ai_aggress_state_id)) {
             ai->add_state(attacked_state);
             attacked_state->set_state_owner(ai);
@@ -1154,7 +1158,7 @@ void MainWindow::setHero(){
     gameInit();
 }
 void MainWindow::setHero1(){
-    if(!player->get_user_id().compare("admin") || !player->get_user_id().compare("admin2")){
+    if(!player->get_user_id().compare("admin") || !player->get_user_id().compare("admin2") || !player->get_user_id().compare("admin3")){
         showAlert(QString("치트 활성화"));
     }
     else{
@@ -1164,7 +1168,7 @@ void MainWindow::setHero1(){
     setHero();
 }
 void MainWindow::setHero2(){
-    if(!player->get_user_id().compare("admin") || !player->get_user_id().compare("admin2")){
+    if(!player->get_user_id().compare("admin") || !player->get_user_id().compare("admin2") || !player->get_user_id().compare("admin3")){
         showAlert(QString("치트 활성화"));
     }
     else{
@@ -1174,7 +1178,7 @@ void MainWindow::setHero2(){
     setHero();
 }
 void MainWindow::setHero3(){
-    if(!player->get_user_id().compare("admin") || !player->get_user_id().compare("admin2")){
+    if(!player->get_user_id().compare("admin") || !player->get_user_id().compare("admin2") || !player->get_user_id().compare("admin3")){
         showAlert(QString("치트 활성화"));
     }
     else{
@@ -1184,7 +1188,7 @@ void MainWindow::setHero3(){
     setHero();
 }
 void MainWindow::setHero4(){
-    if(!player->get_user_id().compare("admin") || !player->get_user_id().compare("admin2")){
+    if(!player->get_user_id().compare("admin") || !player->get_user_id().compare("admin2") || !player->get_user_id().compare("admin3")){
         showAlert(QString("치트 활성화"));
     }
     else{
@@ -1229,7 +1233,21 @@ void MainWindow::cheat(int number_ai){
             }
         }
     }
-    for(int i=0;i<31;i++){
+    else if(number_ai==3){
+        for(int i=0;i<9;i++){
+            if(i!=skip){
+                player->erase_state(game.get_states()[i]);
+                ai->add_state(game.get_states()[i]);
+                game.get_states()[i]->set_state_owner(player);
+            }
+            else if(i==skip){
+                game.get_states()[skip]->set_state_owner(ai);
+                ai->erase_state(game.get_states()[skip]);
+                player->add_state(game.get_states()[skip]);
+            }
+        }
+    }
+    for(int i=0;i<30;i++){
         game.increase_total_turn();
     }
 }
