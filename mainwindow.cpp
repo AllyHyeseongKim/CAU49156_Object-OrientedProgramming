@@ -102,47 +102,42 @@ void MainWindow::clickMap(int id){
                 controlButtons[i]->setGraphicsEffect(effect);
             }
         }
-
-        for(unitIter = unit_list.begin(); unitIter != unit_list.end(); unitIter++){
-            if(((*unitIter).get_status() == munonarch || (*unitIter).get_status() == hired) && (*unitIter).get_can_move()) {
-                available_list.push_back(*unitIter);
-                QString k = QString::fromStdString(unitIter->get_name());
-                k = k.append(QString::fromStdString(" : "));
-                switch (unitIter->get_status()){
-                    case munonarch:
-                        k = k.append("군주");
-                        break;
-                    case hired:
-                        k = k.append("등용");
-                        break;
-                    default:
-                        break;
-                }
-                show_list.push_back(k);
-                flag = true;
-            }
-        }
-
-        if(!flag) {
-            show_list = {};
-            showAlert("활동할 수 있는 영웅이 없습니다.");
-            QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4,ui->btn5};
-            for(int i=0;i<4;i++){
-                controlButtons[i]->setStyleSheet("border-radius: 5px;background-color: #80000000;color: #CCCCCC;");
-                controlButtons[i]->setDisabled(true);
-                QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
-                effect->setBlurRadius(20);
-                effect->setXOffset(0.2);
-                effect->setYOffset(0.5);
-                effect->setColor(QColor(180,180,180,120));
-                controlButtons[i]->setGraphicsEffect(effect);
-            }
-            return;
-        }
         else{
+            for(unitIter = unit_list.begin(); unitIter != unit_list.end(); unitIter++){
+                if(((*unitIter).get_status() == munonarch || (*unitIter).get_status() == hired) && (*unitIter).get_can_move()) {
+                    available_list.push_back(*unitIter);
+                    QString k = QString::fromStdString(unitIter->get_name());
+                    k = k.append(QString::fromStdString(" : "));
+                    switch (unitIter->get_status()){
+                        case munonarch:
+                            k = k.append("군주");
+                            break;
+                        case hired:
+                            k = k.append("등용");
+                            break;
+                        default:
+                            break;
+                    }
+                    show_list.push_back(k);
+                    string toolTipText = "무력: ";
+                    toolTipText = toolTipText.append(to_string(unitIter->get_strength()));
+                    toolTipText = toolTipText.append("\n통솔: ");
+                    toolTipText = toolTipText.append(to_string(unitIter->get_leadearship()));
+                    toolTipText = toolTipText.append("\n지력: ");
+                    toolTipText = toolTipText.append(to_string(unitIter->get_wisdom()));
+                    toolTipText = toolTipText.append("\n정치: ");
+                    toolTipText = toolTipText.append(to_string(unitIter->get_political()));
+                    toolTipText = toolTipText.append("\n매력: ");
+                    toolTipText = toolTipText.append(to_string(unitIter->get_attraction()));
+                    show_list.push_back(QString::fromStdString(toolTipText));
+//                    cout<<toolTipText;
+                    flag = true;
+                }
+            }
             showList(show_list, true, 2);
             showAlert("임무를 수행할 영웅을 선택하십시오.");
         }
+
     }
     else if(clickMapParam==1){//영웅 이동
         player->command(MoveUnit, *hero, (StateId)id);
@@ -462,12 +457,14 @@ void MainWindow::showList(std::vector<QString> list, bool should_show_back, int 
         break;
     }
     case 2:{//default hero selector
-        for (QString item : list) {
+        for(int i=0;i<list.size();i+=2){
             QPushButton *button = new QPushButton();
             button->setFixedSize(120,32);
             button->setStyleSheet("border-radius: 5px;background-color: #007aff;color: white;");
-            button->setText(item);
-            paramMapper->setMapping(button, item);
+            button->setText(list[i]);
+            button->setToolTip(list[i+1]);
+            cout<<list[i].toStdString();
+//            paramMapper->setMapping(button, list[i]);
             connect(button, SIGNAL(released()),paramMapper, SLOT(map()));
             showListLayout->addWidget(button);
         }
