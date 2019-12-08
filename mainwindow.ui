@@ -1073,6 +1073,66 @@
     </property>
    </widget>
   </widget>
+  <widget class="QWidget" name="loadingDialog" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>590</width>
+     <height>440</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #BF000000;</string>
+   </property>
+   <widget class="QLabel" name="loading_image">
+    <property name="geometry">
+     <rect>
+      <x>245</x>
+      <y>170</y>
+      <width>100</width>
+      <height>100</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:#00000000;</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="loading_label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>250</y>
+      <width>591</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Nanum Gothic</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:#00000000; color:white;</string>
+    </property>
+    <property name="text">
+     <string>AI 플레이 중...</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+  </widget>
+  <zorder>inputDialog</zorder>
   <zorder>listDialog</zorder>
   <zorder>selectionDialog</zorder>
   <zorder>alertDialog</zorder>
@@ -1082,7 +1142,7 @@
   <zorder>buttonGrid</zorder>
   <zorder>container2</zorder>
   <zorder>container4</zorder>
-  <zorder>inputDialog</zorder>
+  <zorder>loadingDialog</zorder>
  </widget>
  <resources/>
  <connections/>

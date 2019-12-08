@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "headers/game_controller.h"
+#include <unistd.h>
 
 #include <QGraphicsDropShadowEffect>
 #include <QGraphicsPixmapItem>
@@ -12,6 +13,10 @@
 #include <string>
 #include <cstring>
 #include <QIntValidator>
+#include <QPropertyAnimation>
+#include <QTimer>
+
+QTimer *timerR;
 
 GameController game;
 Player *player;
@@ -32,6 +37,7 @@ GameUnit* aggress_hero;
 int current_soldier_count = 0;
 int current_soldier_degree = 0;
 StateId aggress_state_id = (StateId)0;
+StateId ai_aggress_state_id = (StateId)0;
 
 int clickMapParam = 0;
 
@@ -71,9 +77,10 @@ void MainWindow::clickMap(int id){
         vector<GameUnit> &unit_list = current_state->get_unit_list();
         vector<GameUnit>::iterator unitIter;
         bool flag = false;
+
         //행동할 수 있는 유닛 확인
-        vector<GameUnit> available_list;
-        vector<QString> show_list;
+        vector<GameUnit> available_list = {};
+        vector<QString> show_list = {};
         for(unitIter = unit_list.begin(); unitIter != unit_list.end(); unitIter++){
             if(((*unitIter).get_status() == munonarch || (*unitIter).get_status() == hired) && (*unitIter).get_can_move()) {
                 flag = true;
@@ -83,6 +90,17 @@ void MainWindow::clickMap(int id){
 
         if(!flag) {
             showAlert("활동할 수 있는 영웅이 없습니다.");
+            QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4,ui->btn5};
+            for(int i=0;i<4;i++){
+                controlButtons[i]->setStyleSheet("border-radius: 5px;background-color: #80000000;color: #CCCCCC;");
+                controlButtons[i]->setDisabled(true);
+                QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+                effect->setBlurRadius(20);
+                effect->setXOffset(0.2);
+                effect->setYOffset(0.5);
+                effect->setColor(QColor(180,180,180,120));
+                controlButtons[i]->setGraphicsEffect(effect);
+            }
         }
 
         for(unitIter = unit_list.begin(); unitIter != unit_list.end(); unitIter++){
@@ -108,6 +126,17 @@ void MainWindow::clickMap(int id){
         if(!flag) {
             show_list = {};
             showAlert("활동할 수 있는 영웅이 없습니다.");
+            QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4,ui->btn5};
+            for(int i=0;i<4;i++){
+                controlButtons[i]->setStyleSheet("border-radius: 5px;background-color: #80000000;color: #CCCCCC;");
+                controlButtons[i]->setDisabled(true);
+                QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+                effect->setBlurRadius(20);
+                effect->setXOffset(0.2);
+                effect->setYOffset(0.5);
+                effect->setColor(QColor(180,180,180,120));
+                controlButtons[i]->setGraphicsEffect(effect);
+            }
             return;
         }
         else{
@@ -116,8 +145,20 @@ void MainWindow::clickMap(int id){
         }
     }
     else if(clickMapParam==1){//영웅 이동
-        player->command(MoveUnit, *hero, id);
+        player->command(MoveUnit, *hero, (StateId)id);
         showAlert("이동 완료");
+        QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4};
+        for(int i=0;i<4;i++){
+            controlButtons[i]->setStyleSheet("border-radius: 5px;background-color: #007aff;color: white;");
+            controlButtons[i]->setEnabled(true);
+            QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+            effect->setBlurRadius(20);
+            effect->setXOffset(0.2);
+            effect->setYOffset(0.5);
+            effect->setColor(transparentBlue);
+            controlButtons[i]->setGraphicsEffect(effect);
+        }
+        clickMapParam=0;
     }
     else if(clickMapParam==2){
         aggress_state_id = (StateId)id;
@@ -132,7 +173,6 @@ void MainWindow::clickMap(int id){
         }
 //        showAlert(QString::fromStdString(player->get_user_id()));
         vector<State*> mystate = player->get_own_states();
-        cout<<endl;
         for(State *state : mystate){
             mapButtons[state->get_state_id() - 1]->setEnabled(true);
             mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #000000; border-radius: 10px; background-color: #A0FFFFFF;");
@@ -143,17 +183,6 @@ void MainWindow::clickMap(int id){
     }
 
     clickMapParam=0;
-}
-void MainWindow::disconnectMap(){
-    ui->map1->disconnect();
-    ui->map2->disconnect();
-    ui->map3->disconnect();
-    ui->map4->disconnect();
-    ui->map5->disconnect();
-    ui->map6->disconnect();
-    ui->map7->disconnect();
-    ui->map8->disconnect();
-    ui->map9->disconnect();
 }
 
 void MainWindow::clickMapActionBtn1(){
@@ -208,14 +237,18 @@ void MainWindow::clickMapActionBtn4(){
         button->setDisabled(true);
         button->setStyleSheet("color: #CCCCCC; border-radius: 10px; background-color: #80000000;");
     }
-    cout << current_state->get_state_id() << ":";
     for(int i = 0; i < state_id_list.size(); i++) {
-        mapButtons[state_id_list[i]-1]->setEnabled(true);
-        mapButtons[state_id_list[i]-1]->setStyleSheet("color: #FFFFFF; border-radius: 10px; background-color: #A0FF0000;");
-        cout << state_id_list[i];
+        if(!player->chk_own_state(state_id_list[i])){
+            mapButtons[state_id_list[i]-1]->setEnabled(true);
+            mapButtons[state_id_list[i]-1]->setStyleSheet("color: #FFFFFF; border-radius: 10px; background-color: #A0FF0000;");
+        }
+        else{
+            mapButtons[state_id_list[i]-1]->setDisabled(true);
+            mapButtons[state_id_list[i]-1]->setStyleSheet("color: #FFFFFF; border-radius: 10px; background-color: #A0007aff;");
+        }
     }
     mapButtons[current_state->get_state_id()-1]->setDisabled(true);
-    mapButtons[current_state->get_state_id()-1]->setStyleSheet("color: #000000; border-radius: 10px; background-color: #A0007aff;");
+    mapButtons[current_state->get_state_id()-1]->setStyleSheet("color: #FFFFFF; border-radius: 10px; background-color: #A0007aff;");
     QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4,ui->btn5};
     for(int i=0;i<4;i++){
         controlButtons[i]->setStyleSheet("border-radius: 5px;background-color: #80000000;color: #CCCCCC;");
@@ -238,37 +271,16 @@ void MainWindow::clickMapActionBtnWrapUp(bool shouldShowDone){
     closeList(false);
     // player 전쟁 정보 확인
     // 전쟁시 필요한 정보들
-    StateId aggress_state_id = (StateId)0;
-
-    if(aggress_state_id) {
-        GameUnit *ai_unit;
-        aggress_hero->set_can_move(false);
-
-        if(ai->chk_own_state(aggress_state_id)) {
-            ai_unit = ai->defence_state(*current_state, *game.get_state_by_id(aggress_state_id), *aggress_hero, aggress_num_solider);
-            bool result = current_state->war(*aggress_hero, aggress_num_solider, *game.get_state_by_id(aggress_state_id), *ai_unit);
-            if(result)
-                showAlert("공격에 성공했습니다.");
-            else
-                showAlert("공격에 실패했습니다.");
-        }
-        else {
-            State *state = game.get_state_by_id(aggress_state_id);
-            player->add_state(state);
-            state->set_state_owner(player);
-            showAlert("공격에 성공했습니다.");
-        }
-    }
 }
 void MainWindow::clickMapActionBtn5(){
     game.increase_total_turn();
     game.set_user_turn(game.next_user_turn(current_user));
     gameLoop();
     if(game.check_game_judge() == WIN) {
-        // 승리의 간지나는 아스키코드~ㅎㅎ
+        showAlert("승리");
     }
     if(game.check_game_judge() == LOSE) {
-        // 패배를 뼈저리게 느낄만한 아스키코드~
+        showAlert("패배");
     }
 }
 
@@ -277,13 +289,14 @@ void MainWindow::showAlert(QString n){
     ui->alertDialog->raise();
     ui->alertDialog->show();
 }
-
 void MainWindow::closeAlert(){
     ui->alertDialog->hide();
+    ui->alertDialog->lower();
 }
 void MainWindow::showInputDialog(string title, int mode){
     ui->input_label->setText(QString::fromStdString(title));
     ui->inputDialog->show();
+    ui->inputDialog->raise();
 
     switch (mode){
     case 0:{//전쟁
@@ -305,13 +318,14 @@ void MainWindow::closeInputDialogWar(){
     strcpy(cstr, result.c_str());
     int number = std::atoi(cstr);
 
-    if(number > current_state->get_state_soilder() || number < 0){
+    if(number > current_state->get_state_soilder() || number < 0 || !result.compare("")){
         ui->line_edit->setText("");
         showAlert("병사 수가 정상적이지 않습니다.");
     }
     else{
         dev = {};
         ui->inputDialog->hide();
+        ui->inputDialog->lower();
         ui->line_edit->setText("");
         aggress_num_solider = number;
 
@@ -347,7 +361,6 @@ void MainWindow::closeInputDialogWar(){
         showAlert("전쟁에 내보낼 영웅을 고르세요.");
     }
 }
-
 void MainWindow::closeInputDialogRecruit(){
     string result = ui->line_edit->text().toStdString();
     char cstr[result.size()+1];
@@ -357,15 +370,17 @@ void MainWindow::closeInputDialogRecruit(){
     current_soldier_count += num_soldier;
     setText4(current_soldier_count, current_soldier_degree);
 
-    if(num_soldier > player->get_total_rice()){
+    if(num_soldier > player->get_total_rice() || !result.compare("")){
         ui->line_edit->setText("");
         showAlert("식량이 부족합니다.");
     }
     else{
         ui->inputDialog->hide();
+        ui->inputDialog->lower();
         ui->line_edit->setText("");
         player->command(GetSoldier, *hero, num_soldier);
         clickMapActionBtnWrapUp(true);
+        setText2(current_user->get_total_rice());
     }
 
 
@@ -386,6 +401,7 @@ void MainWindow::selectionRecruitA(){
     }
     else{
         player->command(TrainSolider, *hero);
+        setText4(current_state->get_state_soilder(), current_state->get_soldier_degree());
         clickMapActionBtnWrapUp(true);
     }
 }
@@ -400,6 +416,7 @@ void MainWindow::closeSelectionAccept(){
     ui->selectionDialog->hide();
 }
 void MainWindow::showList(std::vector<QString> list, bool should_show_back, int mode){
+
     if(should_show_back){
         list.push_back(QString::fromStdString("돌아가기"));
     }
@@ -493,26 +510,101 @@ void MainWindow::showList(std::vector<QString> list, bool should_show_back, int 
     ui->listDialog->raise();
     ui->listDialog->show();
 }
+void MainWindow::showLoadingDialog(){
+    ui->loadingDialog->raise();
+    ui->loadingDialog->show();
+
+    QPixmap loadPic("../load.png");
+    if(loadPic.isNull()){
+        loadPic = QPixmap("/Users/herojeff/WorkSpace/OOPS-Project4/load.png");
+    }
+    QPixmap scaled2=loadPic.scaled ( 100, 100, Qt::KeepAspectRatio, Qt::FastTransformation );
+    ui->loading_image->setPixmap(scaled2);
+
+    timerR = new QTimer(this);
+    connect(timerR, SIGNAL(timeout()), this, SLOT(rotateLoadImage1()));
+    timerR->start(150);
+
+    QTimer *timerD = new QTimer(this);
+    timerD->setSingleShot(true);
+    connect(timerD, SIGNAL(timeout()), this, SLOT(hideLoadingDialog()));
+    timerD->start(1000);
+
+
+//    QPropertyAnimation *animation = new QPropertyAnimation(ui->loading_image, "geometry");
+//    animation->setDuration(1000);
+//    animation->setStartValue(ui->loading_image->pixmap()->geometry());
+//    animation->setEndValue(QRect(100,0,100,100));
+//    animation->start();
+
+//    connect(animation,SIGNAL(finished()) ,this, SLOT(hideLoadingDialog()));
+}
+void MainWindow::rotateLoadImage1(){
+    QMatrix rm;
+    rm.rotate(25);
+    ui->loading_image->setPixmap(ui->loading_image->pixmap()->transformed(rm));
+}
+void MainWindow::hideLoadingDialog(){
+    delete timerR;
+    ui->loadingDialog->hide();
+    ui->loadingDialog->lower();
+    clickMapActionBtn5();
+}
 void MainWindow::listHero2(QString value){
     std::vector<StateId> state_id_list = current_state->get_near_state();
     std::vector<State*> state_list = game.get_states();
+    State aggress_state;
 
-    for(int i = 0; i < state_id_list.size(); i++) {
-        if (!player->chk_own_state(state_id_list[i])){
-            aggress_state_id = state_id_list[i];
-            aggress_hero = hero;
-        }
-    }
-
-//    int state_index = 1;
+    aggress_state = *state_list[aggress_state_id-1];
+    aggress_hero = hero;
 //    for(int i = 0; i < state_id_list.size(); i++) {
 //        if (!player->chk_own_state(state_id_list[i])){
-//            if(current_state->get_state_id() == state_index) {
-//                aggress_state_id = state_id_list[i];
+//            aggress_state_id = state_id_list[i];
+
+//            if(!aggress_state.get_state_name().compare(value.toStdString())){
 //                aggress_hero = hero;
+//                break;
 //            }
 //        }
 //    }
+
+    if(ai->chk_own_state(aggress_state_id)) {
+        GameUnit *ai_unit;
+
+        ai_unit = ai->defence_state(*current_state, *game.get_state_by_id(aggress_state_id), *aggress_hero, aggress_num_solider);
+        bool result = current_state->war(*aggress_hero, aggress_num_solider, *game.get_state_by_id(aggress_state_id), *ai_unit);
+        if(result){
+            string final = aggress_state.get_state_name();
+            final = final.append("의 공격에 성공했습니다.");
+            showAlert(QString::fromStdString(final));
+        }
+        else{
+            string final = aggress_state.get_state_name();
+            final = final.append("의 공격에 성공했습니다.");
+            showAlert(QString::fromStdString(final));
+        }
+    }
+    else{
+        State *state = game.get_state_by_id(aggress_state_id);
+        player->add_state(state);
+        state->set_state_owner(player);
+        string final = state->get_state_name();
+        final = final.append("의 공격에 성공했습니다.");
+        showAlert(QString::fromStdString(final));
+    }
+    aggress_hero->set_can_move(false);
+
+    QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
+    for(QToolButton *button : mapButtons){
+        button->setDisabled(true);
+        button->setStyleSheet("color: #CCCCCC; border-radius: 10px; background-color: #80000000;");
+    }
+    vector<State*> mystate = player->get_own_states();
+    for(State *state : mystate){
+        mapButtons[state->get_state_id() - 1]->setEnabled(true);
+        mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #000000; border-radius: 10px; background-color: #A0FFFFFF;");
+    }
+
     closeList(false);
 }
 void MainWindow::hardHR1(){
@@ -525,7 +617,6 @@ void MainWindow::hardHR2(){
     int selected_unit_index;
     int num_develop = 0;
     vector<GameUnit*> developed_unit;
-    cout << temp_unit_list.size() << endl;
 
     for(int i = 0; i < temp_unit_list.size(); i++){
         if(temp_unit_list[i].get_status() == developed){
@@ -566,30 +657,22 @@ void MainWindow::hardHR2(){
 }
 void MainWindow::hardHR3(){
     showAlert("옮길 지역을 입력해주세요.");
+
     closeList(false);
     QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
+    clickMapParam=1;
 
-    disconnectMap();
-    QSignalMapper* signalMapper = new QSignalMapper (this) ;
-    connect(ui->map1, SIGNAL(released()),signalMapper, SLOT(map()));
-    connect(ui->map2, SIGNAL(released()),signalMapper, SLOT(map()));
-    connect(ui->map3, SIGNAL(released()),signalMapper, SLOT(map()));
-    connect(ui->map4, SIGNAL(released()),signalMapper, SLOT(map()));
-    connect(ui->map5, SIGNAL(released()),signalMapper, SLOT(map()));
-    connect(ui->map6, SIGNAL(released()),signalMapper, SLOT(map()));
-    connect(ui->map7, SIGNAL(released()),signalMapper, SLOT(map()));
-    connect(ui->map8, SIGNAL(released()),signalMapper, SLOT(map()));
-    connect(ui->map9, SIGNAL(released()),signalMapper, SLOT(map()));
-    signalMapper -> setMapping (ui->map1, 1) ;
-    signalMapper -> setMapping (ui->map2, 2) ;
-    signalMapper -> setMapping (ui->map3, 3) ;
-    signalMapper -> setMapping (ui->map4, 4) ;
-    signalMapper -> setMapping (ui->map5, 5) ;
-    signalMapper -> setMapping (ui->map6, 6) ;
-    signalMapper -> setMapping (ui->map7, 7) ;
-    signalMapper -> setMapping (ui->map8, 8) ;
-    signalMapper -> setMapping (ui->map9, 9) ;
-    connect (signalMapper, SIGNAL(mapped(int)), this, SLOT((int)));
+    QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4,ui->btn5};
+    for(int i=0;i<4;i++){
+        controlButtons[i]->setStyleSheet("border-radius: 5px;background-color: #80000000;color: #CCCCCC;");
+        controlButtons[i]->setDisabled(true);
+        QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+        effect->setBlurRadius(20);
+        effect->setXOffset(0.2);
+        effect->setYOffset(0.5);
+        effect->setColor(QColor(180,180,180,120));
+        controlButtons[i]->setGraphicsEffect(effect);
+    }
 
     for(QToolButton *button : mapButtons){
         button->setDisabled(true);
@@ -745,7 +828,7 @@ void MainWindow::gameInit(){
 
 
     setText2(player->get_total_rice());
-    setText4(0, 0);
+    setText4(0,20);
     gameLoop();
 }
 
@@ -756,11 +839,16 @@ void MainWindow::gameLoop(){
     for(int i = 0; i < all_state.size(); i++)
         all_state[i]->reset_can_move();
 
-    StateId ai_aggress_state_id = (StateId)0;
+    ai_aggress_state_id = (StateId)0;
+    aggress_state_id = (StateId)0;
 
     // 현재 플레이어 설정
     current_user = game.get_user_turn();
     setText6(game.get_total_turn(), QString::fromStdString(current_user->get_user_id()));
+    setText5(QString::fromStdString(game.get_date()));
+    setText3(100);
+    setText2(current_user->get_total_rice());
+
 
     QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4,ui->btn5};
     for(int i=0;i<4;i++){
@@ -774,12 +862,14 @@ void MainWindow::gameLoop(){
         controlButtons[i]->setGraphicsEffect(effect);
     }
 
+
+
     // 총 턴과 날짜 표시
-    setText5(QString::fromStdString(game.get_date()));
-    setText3(100);
+
+
 
     // 6월, 9월에 농업도에 비례해서 식량 수확 (모든 플레이어가)
-    if(game.get_date().find("6월")!= std::string::npos || game.get_date().find("9월")!= std::string::npos) {
+    if(game.get_date().find("9월")!= std::string::npos) {
         // 각 유저에 대해
         vector<User*> users = game.get_users();
         QString finalString;
@@ -799,8 +889,7 @@ void MainWindow::gameLoop(){
     }
 
     if(current_user->get_user_id() == "AI") {
-        // AI가 플레이를 진행 중입니다... 과 같은 식으로 메시지가 찍히면서 딜레이??
-        // .이 하나하나 찍히면서?
+        showLoadingDialog();
 
         ai->AI_algo(game.get_total_turn()/2);
 
@@ -874,13 +963,15 @@ void MainWindow::gameLoop(){
 void MainWindow::initBoard(){
     ui->setupUi(this);
 
-    QPixmap pic("../map.png");
-    if(pic.isNull()){
-        pic = QPixmap("/Users/herojeff/WorkSpace/OOPS-Project4/map.png");
+    QPixmap mapPic("../map.png");
+    if(mapPic.isNull()){
+        mapPic = QPixmap("/Users/herojeff/WorkSpace/OOPS-Project4/map.png");
     }
-    QPixmap scaled=pic.scaled ( 291, 371, Qt::KeepAspectRatio, Qt::FastTransformation );
+    QPixmap scaled=mapPic.scaled ( 291, 371, Qt::KeepAspectRatio, Qt::FastTransformation );
     ui->imageView->setPixmap(scaled);
     ui->imageView->lower();
+
+
 
     QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
     for(int i=0;i<9;i++){
@@ -911,6 +1002,7 @@ void MainWindow::initBoard(){
     ui->container5->hide();
     ui->alertDialog->hide();
     ui->inputDialog->hide();
+    ui->loadingDialog->hide();
     ui->selectionDialog->hide();
     ui->listDialog->hide();
 
@@ -922,8 +1014,7 @@ void MainWindow::initBoard(){
     connect(ui->btn_hero_4, SIGNAL(released()),this, SLOT(setHero4()));
 
 
-    QSignalMapper* signalMapper = new QSignalMapper (this) ;
-//    disconnectMap();
+    QSignalMapper* signalMapper = new QSignalMapper (this);
     connect(ui->map1, SIGNAL(released()),signalMapper, SLOT(map()));
     connect(ui->map2, SIGNAL(released()),signalMapper, SLOT(map()));
     connect(ui->map3, SIGNAL(released()),signalMapper, SLOT(map()));
@@ -933,9 +1024,9 @@ void MainWindow::initBoard(){
     connect(ui->map7, SIGNAL(released()),signalMapper, SLOT(map()));
     connect(ui->map8, SIGNAL(released()),signalMapper, SLOT(map()));
     connect(ui->map9, SIGNAL(released()),signalMapper, SLOT(map()));
-    signalMapper -> setMapping (ui->map1, 1) ;
-    signalMapper -> setMapping (ui->map2, 2) ;
-    signalMapper -> setMapping (ui->map3, 3) ;
+    signalMapper -> setMapping (ui->map1, 1);
+    signalMapper -> setMapping (ui->map2, 2);
+    signalMapper -> setMapping (ui->map3, 3);
     signalMapper -> setMapping (ui->map4, 4) ;
     signalMapper -> setMapping (ui->map5, 5) ;
     signalMapper -> setMapping (ui->map6, 6) ;
@@ -959,6 +1050,7 @@ void MainWindow::initBoard(){
 
     connect(ui->selection_accept_btn, SIGNAL(released()),this, SLOT(selectionRecruitA()));
     connect(ui->selection_cancel_btn, SIGNAL(released()),this, SLOT(selectionRecruitC()));
+
 
 }
 

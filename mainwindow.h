@@ -32,7 +32,9 @@ public:
     void showInputDialog(std::string title, int mode);
     void disconnectMap();
     void clickMapActionBtnWrapUp(bool shouldShowDone);
+    void showLoadingDialog();
 public slots:
+    void hideLoadingDialog();
     void setUserID();
     void setHero1();
     void setHero2();
@@ -61,6 +63,7 @@ public slots:
     void closeInputDialogRecruit();
     void closeInputDialogWar();
     void listHero2(QString value);
+    void rotateLoadImage1();
 private:
     Ui::MainWindow *ui;
 };
