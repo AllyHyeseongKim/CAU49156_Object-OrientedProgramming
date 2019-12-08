@@ -18,8 +18,10 @@ void GameAI::AI_algo(int total_turn) {
             std::vector<GameUnit> &list = own_states[i]->get_unit_list();
             for(int j = 0; j < list.size(); j++) {
                 if(list[j].get_status() == undeveloped || list[j].get_status() == developed) {
-                    own_states[i]->set_unit_status(list[j], developed);
-                    break;
+                    if(list[j].get_can_move()){
+                        own_states[i]->set_unit_status(list[j], developed);
+                        break;
+                    }
                 }
             }
 
@@ -28,7 +30,9 @@ void GameAI::AI_algo(int total_turn) {
                 std::vector<GameUnit> &list = own_states[i]->get_unit_list();
                 if((list[j].get_status() == hired || list[j].get_status() == munonarch)
                 && total_rice > 1000) {
-                    own_states[i]->recurit_soldier(list[j], 2000);
+                    if(list[j].get_can_move()){
+                        own_states[i]->recurit_soldier(list[j], 2000);
+                    }
                 }
             }
 
