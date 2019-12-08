@@ -227,14 +227,22 @@ void MainWindow::clickMapActionBtn4(){
         return;
     }
 
-    showAlert("침공 지역을 선택하세요.");
-    QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
-
     std::vector<StateId> state_id_list = current_state->get_near_state();
     std::vector<State*> state_list = game.get_states();
     vector<GameUnit*> developed_unit = {};
-    int state_index = 1;
 
+    int attack_target_count=0;
+    for(int i = 0; i < state_id_list.size(); i++) {
+        if(!player->chk_own_state(state_id_list[i])){
+            attack_target_count++;
+        }
+    }
+    if(attack_target_count==0){
+        showAlert("주변에 침공 가능한 지역이 없습니다.");
+        return;
+    }
+    showAlert("침공 지역을 선택하세요.");
+    QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
 
     for(QToolButton *button : mapButtons){
         button->setDisabled(true);
