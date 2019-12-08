@@ -1132,6 +1132,7 @@
     </property>
    </widget>
   </widget>
+  <zorder>loadingDialog</zorder>
   <zorder>inputDialog</zorder>
   <zorder>listDialog</zorder>
   <zorder>selectionDialog</zorder>
@@ -1142,7 +1143,6 @@
   <zorder>buttonGrid</zorder>
   <zorder>container2</zorder>
   <zorder>container4</zorder>
-  <zorder>loadingDialog</zorder>
  </widget>
  <resources/>
  <connections/>

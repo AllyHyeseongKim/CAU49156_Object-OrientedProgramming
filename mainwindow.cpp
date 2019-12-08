@@ -324,36 +324,8 @@ void MainWindow::closeInputDialogWar(){
         ui->line_edit->setText("");
         aggress_num_solider = number;
 
-        //todo
-        vector<QString> show_list;
 
-        vector<GameUnit> &unit_list = current_state->get_unit_list();
-        std::vector<StateId> state_id_list = current_state->get_near_state();
-        std::vector<State*> state_list = game.get_states();
-        vector<GameUnit*> developed_unit;
-
-        for(int i = 0; i < unit_list.size(); i++){
-            if(unit_list[i].get_status() == hired || unit_list[i].get_status() == munonarch){
-                show_list.push_back(QString::fromStdString(unit_list[i].get_name()));
-                dev.push_back(QString::fromStdString(unit_list[i].get_name()));
-                string toolTipText = "무력: ";
-                toolTipText = toolTipText.append(to_string(unit_list[i].get_strength()));
-                toolTipText = toolTipText.append("\n통솔: ");
-                toolTipText = toolTipText.append(to_string(unit_list[i].get_leadearship()));
-                toolTipText = toolTipText.append("\n지력: ");
-                toolTipText = toolTipText.append(to_string(unit_list[i].get_wisdom()));
-                toolTipText = toolTipText.append("\n정치: ");
-                toolTipText = toolTipText.append(to_string(unit_list[i].get_political()));
-                toolTipText = toolTipText.append("\n매력: ");
-                toolTipText = toolTipText.append(to_string(unit_list[i].get_attraction()));
-                dev.push_back(QString::fromStdString(toolTipText));
-                developed_unit.push_back(&unit_list[i]);
-            }
-
-        }
-
-        showList(dev, false, 4);
-        showAlert("전쟁에 내보낼 영웅을 고르세요.");
+        listHero2(QString::fromStdString(hero->get_name()));
     }
 }
 void MainWindow::closeInputDialogRecruit(){
@@ -554,16 +526,6 @@ void MainWindow::listHero2(QString value){
 
     aggress_state = *state_list[aggress_state_id-1];
     aggress_hero = hero;
-//    for(int i = 0; i < state_id_list.size(); i++) {
-//        if (!player->chk_own_state(state_id_list[i])){
-//            aggress_state_id = state_id_list[i];
-
-//            if(!aggress_state.get_state_name().compare(value.toStdString())){
-//                aggress_hero = hero;
-//                break;
-//            }
-//        }
-//    }
 
     if(ai->chk_own_state(aggress_state_id)) {
         GameUnit *ai_unit;
@@ -571,13 +533,17 @@ void MainWindow::listHero2(QString value){
         ai_unit = ai->defence_state(*current_state, *game.get_state_by_id(aggress_state_id), *aggress_hero, aggress_num_solider);
         bool result = current_state->war(*aggress_hero, aggress_num_solider, *game.get_state_by_id(aggress_state_id), *ai_unit);
         if(result){
-            string final = aggress_state.get_state_name();
-            final = final.append("의 공격에 성공했습니다.");
+            string final = hero->get_name();
+            final = final.append("이(가) ");
+            final = final.append(aggress_state.get_state_name());
+            final = final.append("을(를) 뺏어왔습니다.");
             showAlert(QString::fromStdString(final));
         }
         else{
-            string final = aggress_state.get_state_name();
-            final = final.append("의 공격에 성공했습니다.");
+            string final = hero->get_name();
+            final = final.append("이(가) ");
+            final = final.append(aggress_state.get_state_name());
+            final = final.append("을(를) 공격했으나 패배했습니다");
             showAlert(QString::fromStdString(final));
         }
     }
@@ -585,8 +551,10 @@ void MainWindow::listHero2(QString value){
         State *state = game.get_state_by_id(aggress_state_id);
         player->add_state(state);
         state->set_state_owner(player);
-        string final = state->get_state_name();
-        final = final.append("의 공격에 성공했습니다.");
+        string final = hero->get_name();
+        final = final.append("이(가) ");
+        final = final.append(aggress_state.get_state_name());
+        final = final.append("을(를) 차지했습니다.");
         showAlert(QString::fromStdString(final));
     }
     aggress_hero->set_can_move(false);
