@@ -325,7 +325,7 @@
      <rect>
       <x>30</x>
       <y>105</y>
-      <width>200</width>
+      <width>221</width>
       <height>20</height>
      </rect>
     </property>
@@ -1025,6 +1025,30 @@
     </property>
    </widget>
    <widget class="QPushButton" name="input_accept_btn">
+    <property name="geometry">
+     <rect>
+      <x>235</x>
+      <y>360</y>
+      <width>120</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Nanum Gothic</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;background-color: #007aff;color: white;</string>
+    </property>
+    <property name="text">
+     <string>확인</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="input_accept_war_btn">
     <property name="geometry">
      <rect>
       <x>235</x>

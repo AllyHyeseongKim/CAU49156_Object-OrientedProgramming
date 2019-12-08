@@ -31,6 +31,7 @@ public:
     void clickMapActionBtnWrapUp();
     void showList(std::vector<QString> list, bool should_show_back, int mode);
     void showInputDialog(std::string title, int mode);
+    void disconnectMap();
 public slots:
     void setUserID();
     void setHero1();
@@ -57,10 +58,9 @@ public slots:
     void hardHR1();
     void hardHR2();
     void hardHR3();
-    void chooseMap(int id);
-    void highlightMap();
     void closeInputDialogRecruit();
     void closeInputDialogWar();
+    void listHero2(QString value);
 private:
     Ui::MainWindow *ui;
 };
