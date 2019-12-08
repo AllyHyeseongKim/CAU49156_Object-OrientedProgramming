@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent): QDialog(parent), ui(new Ui::MainWindow)
 void MainWindow::clickMap(int id){
     QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
 
-    if(clickMapParam==0){
+    if(clickMapParam==0){//loop마다 지역 선택
         State& select_state = player->find_own_state(static_cast<StateId>(id));
         current_state = &select_state;
 
@@ -115,28 +115,28 @@ void MainWindow::clickMap(int id){
             showAlert("임무를 수행할 영웅을 선택하십시오.");
         }
     }
-    else if(clickMapParam==1){
-        State& select_state = player->find_own_state(static_cast<StateId>(id));
-        current_state = &select_state;
-
+    else if(clickMapParam==1){//영웅 이동
         player->command(MoveUnit, *hero, id);
         showAlert("이동 완료");
     }
     else if(clickMapParam==2){
+        aggress_state_id = (StateId)id;
         int originalPosition = current_state->get_state_id();
 //        State& select_state = player->find_own_state(static_cast<StateId>(id));
 //        current_state = &select_state;
 
-    //    QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
-    //    for(QToolButton *button : mapButtons){
-    //        button->setDisabled(true);
-    //        button->setStyleSheet("color: #CCCCCC; border-radius: 10px; background-color: #80000000;");
-    //    }
-    //    vector<State*> mystate = player->get_own_states();
-    //    for(State *state : mystate){
-    //        mapButtons[state->get_state_id() - 1]->setEnabled(true);
-    //        mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #000000; border-radius: 10px; background-color: #A0FFFFFF;");
-    //    }
+        QToolButton *mapButtons[] = {ui->map1,ui->map2,ui->map3,ui->map4,ui->map5,ui->map6,ui->map7,ui->map8,ui->map9};
+        for(QToolButton *button : mapButtons){
+            button->setDisabled(true);
+            button->setStyleSheet("color: #CCCCCC; border-radius: 10px; background-color: #80000000;");
+        }
+//        showAlert(QString::fromStdString(player->get_user_id()));
+        vector<State*> mystate = player->get_own_states();
+        cout<<endl;
+        for(State *state : mystate){
+            mapButtons[state->get_state_id() - 1]->setEnabled(true);
+            mapButtons[state->get_state_id() - 1]->setStyleSheet("color: #000000; border-radius: 10px; background-color: #A0FFFFFF;");
+        }
 
 
         showInputDialog(to_string(current_state->get_state_soilder()).append("명 중 얼마의 병사를 이끄시겠습니까?"), 0);
@@ -203,16 +203,29 @@ void MainWindow::clickMapActionBtn4(){
     vector<GameUnit*> developed_unit = {};
     int state_index = 1;
 
+
     for(QToolButton *button : mapButtons){
         button->setDisabled(true);
         button->setStyleSheet("color: #CCCCCC; border-radius: 10px; background-color: #80000000;");
     }
-
+    cout << current_state->get_state_id() << ":";
     for(int i = 0; i < state_id_list.size(); i++) {
-        if (!player->chk_own_state(state_id_list[i])){
-            mapButtons[i]->setEnabled(true);
-            mapButtons[i]->setStyleSheet("color: #000000; border-radius: 10px; background-color: #A0FFFFFF;");
-        }
+        mapButtons[state_id_list[i]-1]->setEnabled(true);
+        mapButtons[state_id_list[i]-1]->setStyleSheet("color: #FFFFFF; border-radius: 10px; background-color: #A0FF0000;");
+        cout << state_id_list[i];
+    }
+    mapButtons[current_state->get_state_id()-1]->setDisabled(true);
+    mapButtons[current_state->get_state_id()-1]->setStyleSheet("color: #000000; border-radius: 10px; background-color: #A0007aff;");
+    QPushButton *controlButtons[] = {ui->btn1,ui->btn2,ui->btn3,ui->btn4,ui->btn5};
+    for(int i=0;i<4;i++){
+        controlButtons[i]->setStyleSheet("border-radius: 5px;background-color: #80000000;color: #CCCCCC;");
+        controlButtons[i]->setDisabled(true);
+        QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+        effect->setBlurRadius(20);
+        effect->setXOffset(0.2);
+        effect->setYOffset(0.5);
+        effect->setColor(QColor(180,180,180,120));
+        controlButtons[i]->setGraphicsEffect(effect);
     }
     clickMapParam=2;
 }
@@ -476,7 +489,7 @@ void MainWindow::showList(std::vector<QString> list, bool should_show_back, int 
     }
 
     showListLayout->setAlignment(Qt::AlignCenter);
-    ui->listDialog->setLayout(showListLayout); // Add the layout to widget!
+    ui->listDialog->setLayout(showListLayout);
     ui->listDialog->raise();
     ui->listDialog->show();
 }
