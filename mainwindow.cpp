@@ -176,7 +176,7 @@ void MainWindow::clickMapActionBtn2(){
     }
     player->command(Politic, *hero);
     setText3(current_state->get_agriculture_degree());
-    clickMapActionBtnWrapUp();
+    clickMapActionBtnWrapUp(true);
 }
 void MainWindow::clickMapActionBtn3(){
     if(!hero->get_can_move()) {
@@ -216,10 +216,12 @@ void MainWindow::clickMapActionBtn4(){
     }
     clickMapParam=2;
 }
-void MainWindow::clickMapActionBtnWrapUp(){
-    QString final = QString::fromStdString(hero->get_name());
-    final = final.append("의 행동력이 소모됩니다.");
-    showAlert(final);
+void MainWindow::clickMapActionBtnWrapUp(bool shouldShowDone){
+    if(shouldShowDone){
+        QString final = QString::fromStdString(hero->get_name());
+        final = final.append("의 행동력이 소모됩니다.");
+        showAlert(final);
+    }
     closeList(false);
     // player 전쟁 정보 확인
     // 전쟁시 필요한 정보들
@@ -350,7 +352,7 @@ void MainWindow::closeInputDialogRecruit(){
         ui->inputDialog->hide();
         ui->line_edit->setText("");
         player->command(GetSoldier, *hero, num_soldier);
-        clickMapActionBtnWrapUp();
+        clickMapActionBtnWrapUp(true);
     }
 
 
@@ -371,7 +373,7 @@ void MainWindow::selectionRecruitA(){
     }
     else{
         player->command(TrainSolider, *hero);
-        clickMapActionBtnWrapUp();
+        clickMapActionBtnWrapUp(true);
     }
 }
 void MainWindow::selectionRecruitC(){
@@ -502,7 +504,7 @@ void MainWindow::listHero2(QString value){
 }
 void MainWindow::hardHR1(){
     player->command(FindUnit, *hero);
-    clickMapActionBtnWrapUp();
+    clickMapActionBtnWrapUp(true);
 }
 void MainWindow::hardHR2(){
     vector<GameUnit> &temp_unit_list = current_state->get_unit_list();
@@ -527,7 +529,6 @@ void MainWindow::hardHR2(){
     dev_list = {};
     for(int i = 0; i < temp_unit_list.size(); i++){
         if(temp_unit_list[i].get_status() == developed){
-            cout<<temp_unit_list[i].get_name();
             dev.push_back(QString::fromStdString(temp_unit_list[i].get_name()));
             string toolTipText = "무력: ";
             toolTipText = toolTipText.append(to_string(temp_unit_list[i].get_strength()));
@@ -541,7 +542,6 @@ void MainWindow::hardHR2(){
             toolTipText = toolTipText.append(to_string(temp_unit_list[i].get_attraction()));
             dev.push_back(QString::fromStdString(toolTipText));
             dev_list.push_back(&temp_unit_list[i]);
-            cout<<endl;
         }
     }
 
@@ -696,17 +696,17 @@ void MainWindow::listHero1(QString value){
 
     player->command(GetUnit, *hero, *dev_list[i]);
 
-    if(current_state->is_hired(*dev_list[i]))
-        cout << dev_list[i]->get_name() <<  "이 등용되었습니다. " << endl;
-    else
-        cout << dev_list[i]->get_name() <<  "을 등용에 실패하셨습니다. " << endl;
-    clickMapActionBtnWrapUp();
-
-
-    if(!hero->get_can_move()) {
-        cout << hero->get_name() << "의 행동력이 부족합니다\n";
-        return;
+    string final;
+    if(current_state->is_hired(*dev_list[i])){
+        final = dev_list[i]->get_name();
+        final = final.append("이(가) 등용되었습니다.");
     }
+    else{
+        final = dev_list[i]->get_name();
+        final = final.append("의 등용에 실패했습니다.");
+    }
+    showAlert(QString::fromStdString(final));
+    clickMapActionBtnWrapUp(false);
 }
 
 void MainWindow::gameInit(){
@@ -763,6 +763,7 @@ void MainWindow::gameLoop(){
 
     // 총 턴과 날짜 표시
     setText5(QString::fromStdString(game.get_date()));
+    setText3(100);
 
     // 6월, 9월에 농업도에 비례해서 식량 수확 (모든 플레이어가)
     if(game.get_date().find("6월")!= std::string::npos || game.get_date().find("9월")!= std::string::npos) {
@@ -889,6 +890,7 @@ void MainWindow::initBoard(){
     }
 
     ui->id->setAttribute(Qt::WA_MacShowFocusRect,0);
+    ui->line_edit->setAttribute(Qt::WA_MacShowFocusRect,0);
 
     ui->buttonGrid->hide();
     ui->container2->hide();

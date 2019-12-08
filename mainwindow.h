@@ -28,10 +28,10 @@ public:
     void setText4(int a, int b);
     void setText3(int a);
     void gameLoop();
-    void clickMapActionBtnWrapUp();
     void showList(std::vector<QString> list, bool should_show_back, int mode);
     void showInputDialog(std::string title, int mode);
     void disconnectMap();
+    void clickMapActionBtnWrapUp(bool shouldShowDone);
 public slots:
     void setUserID();
     void setHero1();
