@@ -34,7 +34,7 @@ public:
     void clickMapActionBtnWrapUp(bool shouldShowDone);
     void showLoadingDialog();
     void checkWin();
-    void cheat();
+    void cheat(int number_ai);
 public slots:
     void hideLoadingDialog();
     void setUserID();

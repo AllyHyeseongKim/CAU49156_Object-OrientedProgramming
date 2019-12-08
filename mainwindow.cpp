@@ -546,6 +546,8 @@ void MainWindow::listHero2(QString value){
         bool result = current_state->war(*aggress_hero, aggress_num_solider, *game.get_state_by_id(aggress_state_id), *ai_unit);
         if(result){
             string final = hero->get_name();
+            ai->erase_state(state_list[aggress_state_id-1]);
+            aggress_state.set_state_owner(player);
             final = final.append("이(가) ");
             final = final.append(aggress_state.get_state_name());
             final = final.append("을(를) 뺏어왔습니다.");
@@ -752,6 +754,9 @@ void MainWindow::listDefenceHero(QString value){
     if(result)
         showAlert("방어에 성공했습니다.");
     else{
+        attacked_state->set_state_owner(ai);
+        ai->add_state(attacked_state);
+        player->erase_state(attacked_state);
         showAlert("방어에 실패했습니다.");
     }
 
@@ -859,7 +864,10 @@ void MainWindow::gameInit(){
         game.get_states().at(0)->set_state_owner(ai);
     }
     if(!player->get_user_id().compare("admin")){
-        cheat();
+        cheat(1);
+    }
+    else if(!player->get_user_id().compare("admin2")){
+        cheat(2);
     }
 
     // users에 player와 ai 업캐스팅해서 추가
@@ -1138,7 +1146,7 @@ void MainWindow::setHero(){
     gameInit();
 }
 void MainWindow::setHero1(){
-    if(!player->get_user_id().compare("admin")){
+    if(!player->get_user_id().compare("admin") || !player->get_user_id().compare("admin2")){
         showAlert(QString("치트 활성화"));
     }
     else{
@@ -1148,7 +1156,7 @@ void MainWindow::setHero1(){
     setHero();
 }
 void MainWindow::setHero2(){
-    if(!player->get_user_id().compare("admin")){
+    if(!player->get_user_id().compare("admin") || !player->get_user_id().compare("admin2")){
         showAlert(QString("치트 활성화"));
     }
     else{
@@ -1158,7 +1166,7 @@ void MainWindow::setHero2(){
     setHero();
 }
 void MainWindow::setHero3(){
-    if(!player->get_user_id().compare("admin")){
+    if(!player->get_user_id().compare("admin") || !player->get_user_id().compare("admin2")){
         showAlert(QString("치트 활성화"));
     }
     else{
@@ -1168,7 +1176,7 @@ void MainWindow::setHero3(){
     setHero();
 }
 void MainWindow::setHero4(){
-    if(!player->get_user_id().compare("admin")){
+    if(!player->get_user_id().compare("admin") || !player->get_user_id().compare("admin2")){
         showAlert(QString("치트 활성화"));
     }
     else{
@@ -1179,18 +1187,38 @@ void MainWindow::setHero4(){
 }
 
 
-void MainWindow::cheat(){
+void MainWindow::cheat(int number_ai){
     int skip = initial_state->get_state_id() - 1;
-    for(int i=0;i<9;i++){
-        if(i!=skip){
-            ai->erase_state(game.get_states()[i]);
-            player->add_state(game.get_states()[i]);
-            game.get_states()[i]->set_state_owner(player);
+    if(number_ai==1){
+        for(int i=0;i<9;i++){
+            if(i!=skip){
+                ai->erase_state(game.get_states()[i]);
+                player->add_state(game.get_states()[i]);
+                game.get_states()[i]->set_state_owner(player);
+            }
+            else if(i==skip){
+                game.get_states()[skip]->set_state_owner(ai);
+                player->erase_state(game.get_states()[skip]);
+                ai->add_state(game.get_states()[skip]);
+            }
         }
-        else if(i==skip){
-            game.get_states()[skip]->set_state_owner(ai);
-            player->erase_state(game.get_states()[skip]);
-            ai->add_state(game.get_states()[skip]);
+    }
+    else if(number_ai==2){
+        for(int i=0;i<9;i++){
+            if(i!=skip){
+                ai->erase_state(game.get_states()[i]);
+                player->add_state(game.get_states()[i]);
+                game.get_states()[i]->set_state_owner(player);
+            }
+            else if(i==skip){
+                game.get_states()[skip]->set_state_owner(ai);
+                player->erase_state(game.get_states()[skip]);
+                ai->add_state(game.get_states()[skip]);
+                game.get_states()[skip+1]->set_state_owner(ai);
+                player->erase_state(game.get_states()[skip+1]);
+                ai->add_state(game.get_states()[skip+1]);
+                i++;
+            }
         }
     }
     for(int i=0;i<31;i++){
