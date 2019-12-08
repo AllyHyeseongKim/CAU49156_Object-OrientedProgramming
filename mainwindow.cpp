@@ -433,12 +433,18 @@ void MainWindow::showList(std::vector<QString> list, bool should_show_back, int 
             QPushButton *button = new QPushButton();
             button->setFixedSize(120,32);
             button->setStyleSheet("border-radius: 5px;background-color: #007aff;color: white;");
-            button->setText(list[i]);
-            button->setToolTip(list[i+1]);
+            if(i+1>=list.size()){
+                button->setText(list[i]);
+            }
+            else{
+                button->setText(list[i]);
+                button->setToolTip(list[i+1]);
+            }
             cout<<list[i].toStdString();
-//            paramMapper->setMapping(button, list[i]);
+            paramMapper->setMapping(button, list[i]);
             connect(button, SIGNAL(released()),paramMapper, SLOT(map()));
             showListLayout->addWidget(button);
+
         }
         connect(paramMapper, SIGNAL(mapped(QString)), this, SLOT(listHero(QString)));
         break;
