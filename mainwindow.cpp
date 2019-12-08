@@ -974,8 +974,16 @@ void MainWindow::gameLoop(){
                     show_list.push_back(QString::fromStdString((*unitIter).get_name()));
                 }
             }
-            showList(show_list, false, 1);
-            showAlert(QString::fromStdString(attacked_state->get_state_name()).append("이 공격당했습니다.\n출전시킬 영웅을 고르세요."));
+            if(show_list.size()==0){
+                ai->add_state(attacked_state);
+                player->erase_state(attacked_state);
+                attacked_state->set_state_owner(ai);
+                showAlert(QString::fromStdString(attacked_state->get_state_name()).append("에 영웅이 없어, 병사들이 모두 상대편으로 도망갑니다.\n이 땅은 점령당했습니다."));
+            }
+            else{
+                showList(show_list, false, 1);
+                showAlert(QString::fromStdString(attacked_state->get_state_name()).append("이(가) 공격당했습니다.\n출전시킬 영웅을 고르세요."));
+            }
         }
     }
 
