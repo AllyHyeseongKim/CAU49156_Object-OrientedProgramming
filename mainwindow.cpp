@@ -361,15 +361,10 @@ void MainWindow::showSelection(QString message, QString cancel, QString accept){
     ui->selection_cancel_btn->setText(cancel);
     ui->selectionDialog->raise();
     ui->selectionDialog->show();
-
-    if(!cancel.compare("모집")){
-        connect(ui->selection_accept_btn, SIGNAL(released()),this, SLOT(selectionRecruitA()));
-        connect(ui->selection_cancel_btn, SIGNAL(released()),this, SLOT(selectionRecruitC()));
-    }
-
 }
 void MainWindow::selectionRecruitA(){
-    cout << hero->get_name();
+    closeSelectionAccept();
+    hero->set_can_move(true);
     if(!hero->get_can_move()) {
         showAlert(QString::fromStdString(hero->get_name()).append("의 행동력이 부족합니다"));
         return;
@@ -380,6 +375,7 @@ void MainWindow::selectionRecruitA(){
     }
 }
 void MainWindow::selectionRecruitC(){
+    closeSelectionCancel();
     showInputDialog("모집할 병사의 수를 입력하세요.", 1);
 }
 void MainWindow::closeSelectionCancel(){
@@ -940,11 +936,14 @@ void MainWindow::initBoard(){
     connect(ui->btn5, SIGNAL(released()),this, SLOT(clickMapActionBtn5()));
 
     connect(ui->alert_btn, SIGNAL(released()),this, SLOT(closeAlert()));
-    connect(ui->selection_cancel_btn, SIGNAL(released()),this, SLOT(closeSelectionCancel()));
-    connect(ui->selection_accept_btn, SIGNAL(released()),this, SLOT(closeSelectionAccept()));
+//    connect(ui->selection_cancel_btn, SIGNAL(released()),this, SLOT(closeSelectionCancel()));
+//    connect(ui->selection_accept_btn, SIGNAL(released()),this, SLOT(closeSelectionAccept()));
 
     connect(ui->input_accept_btn, SIGNAL(released()), this, SLOT(closeInputDialogRecruit()));
     connect(ui->input_accept_war_btn, SIGNAL(released()), this, SLOT(closeInputDialogWar()));
+
+    connect(ui->selection_accept_btn, SIGNAL(released()),this, SLOT(selectionRecruitA()));
+    connect(ui->selection_cancel_btn, SIGNAL(released()),this, SLOT(selectionRecruitC()));
 
 }
 
