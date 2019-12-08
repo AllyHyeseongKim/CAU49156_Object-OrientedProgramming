@@ -27,7 +27,7 @@ make
 ./main
 ```
 
-Third, you can use <b>QT (tested on QT 5.12)</b>. Change to 'Release' mode instead of 'Debug' mode.<br>Click 'run' at the bottom left or press the shortcut key, 'Ctrl + R', and you're done.
+<br>Third, you can use <b>QT (tested on QT 5.12)</b>. Change to 'Release' mode instead of 'Debug' mode.<br>Click 'run' at the bottom left or press the shortcut key, 'Ctrl + R', and you're done.
 
 Fourth, you can use <b>executable file</b>.
 
