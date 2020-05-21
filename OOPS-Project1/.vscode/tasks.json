@@ -13,11 +13,20 @@
                 // "${file}", ${fileDirname}
                 "-std=c++11",
                 "main.cpp",
+<<<<<<< HEAD
                 "src/display.cpp",
                 "src/person.cpp",
                 "src/student.cpp",
                 "src/student_list_manager.cpp",
                 "src/utils.cpp",
+=======
+                "src/game_ai.cpp",
+                "src/game_controller.cpp",
+                "src/game_unit.cpp",
+                "src/player.cpp",
+                "src/state.cpp",
+                "src/user.cpp",
+>>>>>>> mergeProject4/master
                 "-o",
                 "${fileBasenameNoExtension}"
             ],

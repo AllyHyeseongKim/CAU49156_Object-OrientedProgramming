@@ -65,7 +65,19 @@
         "filesystem": "cpp",
         "iomanip": "cpp",
         "stack": "cpp",
+<<<<<<< HEAD
         "regex": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }
+=======
+        "regex": "cpp",
+        "numeric": "cpp",
+        "random": "cpp",
+        "__tree": "cpp",
+        "map": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "Enabled",
+    "C_Cpp.default.configurationProvider": "vector-of-bool.cmake-tools"
+}
+>>>>>>> mergeProject4/master

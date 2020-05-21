@@ -9,7 +9,11 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/main",
+<<<<<<< HEAD
             "args": ["data.txt"],
+=======
+            "args": [],
+>>>>>>> mergeProject4/master
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
